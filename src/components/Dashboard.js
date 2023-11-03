@@ -29,7 +29,7 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Resume Analyzer</h1>
+      <h1>Resume Doohickey</h1>
       <h3>Add your master resume and a job description.</h3>
       <PreviousWorkSection />
       <AnalysisSection />

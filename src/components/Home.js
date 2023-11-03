@@ -1,6 +1,7 @@
 // components/Home.js
 function Home() {
-    return <div>Welcome to Resume </div>;
+    return <div>Welcome to Resume Analyzer!</div>;
   }
   
   export default Home;
+  
