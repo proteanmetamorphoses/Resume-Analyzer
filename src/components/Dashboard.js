@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { auth } from '../utils/firebase'; // Adjust the path if needed
+import { auth } from '../utils/firebase';
+import PreviousWorkSection from './PreviousWorkSection';
+import AnalysisSection from './AnalysisSection';
+import ResultsSection from './ResultsSection'; 
+import RevisionSection from './RevisionSection';
+import FinalResultsSection from './FinalResultsSection';
+
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -8,6 +14,9 @@ function Dashboard() {
 
   const handleAnalysis = () => {
     // Logic to analyze the resume and job description
+  };
+  const handleRevisionsSubmission = (revisions) => {
+    console.log('Revisions submitted:', revisions);
   };
   // Fetch user data when the component mounts
   useEffect(() => {
@@ -20,21 +29,13 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Welcome to your Dashboard</h1>
-
-      <div className="resume-input">
-        <h2>Input your resume:</h2>
-        <textarea value={resume} onChange={(e) => setResume(e.target.value)}></textarea>
-      </div>
-
-      <div className="job-description-input">
-        <h2>Input the job description:</h2>
-        <textarea value={jobDescription} onChange={(e) => setJobDescription(e.target.value)}></textarea>
-      </div>
-
-        <button onClick={handleAnalysis}>Analyze</button>
-
-        {/* Sections for comparison results, revisions, and download options */}
+      <h1>Resume Analyzer</h1>
+      <h3>Add your master resume and a job description.</h3>
+      <PreviousWorkSection />
+      <AnalysisSection />
+      <ResultsSection />
+      <RevisionSection missingKeywords={[]} onSubmitRevisions={handleRevisionsSubmission} />
+      <FinalResultsSection />
     </div>
   );
 }
