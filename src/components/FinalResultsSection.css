@@ -1,0 +1,36 @@
+.final-results-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .final-results-section > div {
+    width: 90%; /* Adjust the width as needed */
+    margin-bottom: 20px; /* Space between elements */
+    text-align: center; /* Center the text for headers */
+  }
+  
+  .final-results-section p {
+    border: 1px solid #ccc; /* Border color */
+    border-radius: 4px; /* Rounded corners for the paragraphs */
+    padding: 10px; /* Padding inside the paragraphs */
+    background-color: #f8f9fa; /* Light background color for the content */
+  }
+  
+  .actions button {
+    padding: 10px 20px; /* Padding inside the button */
+    margin-right: 10px; /* Space between buttons */
+    background-color: #007bff; /* Background color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    text-align: center; /* Center the text inside the button */
+  }
+  
+  .actions button:hover {
+    background-color: #0056b3; /* Darker background color on hover */
+  }
+  

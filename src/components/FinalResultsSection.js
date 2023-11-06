@@ -1,5 +1,7 @@
 // FinalResultsSection.js
 import React from 'react';
+import './FinalResultsSection.css';
+
 
 function FinalResultsSection({ revisedResume, revisedATSScore, coverLetter }) {
   const handleSave = () => {

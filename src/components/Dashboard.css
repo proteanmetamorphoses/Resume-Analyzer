@@ -1,0 +1,36 @@
+.dashboard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding-top: 10vh; /* Adjust this value to position your content lower or higher */
+  }
+  
+  @media (max-width: 768px) {
+    .logout-nav {
+      position: static; /* or adjust as needed for mobile layout */
+      padding: 5px; /* smaller padding for smaller screens */
+    }
+  }
+  
+  h1 {
+    font-size: 3rem; /* Large font size for the main title */
+    margin-bottom: 1rem; /* Space below the title */
+  }
+  
+  h3 {
+    font-size: 1.5rem; /* Smaller font size for the subtitle */
+    margin-bottom: 2rem; /* Space below the subtitle */
+  }
+  
+  /* Add styles for other sections if necessary */
+  
+  .logout-nav {
+    position: fixed; /* Fixed position relative to the viewport */
+    top: 0;
+    right: 0;
+    padding: 10px; /* Adjust the padding as needed */
+    z-index: 1000;
+  }

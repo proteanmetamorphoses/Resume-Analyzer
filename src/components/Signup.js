@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, createUserWithEmailAndPassword } from '../utils/firebase';
 import { Link } from 'react-router-dom';
+import './Signup.css';
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -38,7 +39,8 @@ function Signup() {
   };
 
   return (
-    <div>
+    <div className="signup-container">
+      <h1 className="supheader-title">Advanced Resume</h1>
       <form onSubmit={handleSignup}>
         <input
           type="email"
@@ -60,8 +62,8 @@ function Signup() {
         />
         <button type="submit">Sign Up</button>
       </form>
-      {error && <p>{error}</p>}
-      <p>
+      {error && <p className="error-message">{error}</p>}
+      <p className="link-text">
         Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>

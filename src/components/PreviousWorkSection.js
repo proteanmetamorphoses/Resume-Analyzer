@@ -1,4 +1,5 @@
 import React from 'react';
+import './PreviousWorkSection.css';
 
 function PreviousWorkSection() {
   // Logic to handle previous work sets

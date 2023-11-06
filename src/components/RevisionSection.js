@@ -1,5 +1,7 @@
 // RevisionSection.js
 import React, { useState } from 'react';
+import './RevisionSection.css';
+
 
 function RevisionSection({ missingKeywords = [], onSubmitRevisions }) {
   const [userRevisions, setUserRevisions] = useState('');
@@ -24,7 +26,7 @@ function RevisionSection({ missingKeywords = [], onSubmitRevisions }) {
         <textarea
           value={userRevisions}
           onChange={(e) => setUserRevisions(e.target.value)}
-          placeholder="Add details for each missing keyword or keyphrase."
+          placeholder="Add details for each missing keyphrase."
         />
       </div>
       <button onClick={handleSubmitRevisions}>Submit Revisions</button>

@@ -1,5 +1,6 @@
 // AnalysisSection.js
 import React, { useState } from 'react';
+import './AnalysisSection.css';
 
 function AnalysisSection() {
   const [resumeText, setResumeText] = useState('');
@@ -15,19 +16,21 @@ function AnalysisSection() {
         <textarea
           value={resumeText}
           onChange={(e) => setResumeText(e.target.value)}
-          placeholder="Paste your resume here"
+          placeholder="Paste your starter resume here."
         />
       </div>
       <div className="job-description-input">
         <textarea
           value={jobDescriptionText}
           onChange={(e) => setJobDescriptionText(e.target.value)}
-          placeholder="Paste the job description here"
+          placeholder="Paste the recent job description here."
         />
       </div>
-      <button onClick={handleAnalyzeClick}>Analyze</button>
+      <button className="analysis-button" onClick={handleAnalyzeClick}>Analyze</button>
+
     </div>
   );
+  
 }
 
 export default AnalysisSection;

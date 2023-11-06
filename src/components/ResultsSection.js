@@ -1,6 +1,7 @@
 import React from 'react';
 import KeywordsList from './KeywordsList';
 import ATSScore from './ATSScore';
+import './ResultsSection.css';
 
 function ResultsSection({ resumeKeywords, jobDescriptionKeywords, atsScore }) {
   return (

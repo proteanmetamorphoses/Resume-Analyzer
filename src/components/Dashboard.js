@@ -5,7 +5,8 @@ import AnalysisSection from './AnalysisSection';
 import ResultsSection from './ResultsSection'; 
 import RevisionSection from './RevisionSection';
 import FinalResultsSection from './FinalResultsSection';
-
+import LogoutLink from './LogoutLink';
+import './Dashboard.css';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -29,13 +30,20 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Resume Doohickey</h1>
-      <h3>Add your master resume and a job description.</h3>
-      <PreviousWorkSection />
-      <AnalysisSection />
+      <h1>Advanced</h1>
+      <h3>Add your starter resume and a recent job description.</h3>
+      <div className="previous-work-section">
+          <PreviousWorkSection />
+      </div>
+      <div className="analysis-section">
+          <AnalysisSection />
+      </div>
       <ResultsSection />
       <RevisionSection missingKeywords={[]} onSubmitRevisions={handleRevisionsSubmission} />
       <FinalResultsSection />
+      <nav className="logout-nav">
+        <LogoutLink />
+      </nav>
     </div>
   );
 }
