@@ -16,14 +16,14 @@ function AnalysisSection() {
         <textarea
           value={resumeText}
           onChange={(e) => setResumeText(e.target.value)}
-          placeholder="Paste your starter resume here."
+          placeholder="Type or paste your starter resume text here."
         />
       </div>
       <div className="job-description-input">
         <textarea
           value={jobDescriptionText}
           onChange={(e) => setJobDescriptionText(e.target.value)}
-          placeholder="Paste the recent job description here."
+          placeholder="Paste your recent job description text here."
         />
       </div>
       <button className="analysis-button" onClick={handleAnalyzeClick}>Analyze</button>

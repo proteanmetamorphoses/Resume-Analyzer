@@ -11,7 +11,7 @@ function PasswordReset() {
     event.preventDefault();
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage('Check your email to reset your password.');
+      setMessage('Check your email (including spam or junk box) for your password reset link.');
     } catch (error) {
       console.error('Error sending password reset email:', error);
       setError('Failed to send password reset email. Please try again.');

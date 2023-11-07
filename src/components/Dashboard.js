@@ -7,6 +7,7 @@ import RevisionSection from './RevisionSection';
 import FinalResultsSection from './FinalResultsSection';
 import LogoutLink from './LogoutLink';
 import './Dashboard.css';
+import Todo from '../utils/Todo.jsx';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
