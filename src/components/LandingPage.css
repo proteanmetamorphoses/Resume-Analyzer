@@ -8,29 +8,28 @@
   }
   
   .header-title {
-    font-size: 4rem; /* Adjust size as needed */
+    font-size: 4rem; 
     margin-bottom: 1rem;
-    /* Add more styling as needed */
   }
   
   .tagline {
-    font-size: 1.5rem; /* Adjust size as needed */
+    font-size: 1.5rem;
     margin-bottom: 2rem;
-    /* Add more styling as needed */
   }
   
   .cta-button {
     padding: 10px 20px;
-    font-size: 1.25rem; /* Adjust size as needed */
+    font-size: 1.25rem;
     color: white;
-    background-color: #007bff; /* Adjust color as needed */
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 1rem;
   }
   
   .cta-button:hover {
-    background-color: #0056b3; /* Adjust color as needed */
+    background-color: #0056b3;
   }
   

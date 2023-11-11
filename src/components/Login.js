@@ -16,15 +16,13 @@ function Login() {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard'); // Redirect to dashboard after successful login
+      navigate('/dashboard'); 
     } catch (error) {
       console.error("Error logging in:", error);
-      // Check for the 'auth/invalid-email' error code and set a custom message
+      
       if (error.code === 'auth/invalid-email') {
         setError('Invalid Email.');
       } else {
-        // For other errors, you can either display a generic message
-        // or handle them specifically based on their error.code
         setError('An error occurred while trying to log in. Please try again.');
       }
     }
@@ -35,12 +33,11 @@ function Login() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      // This gives you a Google Access Token. You can use it to access Google APIs.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      navigate('/dashboard'); // Redirect to dashboard after successful login
+      navigate('/dashboard');
     } catch (error) {
       console.error("Error logging in with Google:", error);
       setError("There was an issue with Google sign-in. Please try again.");
@@ -81,5 +78,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;

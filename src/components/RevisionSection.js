@@ -1,4 +1,3 @@
-// RevisionSection.js
 import React, { useState } from 'react';
 import './RevisionSection.css';
 
@@ -13,20 +12,20 @@ function RevisionSection({ missingKeywords = [], onSubmitRevisions }) {
 
   return (
     <div className="revision-section">
+      <h3>Resume Analysis Based on Job Description</h3>
       <div className="missing-keywords">
-        <h3>Missing Keywords</h3>
         <ul>
           {missingKeywords.map((keyword, index) => (
             <li key={index}>{keyword}</li>
           ))}
         </ul>
       </div>
+      <h3>Add Details for Missing Job Description Details to Include</h3>
       <div className="revision-input">
-        <h3>Add Details</h3>
         <textarea
           value={userRevisions}
           onChange={(e) => setUserRevisions(e.target.value)}
-          placeholder="Add details for each missing keyphrase."
+          placeholder="Add details for missing keyphrases."
         />
       </div>
       <button onClick={handleSubmitRevisions}>Submit Revisions</button>

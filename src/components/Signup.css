@@ -1,4 +1,3 @@
-/* Signup.css */
 .signup-container {
     display: flex;
     flex-direction: column;
@@ -14,7 +13,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 400px; /* Example max-width */
+    max-width: 400px;
     margin-bottom: 20px;
   }
   
@@ -52,7 +51,6 @@
   .supheader-title {
     text-align: center;
     font-size: 5rem;
-    margin-top: 0; /* Adjust the margin as needed */
-    /* Add more styling as needed */
+    margin-top: 0;
   }
   

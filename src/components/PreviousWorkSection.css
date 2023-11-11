@@ -1,10 +1,10 @@
 .previous-work-section {
-    width: 100%;
-    max-width: 600px; /* or your preferred width */
+    width: 5%;
+    max-width: 600px;
     margin: auto;
     padding: 20px;
-    /* Add more styles as needed */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f8f9fa;
   }
-  
-  /* Add styles for elements within the PreviousWorkSection if needed */
-  

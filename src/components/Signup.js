@@ -12,7 +12,6 @@ function Signup() {
   const navigate = useNavigate();
 
   const isStrongPassword = (password) => {
-    // Example: Password should be at least 8 characters, contain a number and an uppercase letter
     return /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
   };
 
@@ -31,7 +30,7 @@ function Signup() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard'); // Redirect to dashboard after successful signup
+      navigate('/dashboard');
     } catch (error) {
       console.error("Error signing up:", error);
       setError(error.message);

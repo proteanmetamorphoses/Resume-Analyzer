@@ -1,15 +1,14 @@
-// AnalysisSection.js
 import React, { useState } from 'react';
 import './AnalysisSection.css';
 
-function AnalysisSection() {
+function AnalysisSection({ onSubmit }) {
   const [resumeText, setResumeText] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
 
   const handleAnalyzeClick = () => {
-    // Call the ChatGPT API to analyze the resume and job description
+    onSubmit(resumeText, jobDescriptionText);
   };
-
+  
   return (
     <div className="analysis-section">
       <div className="resume-input">

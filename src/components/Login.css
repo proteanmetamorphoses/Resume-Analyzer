@@ -13,80 +13,77 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Set a max-width if you want to constrain the form width */
-  /* Additional styling */
+  width: 100%;
 }
-  /* Wrap your button in a div with a class name 'button-container' */
+  
   .button-container {
     text-align: center;
   }
 
-  /* This rule will ensure that the inputs have a visible border on all sides */
+  
 input[type="email"],
 input[type="password"] {
-  border: 1px solid #ccc; /* Adjust color as needed */
-  margin-bottom: 10px; /* Adds space below the email input */
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
 }
 
-/* This rule adds some padding inside the inputs to ensure text is not flush against the edges */
 input[type="email"],
 input[type="password"] {
-  padding: 10px; /* Adjust padding as needed */
+  padding: 10px;
 }
 
-/* This rule will ensure that the form elements are not directly touching each other */
+
 form input {
-  margin-bottom: 1rem; /* Adds 16px space below each input */
+  margin-bottom: 1rem; 
 }
 
-/* If you want to specifically target only the email input for bottom margin */
+
 input[type="email"] {
-  margin-bottom: 1rem; /* Adds 16px space below the email input */
+  margin-bottom: 1rem; 
 }
 
-/* Add space between inputs */
+
 input[type="email"],
 input[type="password"] {
-  margin-bottom: 20px; /* Adjust the value as needed */
-  display: block; /* This ensures the inputs take up the full width and the margin applies */
+  margin-bottom: 20px; 
+  display: block; 
 }
 
-/* Alternatively, you can target them individually */
+
 input[type="email"] {
-  margin-bottom: 20px; /* Space below the email input */
+  margin-bottom: 20px; 
 }
 
 input[type="password"] {
-  /* If you need specific styles for the password input */
+  
 }
 
 
 
 .login-button {
-  margin-bottom: 20px; /* Adjust the value as needed */
+  margin-bottom: 20px; 
 }
 
 .error-message {
   color: red;
-  /* Add additional styling as needed */
+  
 }
 
 .google-sign-in-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Add other styles such as padding, background color, etc. */
+ 
 }
 
 .google-sign-in-button img {
-  margin-right: 8px; /* Adjust spacing as needed */
-  width: 20px; /* Adjust size as needed */
-  height: 20px; /* Adjust size as needed */
+  margin-right: 8px; 
+  width: 20px; 
+  height: 20px; 
 }
 
 .header-title {
   text-align: center;
   font-size: 5rem;
-  margin-top: 0; /* Adjust the margin as needed */
-  /* Add more styling as needed */
-}
+  margin-top: 0; 
+ }

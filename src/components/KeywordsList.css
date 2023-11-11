@@ -1,0 +1,11 @@
+.keywords{
+    width: 50vw;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f8f9fa; 
+}
+.keyTitles {
+    text-align: center;
+  }
+  

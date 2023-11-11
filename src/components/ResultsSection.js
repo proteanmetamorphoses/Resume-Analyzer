@@ -6,9 +6,10 @@ import './ResultsSection.css';
 function ResultsSection({ resumeKeywords, jobDescriptionKeywords, atsScore }) {
   return (
     <div className="results-section">
-      <KeywordsList type="resume" keywords={resumeKeywords} />
-      <KeywordsList type="jobDescription" keywords={jobDescriptionKeywords} />
-      <ATSScore score={atsScore} />
+      <div className="keywords-container"><KeywordsList type="resume" keywords={resumeKeywords} /></div>
+      <div className="keywords-container"><KeywordsList type="jobDescription" keywords={jobDescriptionKeywords} /></div>
+      <h3>Resume ATS Score (&gt;=90% is more competitive)</h3>
+      <div className="ats-score"><ATSScore score={atsScore} /></div>
     </div>
   );
 }

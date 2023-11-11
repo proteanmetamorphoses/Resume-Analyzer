@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { auth, sendPasswordResetEmail } from '../utils/firebase';
-import './PasswordReset.css'; // Your CSS file for styling
-
+import './PasswordReset.css'; 
 function PasswordReset() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');

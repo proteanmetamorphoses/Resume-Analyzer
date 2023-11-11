@@ -5,32 +5,31 @@
     align-items: center;
     justify-content: flex-start;
     min-height: 100vh;
-    padding-top: 10vh; /* Adjust this value to position your content lower or higher */
+    padding-top: 5vh;
   }
   
   @media (max-width: 768px) {
     .logout-nav {
-      position: static; /* or adjust as needed for mobile layout */
-      padding: 5px; /* smaller padding for smaller screens */
+      position: static;
+      padding: 5px;
     }
   }
   
   h1 {
-    font-size: 3rem; /* Large font size for the main title */
-    margin-bottom: 1rem; /* Space below the title */
+    font-size: 3rem;
+    margin-bottom: 1rem; 
   }
   
   h3 {
-    font-size: 1.5rem; /* Smaller font size for the subtitle */
-    margin-bottom: 2rem; /* Space below the subtitle */
+    font-size: 1.5rem; 
+    margin: 10px 0 10px 0;
   }
   
-  /* Add styles for other sections if necessary */
   
   .logout-nav {
-    position: fixed; /* Fixed position relative to the viewport */
+    position: fixed;
     top: 0;
     right: 0;
-    padding: 10px; /* Adjust the padding as needed */
+    padding: 10px;
     z-index: 1000;
   }

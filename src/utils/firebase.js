@@ -10,7 +10,6 @@ import {
 import { getAnalytics } from "firebase/analytics";
 import { signOut } from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCjJPT5uMq7_Y4ZSHTbRttEe2EhsujerWw",
   authDomain: "resume-analyzer-83c09.firebaseapp.com",
@@ -21,7 +20,6 @@ const firebaseConfig = {
   measurementId: "G-150DTM3MX9"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);

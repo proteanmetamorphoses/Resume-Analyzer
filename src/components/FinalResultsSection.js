@@ -1,29 +1,29 @@
-// FinalResultsSection.js
 import React from 'react';
 import './FinalResultsSection.css';
 
 
 function FinalResultsSection({ revisedResume, revisedATSScore, coverLetter }) {
   const handleSave = () => {
-    // Logic to save the results to the user's account
+
   };
 
   const handleDownload = () => {
-    // Logic to download the results as a file
+
   };
 
   return (
     <div className="final-results-section">
-      <div className="revised-resume">
+      <div>
         <h3>Revised Resume</h3>
-        <p>{revisedResume}</p>
+        <p className="revised-resume">{revisedResume}</p>
       </div>
+      <h3>Revised ATS Score</h3> 
       <div className="revised-ats-score">
-        <h3>Revised ATS Score: {revisedATSScore}</h3>
+        {revisedATSScore}
       </div>
-      <div className="cover-letter">
+      <div>
         <h3>Cover Letter</h3>
-        <p>{coverLetter}</p>
+        <p className="cover-letter">{coverLetter}</p>
       </div>
       <div className="actions">
         <button onClick={handleSave}>Save</button>

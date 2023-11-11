@@ -4,40 +4,51 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
+    width: 100%;
   }
   
   .missing-keywords,
   .revision-input {
-    width: 90%; /* Adjust the width as needed */
-    margin-bottom: 20px; /* Space between elements */
-    text-align: center; /* Center the text for headers */
+    width: 90%; 
+    margin-bottom: 20px; 
+    text-align: center; 
   }
   
+  .missing-keywords {
+    width: 50vw;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    padding: 10px; 
+    background-color: #f8f9fa;
+  }
+
   .missing-keywords ul {
-    list-style-type: none; /* Removes the default list styling */
-    padding: 0; /* Removes the default padding */
+    list-style-type: none; 
+    padding: 0; 
   }
   
   .revision-input textarea {
-    width: 100%; /* Takes the full width of the parent container */
-    padding: 10px; /* Padding inside the textarea */
-    margin-bottom: 20px; /* Space below the textarea */
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 4px; /* Rounded corners for the textarea */
-    min-height: 150px; /* Minimum height for the textarea */
+    width: 50vw; 
+    padding: 10px; 
+    margin-bottom: 20px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    min-height: 150px; 
   }
   
   .revision-section button {
-    padding: 10px 20px; /* Padding inside the button */
-    background-color: #007bff; /* Background color */
-    color: white; /* Text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners for the button */
-    cursor: pointer; /* Pointer cursor on hover */
-    text-align: center; /* Center the text inside the button */
+    padding: 10px 20px; 
+    background-color: #007bff; 
+    color: white;
+    border: none; 
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    border-radius: 4px;
+    margin: 0 auto;
   }
   
   .revision-section button:hover {
-    background-color: #0056b3; /* Darker background color on hover */
+    background-color: #0056b3; 
   }
   

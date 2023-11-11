@@ -1,36 +1,52 @@
 .final-results-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center; /* This will center the text inside the blocks */
+}
   
   .final-results-section > div {
-    width: 90%; /* Adjust the width as needed */
-    margin-bottom: 20px; /* Space between elements */
-    text-align: center; /* Center the text for headers */
+    margin-bottom: 20px;
+    text-align: center;
   }
   
-  .final-results-section p {
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 4px; /* Rounded corners for the paragraphs */
-    padding: 10px; /* Padding inside the paragraphs */
-    background-color: #f8f9fa; /* Light background color for the content */
+  .revised-resume,
+  .cover-letter {
+    box-sizing: border-box;
+    display: block; /* or 'inline-block' if you want them to be centered as inline elements */
+    width: 50vw;
+    margin: auto; /* This should center the blocks */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa;
   }
+  
+
   
   .actions button {
-    padding: 10px 20px; /* Padding inside the button */
-    margin-right: 10px; /* Space between buttons */
-    background-color: #007bff; /* Background color */
-    color: white; /* Text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners for the button */
-    cursor: pointer; /* Pointer cursor on hover */
-    text-align: center; /* Center the text inside the button */
+    padding: 10px 20px;
+    margin: 10px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
   }
   
   .actions button:hover {
-    background-color: #0056b3; /* Darker background color on hover */
+    background-color: #0056b3;
   }
+  
+  .revised-ats-score {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    padding: 10px 10px 25px 10px;
+  }
+
   
