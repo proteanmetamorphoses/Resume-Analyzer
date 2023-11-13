@@ -4,7 +4,6 @@ import { auth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup }
 import { Link } from 'react-router-dom';
 import './Login.css';
 import googleLogo from './GoogleG.png';
-import { useEffect } from 'react';
 
 function Login() {
   const [email, setEmail] = useState("");

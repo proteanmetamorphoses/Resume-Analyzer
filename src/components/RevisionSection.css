@@ -22,10 +22,12 @@
     background-color: #f8f9fa;
   }
 
-  .missing-keywords ul {
-    list-style-type: none; 
-    padding: 0; 
+  .revision-section .missing-keywords ul {
+    list-style-type: disc; 
+    padding-left: 30px;
+    text-align: left;
   }
+
   
   .revision-input textarea {
     width: 50vw; 
@@ -52,3 +54,17 @@
     background-color: #0056b3; 
   }
   
+  h4, p {
+    text-align: left;
+  }
+
+  textarea {
+    align-items: center;
+    box-sizing: border-box;
+    width: 50vw; 
+    min-height: 25vh;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }

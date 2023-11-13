@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
 import './AnalysisSection.css';
 
-function AnalysisSection({ onSubmit }) {
-  const [resumeText, setResumeText] = useState('');
-  const [jobDescriptionText, setJobDescriptionText] = useState('');
+import React, { useState } from 'react';
+
+function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText, setResumeText, jobDescriptionText, setJobDescriptionText }) {
 
   const handleAnalyzeClick = () => {
     onSubmit(resumeText, jobDescriptionText);
@@ -25,11 +24,11 @@ function AnalysisSection({ onSubmit }) {
           placeholder="Paste your recent job description text here."
         />
       </div>
-      <button className="analysis-button" onClick={handleAnalyzeClick}>Analyze</button>
-
+      {!isAnalyzing && !analysisCompleted && (
+        <button className="analysis-button" onClick={handleAnalyzeClick}>Analyze</button>
+      )}
     </div>
   );
-  
 }
 
 export default AnalysisSection;

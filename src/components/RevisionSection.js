@@ -2,35 +2,53 @@ import React, { useState } from 'react';
 import './RevisionSection.css';
 
 
-function RevisionSection({ missingKeywords = [], onSubmitRevisions }) {
+function RevisionSection({ missingKeywords = [], assessment = '', employabilityScore = 0, bestPossibleJob = '', onSubmitRevisions, originalResume, originalJobDescription }) {
   const [userRevisions, setUserRevisions] = useState('');
+  const [isTouched, setIsTouched] = useState(false);
+
+
+  const handleFocus = () => {
+      if (!isTouched) {
+          setUserRevisions(missingKeywords.join('\n'));
+          setIsTouched(true);
+      }
+  };
 
   const handleSubmitRevisions = () => {
-    // Call the ChatGPT API to submit revisions and update the resume
-    onSubmitRevisions(userRevisions);
+    onSubmitRevisions(originalResume, originalJobDescription, userRevisions);
   };
+  
 
   return (
     <div className="revision-section">
-      <h3>Resume Analysis Based on Job Description</h3>
-      <div className="missing-keywords">
-        <ul>
-          {missingKeywords.map((keyword, index) => (
-            <li key={index}>{keyword}</li>
-          ))}
-        </ul>
-      </div>
-      <h3>Add Details for Missing Job Description Details to Include</h3>
-      <div className="revision-input">
-        <textarea
-          value={userRevisions}
-          onChange={(e) => setUserRevisions(e.target.value)}
-          placeholder="Add details for missing keyphrases."
-        />
-      </div>
-      <button onClick={handleSubmitRevisions}>Submit Revisions</button>
+    <h3>Resume Analysis Based on Job Description</h3>
+    
+    <div className="missing-keywords">
+      <h4>Missing Keywords:</h4>
+      <ul>
+        {missingKeywords.map((keyword, index) => (
+          <li key={index}>{keyword}</li>
+        ))}
+      </ul>
+      <h4>Assessment:</h4>
+      <p>{assessment}</p>
+      <h4>Best Possible Job:</h4>
+      <p>{bestPossibleJob}</p>
     </div>
+
+          <div className="missing-details">
+          <h3>Add Missing Keyword Details for the following items:</h3>
+              <textarea
+                  value={userRevisions}
+                  onChange={(e) => setUserRevisions(e.target.value)}
+                  onFocus={handleFocus}
+                  placeholder={!isTouched ? missingKeywords.join('\n') : ''}
+              />
+          </div>
+          <button className="analysis-button" onClick={handleSubmitRevisions}>Revise</button>
+      </div>
   );
 }
+
 
 export default RevisionSection;

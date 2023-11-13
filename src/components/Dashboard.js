@@ -7,19 +7,42 @@ import FinalResultsSection from './FinalResultsSection';
 import LogoutLink from './LogoutLink';
 import './Dashboard.css';
 import axios from 'axios';
-//import { parseOpenAIResponse } from '../utils/parseOpenAIResponse';
+import Spinner from './Spinner';
 
 function Dashboard() {
+  const [showRevisionSection, setShowRevisionSection] = useState(false);
   const [resumeKeywords, setResumeKeywords] = useState([]);
   const [jobDescriptionKeywords, setJobDescriptionKeywords] = useState([]);
   const [atsScore, setAtsScore] = useState(0);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisCompleted, setAnalysisCompleted] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [showFinalResults, setShowFinalResults] = useState(false);
+  const [missingKeywords, setMissingKeywords] = useState([]);
+  const [assessment, setAssessment] = useState('');
+  const [employabilityScore, setEmployabilityScore] = useState(0);
+  const [bestPossibleJob, setBestPossibleJob] = useState('');
+  const [resumeText, setResumeText] = useState('');
+  const [jobDescriptionText, setJobDescriptionText] = useState('');
+
+
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
+    setIsAnalyzing(true);
     const resumeData = { resumeText, jobDescriptionText };
     await handleSubmit(resumeData);
   };
 
-  const handleRevisionsSubmission = (revisions) => {
-    console.log('Revisions submitted:', revisions);
+  const handleRevisionsSubmission = async (resume, jobDescription, revisions) => {
+    try {
+      const response = await axios.post('/api/submit-revision', { resume, jobDescription, revisions });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+      // Handle error
+    }
+    setShowResults(true);
+    setShowRevisionSection(true);
+    setShowFinalResults(true);
   };
 
   const handleSubmit = async (resumeData) => {
@@ -27,22 +50,27 @@ function Dashboard() {
       const response = await axios.post('/api/analyze-resume', resumeData);
       if (response.status === 200) {
         const message = response.data.message;
-        console.log(message);
-        const parsedData = parsePlainTextResponse(message); 
-        console.log(parsedData);
+        const parsedData = parsePlainTextResponse(message);
         setResumeKeywords(parsedData.resumeKeywords);
         setJobDescriptionKeywords(parsedData.jobDescriptionKeywords);
         setAtsScore(parsedData.atsScore);
-        console.log(setAtsScore);
-        // ... (set other state variables)
+        setMissingKeywords(parsedData.missingKeywords);
+        setAssessment(parsedData.assessment);
+        setEmployabilityScore(parsedData.atsScore);
+        setBestPossibleJob(parsedData.bestPossibleJob);
+        setShowResults(true);
       } else {
         // Handle non-200 status
       }
     } catch (error) {
-      // Handle network errors
       console.error(error);
+    } finally {
+      setIsAnalyzing(false);
+      setAnalysisCompleted(true);
     }
+    setShowRevisionSection(false);
   };
+
   
   function parsePlainTextResponse(text) {
     // Split the entire message by new lines
@@ -73,6 +101,12 @@ function Dashboard() {
       .slice(assessmentIndex + 1, employabilityScoreIndex)
       .join(' ')
       .trim();
+    
+    // Extract missing keywords
+    const missingKeywords = lines
+    .slice(missingKeywordsIndex + 1, assessmentIndex)
+    .filter(line => line.startsWith('- '))
+    .map(keyword => keyword.substring(2).trim());
   
     // Extract the ATS score
     const employabilityScoreLine = lines[employabilityScoreIndex];
@@ -88,30 +122,56 @@ function Dashboard() {
     return {
       resumeKeywords,
       jobDescriptionKeywords,
+      missingKeywords,
       assessment,
       atsScore,
       bestPossibleJob
     };
   }
-  
 
   return (
     <div className="dashboard">
       <h1>Advanced Resume</h1>
       <h3>Add your starter resume and a recent job description, below.</h3>
       <div className="previous-work-section">
-          <PreviousWorkSection />
+        <PreviousWorkSection />
       </div>
       <div className="analysis-section">
-          <AnalysisSection onSubmit={handleAnalysis} />
+        <AnalysisSection
+          onSubmit={handleAnalysis}
+          isAnalyzing={isAnalyzing}
+          analysisCompleted={analysisCompleted}
+          resumeText={resumeText}
+          setResumeText={setResumeText}
+          jobDescriptionText={jobDescriptionText}
+          setJobDescriptionText={setJobDescriptionText}
+        />
       </div>
-      <ResultsSection
-        resumeKeywords={resumeKeywords}
-        jobDescriptionKeywords={jobDescriptionKeywords}
-        atsScore={atsScore}
-      />
-      <RevisionSection missingKeywords={[]} onSubmitRevisions={handleRevisionsSubmission} />
-      <FinalResultsSection />
+  
+      {isAnalyzing && <Spinner />}
+  
+      {!isAnalyzing && showResults && (
+        <ResultsSection
+          resumeKeywords={resumeKeywords}
+          jobDescriptionKeywords={jobDescriptionKeywords}
+          atsScore={atsScore}
+        />
+      )}
+  
+      {!isAnalyzing && (showResults || showRevisionSection) && (
+        <RevisionSection 
+          missingKeywords={missingKeywords}
+          assessment={assessment}
+          employabilityScore={employabilityScore}
+          bestPossibleJob={bestPossibleJob}
+          onSubmitRevisions={handleRevisionsSubmission}
+          originalResume={resumeText}
+          originalJobDescription={jobDescriptionText}
+        />
+      )}
+  
+      {!isAnalyzing && showFinalResults && <FinalResultsSection />}
+  
       <nav className="logout-nav">
         <LogoutLink />
       </nav>
