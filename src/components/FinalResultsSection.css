@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  text-align: center; /* This will center the text inside the blocks */
+  text-align: center; 
 }
   
   .final-results-section > div {
@@ -12,19 +12,22 @@
     text-align: center;
   }
   
-  .revised-resume,
+  h3{
+    margin-top: 30px;
+  }
+  .revised-resume, 
   .cover-letter {
     box-sizing: border-box;
-    display: block; /* or 'inline-block' if you want them to be centered as inline elements */
+    display: block;
     width: 50vw;
-    margin: auto; /* This should center the blocks */
+    margin: auto;
+    margin-top: 30px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #f8f9fa;
+    text-align: left;
   }
-  
-
   
   .actions button {
     padding: 10px 20px;
@@ -44,9 +47,14 @@
   .revised-ats-score {
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 10px;
     background-color: #f8f9fa;
-    padding: 10px 10px 25px 10px;
+    padding: 10px 10px 10px 10px;
+    width: auto;
+    margin: 0 auto;
+    display: inline-block;
   }
 
+  .ats-score-header, .cover-letter-header {
+    margin-top: 80px; /* Adjust this value as needed */
+  }
   

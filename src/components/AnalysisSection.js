@@ -1,7 +1,4 @@
 import './AnalysisSection.css';
-
-import React, { useState } from 'react';
-
 function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText, setResumeText, jobDescriptionText, setJobDescriptionText }) {
 
   const handleAnalyzeClick = () => {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './RevisionSection.css';
+import Spinner from './Spinner';
 
-
-function RevisionSection({ missingKeywords = [], assessment = '', employabilityScore = 0, bestPossibleJob = '', onSubmitRevisions, originalResume, originalJobDescription }) {
+function RevisionSection({ missingKeywords = [], assessment = '', employabilityScore = 0, bestPossibleJob = '', onSubmitRevisions, originalResume, originalJobDescription, isRevising, revisionCompleted }) {
   const [userRevisions, setUserRevisions] = useState('');
   const [isTouched, setIsTouched] = useState(false);
 
@@ -45,7 +45,10 @@ function RevisionSection({ missingKeywords = [], assessment = '', employabilityS
                   placeholder={!isTouched ? missingKeywords.join('\n') : ''}
               />
           </div>
-          <button className="analysis-button" onClick={handleSubmitRevisions}>Revise</button>
+          {!isRevising && !revisionCompleted && (
+        <button className="analysis-button" onClick={handleSubmitRevisions}>Revise</button>
+      )}
+      {isRevising && <Spinner />}
       </div>
   );
 }

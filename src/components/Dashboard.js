@@ -24,7 +24,11 @@ function Dashboard() {
   const [bestPossibleJob, setBestPossibleJob] = useState('');
   const [resumeText, setResumeText] = useState('');
   const [jobDescriptionText, setJobDescriptionText] = useState('');
-
+  const [isRevising, setIsRevising] = useState(false);
+  const [revisionCompleted, setRevisionCompleted] = useState(false);
+  const [finalResume, setFinalResume] = useState('');
+  const [coverLetter, setCoverLetter] = useState('');
+  const [newEmployabilityScore, setNewEmployabilityScore] = useState(0);
 
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
     setIsAnalyzing(true);
@@ -33,17 +37,28 @@ function Dashboard() {
   };
 
   const handleRevisionsSubmission = async (resume, jobDescription, revisions) => {
+    setIsRevising(true);
     try {
       const response = await axios.post('/api/submit-revision', { resume, jobDescription, revisions });
-      console.log(response);
+      if (response.data && response.data.message) {
+        const parsedRevisionData = parseOpenAIResponse(response.data.message);
+        console.log("Parsed Revision Data: ", parsedRevisionData);
+        setFinalResume(parsedRevisionData.finalResume);
+        setCoverLetter(parsedRevisionData.coverLetter);
+        setNewEmployabilityScore(parsedRevisionData.newEmployabilityScore);
+      }
+      setRevisionCompleted(true);
     } catch (error) {
       console.error(error);
-      // Handle error
+      // Handle error (consider updating state to show error in UI)
+    } finally {
+      setIsRevising(false);
     }
-    setShowResults(true);
+    setShowResults(true); // Hide initial results if showing final results
     setShowRevisionSection(true);
     setShowFinalResults(true);
   };
+
 
   const handleSubmit = async (resumeData) => {
     try {
@@ -129,6 +144,47 @@ function Dashboard() {
     };
   }
 
+  function parseOpenAIResponse(responseText) {
+    // Split the entire message by new lines
+    const lines = responseText.split('\n');
+  
+    // Find the indices for each section
+    const finalResumeIndex = lines.findIndex(line => line.includes('Final Resume:'));
+    const eScoreIndex = lines.findIndex(line => line.includes('EScore:'));
+    const coverLetterIndex = lines.findIndex(line => line.includes('Cover letter:'));
+  
+    let finalResume = '';
+    let newEmployabilityScore = 0;
+    let coverLetter = '';
+  
+    if (finalResumeIndex !== -1 && eScoreIndex !== -1) {
+      finalResume = lines.slice(finalResumeIndex + 1, eScoreIndex).join('\n').trim();
+    }
+  
+    if (eScoreIndex !== -1) {
+      const scoreLine = lines[eScoreIndex];
+      const scoreMatch = scoreLine.match(/\d+/); // Matches the first sequence of digits
+      if (scoreMatch) {
+        newEmployabilityScore = parseInt(scoreMatch[0], 10);
+      }
+    }
+  
+    if (coverLetterIndex !== -1) {
+      coverLetter = lines.slice(coverLetterIndex + 1).join('\n').trim();
+    }
+  
+    // Log for debugging
+    console.log({ finalResume, newEmployabilityScore, coverLetter });
+  
+    return {
+      finalResume,
+      newEmployabilityScore,
+      coverLetter
+    };
+  }
+  
+  
+
   return (
     <div className="dashboard">
       <h1>Advanced Resume</h1>
@@ -167,10 +223,18 @@ function Dashboard() {
           onSubmitRevisions={handleRevisionsSubmission}
           originalResume={resumeText}
           originalJobDescription={jobDescriptionText}
+          isRevising={isRevising}
+          revisionCompleted={revisionCompleted}
         />
       )}
   
-      {!isAnalyzing && showFinalResults && <FinalResultsSection />}
+      {!isAnalyzing && showFinalResults && (
+        <FinalResultsSection
+          finalResume={finalResume}
+          coverLetter={coverLetter}
+          newEmployabilityScore={newEmployabilityScore}
+        />
+      )}
   
       <nav className="logout-nav">
         <LogoutLink />
