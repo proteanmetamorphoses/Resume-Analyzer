@@ -1,14 +1,15 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  sendPasswordResetEmail // Import this
-} from "firebase/auth";
-import { getAnalytics } from "firebase/analytics";
-import { signOut } from "firebase/auth";
+  sendPasswordResetEmail,
+  signOut
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCjJPT5uMq7_Y4ZSHTbRttEe2EhsujerWw",
@@ -21,6 +22,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+export { db };
+console.log(db); // Should log Firestore instance
+
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 export {
@@ -29,7 +34,7 @@ export {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  sendPasswordResetEmail // Export this
+  sendPasswordResetEmail
 };
 
 // Function to log out the user

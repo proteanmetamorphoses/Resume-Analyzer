@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './FinalResultsSection.css';
 import { saveAs } from 'file-saver';
 import { Document, Packer, Paragraph, HeadingLevel, SectionType, TextRun } from 'docx';
@@ -72,12 +72,15 @@ const downloadDocument = (coverLetter, resume, fileName) => {
 };
 
 
-
-
-
-function FinalResultsSection({ finalResume, newEmployabilityScore, coverLetter }) {
+function FinalResultsSection({ finalResume, newEmployabilityScore, coverLetter, onSave }) {
+  const [title, setTitle] = useState(""); // State to store the title
   const handleSave = () => {
-    // Existing save logic here
+    if (title) {
+      console.log("newEmployabilityScore on Save:", newEmployabilityScore);
+      onSave(title, finalResume, coverLetter, newEmployabilityScore);
+    } else {
+      console.log("Please enter a title for the document.");
+    }
   };
 
   const handleDownload = () => {
@@ -111,7 +114,13 @@ function FinalResultsSection({ finalResume, newEmployabilityScore, coverLetter }
               </React.Fragment>
             ))}
           </div>
-        </div>
+      </div>
+      <input
+        type="text"
+        placeholder="Enter document title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <div className="actions">
         <button onClick={handleSave}>Save</button>
         <button onClick={handleDownload}>Download</button>

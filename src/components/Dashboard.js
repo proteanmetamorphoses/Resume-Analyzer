@@ -8,6 +8,11 @@ import LogoutLink from './LogoutLink';
 import './Dashboard.css';
 import axios from 'axios';
 import Spinner from './Spinner';
+import { db } from '../utils/firebase';
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+
+
 
 function Dashboard() {
   const [showRevisionSection, setShowRevisionSection] = useState(false);
@@ -180,9 +185,7 @@ function Dashboard() {
   if (isNaN(newEmployabilityScore)) {
       newEmployabilityScore = "N/A"; // or some default value
   }
-  
-  
-  
+    
   // Add a check to prevent rendering NaN
   if (isNaN(newEmployabilityScore)) {
       newEmployabilityScore = "N/A"; // or some default value
@@ -202,6 +205,45 @@ function Dashboard() {
         coverLetter
     };
 }
+
+
+
+const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmployabilityScore) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (user) {
+    try {
+      const q = query(collection(db, "users", user.uid, "documents"), where("title", "==", title));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        // A document with the same title exists
+        console.warn("A document with this title already exists.");
+        // Add logic to handle this scenario (e.g., prompt user for action)
+      } else {
+        // Save the new document as no duplicate was found
+        console.log("newEmployabilityScore before addDoc:", newEmployabilityScore);
+        if (newEmployabilityScore === undefined) {
+          console.error("newEmployabilityScore is undefined, aborting save");
+          return;
+        }
+        const docRef = await addDoc(collection(db, "users", user.uid, "documents"), {
+          title,
+          finalResume,
+          coverLetter,
+          newEmployabilityScore,
+          createdAt: serverTimestamp()
+        });
+        console.log("Document written with ID: ", docRef.id);
+      }
+    } catch (error) {
+      console.error("Error saving document: ", error);
+    }
+  } else {
+    console.log("No user logged in");
+  }
+};
+
+
 
   return (
     <div className="dashboard">
@@ -251,6 +293,7 @@ function Dashboard() {
           finalResume={finalResume}
           coverLetter={coverLetter}
           newEmployabilityScore={newEmployabilityScore}
+          onSave={handleSaveToFirestore}
         />
       )}
   
