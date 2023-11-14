@@ -147,43 +147,59 @@ function Dashboard() {
   function parseOpenAIResponse(responseText) {
     // Split the entire message by new lines
     const lines = responseText.split('\n');
-  
+
     // Find the indices for each section
     const finalResumeIndex = lines.findIndex(line => line.includes('Final Resume:'));
     const eScoreIndex = lines.findIndex(line => line.includes('EScore:'));
-    const coverLetterIndex = lines.findIndex(line => line.includes('Cover letter:'));
-  
+    const coverLetterIndex = lines.findIndex(line => line.includes('Cover Letter:'));
+
     let finalResume = '';
     let newEmployabilityScore = 0;
     let coverLetter = '';
-  
+
     if (finalResumeIndex !== -1 && eScoreIndex !== -1) {
-      finalResume = lines.slice(finalResumeIndex + 1, eScoreIndex).join('\n').trim();
+        finalResume = lines.slice(finalResumeIndex + 1, eScoreIndex).join('\n').trim();
+    }
+
+    const singleLineText = responseText.replace(/\n/g, ' ');
+
+    // Use a regex to find 'EScore: <number>/<total>'
+    const scoreRegex = /EScore:\s*(\d+)\/\d+/;
+    const scoreMatch = singleLineText.match(scoreRegex);
+
+    if (scoreMatch && scoreMatch[1]) {
+        newEmployabilityScore = parseInt(scoreMatch[1], 10);
+    } else {
+        console.error("EScore parsing failed or not found");
+        newEmployabilityScore = "N/A"; // Default value in case of parsing failure
     }
   
-    if (eScoreIndex !== -1) {
-      const scoreLine = lines[eScoreIndex];
-      const scoreMatch = scoreLine.match(/\d+/); // Matches the first sequence of digits
-      if (scoreMatch) {
-        newEmployabilityScore = parseInt(scoreMatch[0], 10);
-      }
-    }
-  
-    if (coverLetterIndex !== -1) {
-      coverLetter = lines.slice(coverLetterIndex + 1).join('\n').trim();
-    }
-  
-    // Log for debugging
-    console.log({ finalResume, newEmployabilityScore, coverLetter });
-  
-    return {
-      finalResume,
-      newEmployabilityScore,
-      coverLetter
-    };
+  // Add a check to prevent rendering NaN
+  if (isNaN(newEmployabilityScore)) {
+      newEmployabilityScore = "N/A"; // or some default value
   }
   
   
+  
+  // Add a check to prevent rendering NaN
+  if (isNaN(newEmployabilityScore)) {
+      newEmployabilityScore = "N/A"; // or some default value
+  }
+  
+
+    if (coverLetterIndex !== -1) {
+        coverLetter = lines.slice(coverLetterIndex + 1).join('\n').trim();
+    }
+
+    // Log for debugging
+    console.log({ finalResume, newEmployabilityScore, coverLetter });
+
+    return {
+        finalResume,
+        newEmployabilityScore,
+        coverLetter
+    };
+}
 
   return (
     <div className="dashboard">

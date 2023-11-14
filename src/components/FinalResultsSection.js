@@ -1,14 +1,87 @@
 import React from 'react';
 import './FinalResultsSection.css';
+import { saveAs } from 'file-saver';
+import { Document, Packer, Paragraph, HeadingLevel, SectionType, TextRun } from 'docx';
+
+const downloadDocument = (coverLetter, resume, fileName) => {
+  const fontSize = 22;
+  const fontName = "Times New Roman";
+  const coverLetterParagraphs = coverLetter.split('\n').map(
+    line => new Paragraph({
+      children: [
+        new TextRun({
+          text: line,
+          size: fontSize, // Size is in half-points, so 24 equals 12pt font
+          font: {
+            name: fontName,
+          },
+        }),
+      ],
+    })
+  );
+
+  const resumeParagraphs = resume.split('\n').map(
+    line => new Paragraph({
+      children: [
+        new TextRun({
+          text: line,
+          size: fontSize,
+          font: {
+            name: fontName,
+          },
+        }),
+      ],
+    })
+  );
+
+  // Create a Document with sections defined in the constructor
+  const doc = new Document({
+    creator: "Advanced Resume",
+    title: "Cover Letter and Resume",
+    description: "User Created Document",
+    sections: [
+      {
+        // Cover Letter Section
+        children: [
+          new Paragraph({
+            text: "Cover Letter",
+            heading: HeadingLevel.HEADING_2
+          }),
+          ...coverLetterParagraphs,
+          new Paragraph({ text: '', break: 1 }), // Adding a page break
+        ],
+      },
+      {
+        // Resume Section
+        properties: { type: SectionType.NEXT_PAGE },
+        children: [
+          new Paragraph({
+            text: "Resume",
+            heading: HeadingLevel.HEADING_2
+          }),
+          ...resumeParagraphs
+        ],
+      }
+    ]
+  });
+
+  // Generate and download the file
+  Packer.toBlob(doc).then(blob => {
+    saveAs(blob, fileName);
+  });
+};
+
+
+
 
 
 function FinalResultsSection({ finalResume, newEmployabilityScore, coverLetter }) {
   const handleSave = () => {
-
+    // Existing save logic here
   };
 
   const handleDownload = () => {
-
+    downloadDocument(coverLetter, finalResume, 'CoverLetterAndResume.docx');
   };
 
   return (
