@@ -89,6 +89,7 @@ function Dashboard() {
   
   function parsePlainTextResponse(text) {
     // Split the entire message by new lines
+    text = text.replace(/`/g, '');
     const lines = text.split('\n');
   
     // Find the indices for each section
@@ -145,6 +146,7 @@ function Dashboard() {
   }
 
   function parseOpenAIResponse(responseText) {
+    responseText = responseText.replace(/`/g, '');
     // Split the entire message by new lines
     const lines = responseText.split('\n');
 
