@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-
 import './AnalysisSection.css';
+
 function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText, setResumeText, jobDescriptionText, setJobDescriptionText }) {
   const [resumeTextCount, setResumeTextCount] = useState(0);
   const [jobDescriptionTextCount, setJobDescriptionTextCount] = useState(0);
@@ -11,63 +11,73 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
     onSubmit(resumeText, jobDescriptionText);
   };
 
-  const getCharacterMessage = (count) => {
-    if (count >= 1) return "Keep going...(500 characters minimum; 15,000 characters maximum).";
-    if (count >= 15000) return "Maximum characters reached (15,000 maximum).";
-    return `${500 - count} characters required before analysis can begin (15,000 characters maximum).`;
+  const getCharacterMessage = (count, maxCount) => {
+    if (count >= 1) return `Keep going...(500 characters minimum; ${maxCount} characters maximum).`;
+    if (count >= maxCount) return `Maximum characters reached (${maxCount} maximum).`;
+    return `Analysis begins in ${500 - count} characters (${maxCount} characters maximum).`;
   };
-  
 
-  const handleTextChange = (e, setText, setTextCount, textAreaRef) => {
+  const handleTextChange = (e, setText, setTextCount, textAreaRef, maxCount) => {
     let newValue = e.target.value;
-    if (newValue.length > 15000) {
-      newValue = newValue.substring(0, 15000); // Truncate to 15000 characters
+    if (newValue.length > maxCount) {
+      newValue = newValue.substring(0, maxCount); // Truncate to maxCount characters
     }
-  
+
     setText(newValue);
     setTextCount(newValue.length);
-  
+
     // Dynamically adjust the height of the textarea
     textAreaRef.current.style.height = 'auto';
     textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px';
   };
 
   const handleResumeTextChange = (e) => {
-    handleTextChange(e, setResumeText, setResumeTextCount, resumeTextAreaRef);
+    handleTextChange(e, setResumeText, setResumeTextCount, resumeTextAreaRef, 15000); // Updated maxCount to 15000
   };
 
   const handleJobDescriptionTextChange = (e) => {
-    handleTextChange(e, setJobDescriptionText, setJobDescriptionTextCount, jobDescriptionTextAreaRef);
+    handleTextChange(e, setJobDescriptionText, setJobDescriptionTextCount, jobDescriptionTextAreaRef, 5000); // Updated maxCount to 5000
   };
+
+  // Cap the subtraction at 500 for each text box if they exceed 500
+  const cappedResumeTextCount = resumeTextCount > 500 ? 500 : resumeTextCount;
+  const cappedJobDescriptionTextCount = jobDescriptionTextCount > 500 ? 500 : jobDescriptionTextCount;
+
+  // Recalculate the remaining characters after capping
+  const cappedRemainingCharacters = 1000 - cappedResumeTextCount - cappedJobDescriptionTextCount;
 
   return (
     <div className="analysis-section">
       <div className="textarea-container">
+        <h3>Resume</h3>
         <textarea ref={resumeTextAreaRef}
           className="styled-textarea"
           value={resumeText}
           onChange={handleResumeTextChange}
           placeholder="Type or paste your current resume text here."
         />
-        <p className="char-count">{getCharacterMessage(resumeTextCount)}</p>
+        <p className="char-count">{getCharacterMessage(resumeTextCount, 15000)}</p> {/* Updated maxCount to 15000 */}
         <p className="char-count-left">{resumeTextCount} characters</p>
       </div>
       <div className="textarea-container">
+        <h3>Job Description</h3>
         <textarea ref={jobDescriptionTextAreaRef}
           className="styled-textarea"
           value={jobDescriptionText}
           onChange={handleJobDescriptionTextChange}
           placeholder="Paste your recent job description text here."
         />
-        <p className="char-count">{getCharacterMessage(jobDescriptionTextCount)}</p>
+        <p className="char-count">{getCharacterMessage(jobDescriptionTextCount, 5000)}</p> {/* Updated maxCount to 5000 */}
         <p className="char-count-left">{jobDescriptionTextCount} characters</p>
       </div>
+      {cappedRemainingCharacters > 0 && (
+        <h4>Analysis can commence in {cappedRemainingCharacters} characters.</h4>
+      )}
       {(!isAnalyzing && !analysisCompleted && resumeTextCount > 500 && jobDescriptionTextCount > 500) && (
         <button className="analysis-button" onClick={handleAnalyzeClick}>Analyze</button>
       )}
     </div>
   );
 }
-
 
 export default AnalysisSection;
