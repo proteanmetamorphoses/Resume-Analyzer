@@ -22,6 +22,16 @@
   border-radius: 4px;
 }
 
+@media (max-width: 768px) {
+  /* Adjust the styles for smaller screens */
+  .resume-input textarea,
+  .job-description-input textarea {
+    max-width: 100%; /* Allow the textarea to take full width on smaller screens */
+    margin-bottom: 5px; /* Reduce margin for better spacing */
+    padding: 5px; /* Adjust padding as needed */
+  };
+}
+
 .analysis-button {
   padding: 10px;
   background-color: #007bff;
@@ -49,6 +59,13 @@
   resize: none; /* Optional: Disable manual resizing */
 }
 
+@media (max-width: 768px) {
+  /* Adjust the width for smaller screens */
+  .styled-textarea {
+    width: 350px; /* Set the width to 350px for smaller screens */
+  }
+}
+
 .char-count {
   position: absolute;
   bottom: 30px; /* Adjust as needed */
@@ -67,4 +84,25 @@
   color: rgba(14, 6, 239, 0.7);
   padding: 2px 5px;
   font-size: 0.8em;
+}
+
+h5 {
+  color: rgba(14, 6, 239, 0.7);
+  font-size: 0.8em;
+  margin: 0;
+}
+
+/* Default style for character count messages */
+.char-count-left, .char-count-right {
+  font-size: 14px; /* Adjust the font size as needed */
+  margin-top: 5px; /* Add some top margin for spacing */
+}
+
+/* Media query for screens with a maximum width of 768px (adjust the value as needed) */
+@media (max-width: 768px) {
+  /* Adjust the styling for smaller screens */
+  .char-count-left, .char-count {
+    font-size: 8px; /* Reduce font size for smaller screens */
+    margin-top: 1px; /* Reduce top margin for spacing */
+  }
 }

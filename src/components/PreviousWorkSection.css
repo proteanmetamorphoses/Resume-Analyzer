@@ -14,6 +14,8 @@
   padding: 10px;
   background-color: #f8f9fa;
   text-align: center;
+  height: 75px;
+  width: 120px;
 }
 
 .document-container h3 {
@@ -22,7 +24,9 @@
 
 .document-container .eScore {
   font-size: 14px; /* Adjust as needed */
+  text-align: center;
 }
+
 .noDocs{
   color:#f8f9fa;
 }

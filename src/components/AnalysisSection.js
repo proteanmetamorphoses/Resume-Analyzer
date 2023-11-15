@@ -50,6 +50,7 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
     <div className="analysis-section">
       <div className="textarea-container">
         <h3>Resume</h3>
+        <h5>(minimum 500 characters)</h5>
         <textarea ref={resumeTextAreaRef}
           className="styled-textarea"
           value={resumeText}
@@ -57,10 +58,11 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
           placeholder="Type or paste your current resume text here."
         />
         <p className="char-count">{getCharacterMessage(resumeTextCount, 15000)}</p> {/* Updated maxCount to 15000 */}
-        <p className="char-count-left">{resumeTextCount} characters</p>
+        <p className="char-count-left">{resumeTextCount} {resumeTextCount === 1 ? 'character' : 'characters'}</p>
       </div>
       <div className="textarea-container">
         <h3>Job Description</h3>
+        <h5>(minimum 500 characters)</h5>
         <textarea ref={jobDescriptionTextAreaRef}
           className="styled-textarea"
           value={jobDescriptionText}
@@ -68,7 +70,7 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
           placeholder="Paste your recent job description text here."
         />
         <p className="char-count">{getCharacterMessage(jobDescriptionTextCount, 5000)}</p> {/* Updated maxCount to 5000 */}
-        <p className="char-count-left">{jobDescriptionTextCount} characters</p>
+        <p className="char-count-left">{jobDescriptionTextCount} {jobDescriptionTextCount === 1 ? 'character' : 'characters'}</p>
       </div>
       {cappedRemainingCharacters > 0 && (
         <h4>Analysis can commence in {cappedRemainingCharacters} characters.</h4>
