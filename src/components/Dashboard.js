@@ -248,7 +248,8 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
   return (
     <div className="dashboard">
       <h1>Advanced Resume</h1>
-      <h3>Add your starter resume and a recent job description, below.</h3>
+      <h3>Add your current resume and a recent job description, below.</h3>
+      <h2>Previous Resume Work</h2>
       <div className="previous-work-section">
         <PreviousWorkSection />
       </div>

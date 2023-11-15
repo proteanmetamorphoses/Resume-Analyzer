@@ -33,3 +33,18 @@
     padding: 10px;
     z-index: 1000;
   }
+
+  .previous-work-section {
+    display: flex;
+    flex-direction: row; /* Change to row if you want items side by side */
+    flex-wrap: wrap; /* Allows items to wrap to the next line */
+    justify-content: center; /* Adjust as needed */
+    width: 100%; /* Use 100% for full width */
+    max-width: none; /* Remove max-width restriction or set a higher value */
+    margin: auto;
+    padding: 20px;
+    background-color: #2280df;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  

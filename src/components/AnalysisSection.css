@@ -34,3 +34,37 @@
 .analysis-button:hover {
   background-color: #0056b3;
 }
+
+.textarea-container {
+  position: relative;
+  margin-bottom: 20px; /* Adjust as needed */
+}
+
+.styled-textarea {
+  width: min-height;
+  min-height: 150px; /* Minimum height */
+  overflow-y: hidden; /* Hide scrollbar */
+  padding-bottom: 50px; /* Increased padding for visibility of character counts */
+  box-sizing: border-box;
+  resize: none; /* Optional: Disable manual resizing */
+}
+
+.char-count {
+  position: absolute;
+  bottom: 30px; /* Adjust as needed */
+  right: 15px; /* Adjust as needed */
+  margin: 0;
+  color: rgba(14, 6, 239, 0.7); /* Optional for readability */
+  padding: 2px 5px; /* Optional for better presentation */
+  font-size: 0.8em; /* Adjust as needed */
+}
+
+.char-count-left {
+  position: absolute;
+  bottom: 30px;
+  left: 5px;
+  margin: 0;
+  color: rgba(14, 6, 239, 0.7);
+  padding: 2px 5px;
+  font-size: 0.8em;
+}

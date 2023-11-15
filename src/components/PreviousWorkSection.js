@@ -1,3 +1,4 @@
+import './PreviousWorkSection.css';
 import React, { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../utils/firebase';
@@ -37,16 +38,19 @@ function UserDocuments() {
 
   return (
     <div>
-      <h2>Your Documents</h2>
-      {documents.length > 0 ? (
-        documents.map((doc) => (
-          <div key={doc.id}>
-            <h3>{doc.title}</h3> {/* Display the title */}
-            <p>Employability Score: {doc.newEmployabilityScore}</p> {/* Display the score */}
-          </div>
-        ))
+      {loading ? (
+        <div>Loading...</div>
+      ) : documents.length > 0 ? (
+        <div className="documents-container"> {/* Flex container */}
+          {documents.map((doc) => (
+            <div key={doc.id} className="document-container">
+              <h3>{doc.title}</h3>
+              <p className="eScore">Employability Score: {doc.newEmployabilityScore}</p>
+            </div>
+          ))}
+        </div>
       ) : (
-        <p>No documents found.</p>
+        <p className="noDocs">No resumes found.</p>
       )}
     </div>
   );
