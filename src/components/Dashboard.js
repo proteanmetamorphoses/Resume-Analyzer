@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PreviousWorkSection from './PreviousWorkSection';
 import AnalysisSection from './AnalysisSection';
 import ResultsSection from './ResultsSection';
@@ -9,7 +9,7 @@ import './Dashboard.css';
 import axios from 'axios';
 import Spinner from './Spinner';
 import { db } from '../utils/firebase';
-import { collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import DocumentModal from './DocumentModal'; 
 
@@ -34,6 +34,34 @@ function Dashboard() {
   const [finalResume, setFinalResume] = useState('');
   const [coverLetter, setCoverLetter] = useState('');
   const [newEmployabilityScore, setNewEmployabilityScore] = useState(0);
+  const [selectedDocumentId, setSelectedDocumentId] = useState(null);
+  const [deletionCount, setDeletionCount] = useState(0);
+  const [documents, setDocuments] = useState([]);
+
+  useEffect(() => {
+    if (deletionCount > 0) {
+      fetchUserData();
+    }
+  }, [deletionCount]);
+  
+  const fetchUserData = async () => {
+    const auth = getAuth();
+    if (auth.currentUser) {
+      try {
+        const q = query(collection(db, "users", auth.currentUser.uid, "documents"));
+        const querySnapshot = await getDocs(q);
+        const updatedDocuments = [];
+        querySnapshot.forEach((doc) => {
+          updatedDocuments.push({ id: doc.id, ...doc.data() });
+        });
+        // Assuming you have a state variable to hold the documents
+        setDocuments(updatedDocuments);
+      } catch (error) {
+        console.error("Error fetching documents: ", error);
+      }
+    }
+  };
+  
 
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
     setIsAnalyzing(true);
@@ -94,10 +122,14 @@ function Dashboard() {
   const [selectedResumeContent, setSelectedResumeContent] = useState('');
   const [selectedCoverLetterContent, setSelectedCoverLetterContent] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleDivClick = (resumeContent, coverLetterContent) => {
+  useEffect(() => {
+    console.log("Modal open state changed:", isModalOpen);
+  }, [isModalOpen]);
+  
+  const handleDivClick = (resumeContent, coverLetterContent, documentId) => {
     setSelectedResumeContent(resumeContent);
     setSelectedCoverLetterContent(coverLetterContent);
+    setSelectedDocumentId(documentId); // Update the selected document ID
     setIsModalOpen(true);
   };
 
@@ -216,9 +248,6 @@ function Dashboard() {
     };
 }
 
-
-
-
 const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmployabilityScore) => {
   const auth = getAuth();
   const user = auth.currentUser;
@@ -254,6 +283,18 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
   }
 };
 
+  const handleDeleteDocument = async (documentId) => {
+    console.log('Deleting document with ID:', documentId);
+    const auth = getAuth();
+    try {
+      await deleteDoc(doc(db, "users", auth.currentUser.uid, "documents", documentId));
+      setIsModalOpen(false);
+      setDeletionCount(deletionCount + 1);
+    } catch (error) {
+      console.error("Error deleting document: ", error);
+      alert(`Error deleting document: ${error.message}`);
+    }
+  };
 
 
   return (
@@ -263,7 +304,13 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
       <h2>Previous Resumes</h2>
       <h4>Click a resume to view</h4>
       <div className="previous-work-section">
-        <PreviousWorkSection onDocumentClick={handleDivClick}/>
+      <PreviousWorkSection 
+        documents={documents} 
+        setDocuments={setDocuments}
+        onDocumentClick={handleDivClick} 
+        onDeleteDocument={handleDeleteDocument} 
+      />
+
       </div>
       <div className="analysis-section">
         <AnalysisSection
@@ -319,6 +366,7 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
           resume={selectedResumeContent}
           onClose={() => setIsModalOpen(false)}
           onRework={handleRework}
+          onDelete={() => handleDeleteDocument(selectedDocumentId)}
         />
       )}
     </div>

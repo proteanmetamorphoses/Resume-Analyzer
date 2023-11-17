@@ -11,6 +11,9 @@
 }
 
 .document-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   flex: 0 1 calc(10% - 20px);
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -18,22 +21,29 @@
   background-color: #f8f9fa;
   text-align: center;
   height: 120px;
-  max-width: 95px;
-  width: 75px;
+  min-width: 100px;
   margin: 10px;
   overflow: hidden;
 }
 
 .document-container h3 {
+  flex-grow: 1;
   font-size: 16px;
-  margin: 0;
+  height: 65px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .document-container .eScore {
   font-size: 14px;
   text-align: center;
+  margin-top: auto;
 }
 
 .noDocs {
   color: #f8f9fa;
+  font-size: 22px;
 }

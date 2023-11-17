@@ -3,14 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { db } from '../utils/firebase';
 import { collection, query, getDocs } from 'firebase/firestore';
-import DocumentModal from './DocumentModal'; 
 import './PreviousWorkSection.css';
 
 
-function PreviousWorkSection({ onDocumentClick }) {
-  const [documents, setDocuments] = useState([]);
+function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
   const [loading, setLoading] = useState(true);
-  const [selectedDocument, setSelectedDocument] = useState(null);
 
   useEffect(() => {
     const auth = getAuth();
@@ -32,25 +29,20 @@ function PreviousWorkSection({ onDocumentClick }) {
       }
       setLoading(false);
     });
-  }, []);
+  }, [setDocuments]);
 
   const handleDocumentClick = (document) => {
-    onDocumentClick(document.finalResume, document.coverLetter);
+    onDocumentClick(document.finalResume, document.coverLetter, document.id);
   };
+  
 
-  const closeModal = () => {
-    setSelectedDocument(null);
-  };
-
+  
   if (loading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : documents.length > 0 ? (
+      {documents.length > 0 ? (
         <div className="documents-container">
           {documents.map((doc) => (
             <div
@@ -66,16 +58,13 @@ function PreviousWorkSection({ onDocumentClick }) {
           ))}
         </div>
       ) : (
-        <p className="noDocs">No resumes found.  Start adding one, below...</p>
+        <div>
+          <p className="noDocs">No resumes found.</p>
+          <p className="noDocs">Start working below.</p>
+        </div>
       )}
 
-      {selectedDocument && (
-        <DocumentModal
-          coverLetter={selectedDocument.coverLetter}
-          resume={selectedDocument.finalResume}
-          onClose={closeModal}
-        />
-      )}
+      
     </div>
   );
 }
