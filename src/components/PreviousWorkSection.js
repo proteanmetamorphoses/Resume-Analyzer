@@ -7,7 +7,7 @@ import DocumentModal from './DocumentModal';
 import './PreviousWorkSection.css';
 
 
-function PreviousWorkSection() {
+function PreviousWorkSection({ onDocumentClick }) {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDocument, setSelectedDocument] = useState(null);
@@ -35,7 +35,7 @@ function PreviousWorkSection() {
   }, []);
 
   const handleDocumentClick = (document) => {
-    setSelectedDocument(document);
+    onDocumentClick(document.finalResume, document.coverLetter);
   };
 
   const closeModal = () => {
@@ -66,7 +66,7 @@ function PreviousWorkSection() {
           ))}
         </div>
       ) : (
-        <p className="noDocs">No resumes found.</p>
+        <p className="noDocs">No resumes found.  Start adding one, below...</p>
       )}
 
       {selectedDocument && (
@@ -74,12 +74,6 @@ function PreviousWorkSection() {
           coverLetter={selectedDocument.coverLetter}
           resume={selectedDocument.finalResume}
           onClose={closeModal}
-          onRework={() => {
-            // Handle rework button click here
-          }}
-          onDownload={() => {
-            // Handle download button click here
-          }}
         />
       )}
     </div>

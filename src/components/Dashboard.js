@@ -101,6 +101,11 @@ function Dashboard() {
     setIsModalOpen(true);
   };
 
+  const handleRework = () => {
+    setResumeText(selectedResumeContent); // Update the resume text for the analysis section
+    setIsModalOpen(false); // Close the modal
+  };
+
   function parsePlainTextResponse(text) {
     // Split the entire message by new lines
     text = text.replace(/`/g, '');
@@ -255,9 +260,10 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
     <div className="dashboard">
       <h1>Advanced Resume</h1>
       <h3>Add your current resume and a recent job description, below.</h3>
-      <h2>Previous Resume Work</h2>
+      <h2>Previous Resumes</h2>
+      <h4>Click a resume to view</h4>
       <div className="previous-work-section">
-        <PreviousWorkSection />
+        <PreviousWorkSection onDocumentClick={handleDivClick}/>
       </div>
       <div className="analysis-section">
         <AnalysisSection
@@ -312,9 +318,7 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
           coverLetter={selectedCoverLetterContent}
           resume={selectedResumeContent}
           onClose={() => setIsModalOpen(false)}
-          onRework={() => {
-            // Implement logic to paste content into AnalysisSection
-          }}
+          onRework={handleRework}
         />
       )}
     </div>

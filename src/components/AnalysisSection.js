@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './AnalysisSection.css';
 
 function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText, setResumeText, jobDescriptionText, setJobDescriptionText }) {
@@ -45,6 +45,12 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
 
   // Recalculate the remaining characters after capping
   const cappedRemainingCharacters = 1000 - cappedResumeTextCount - cappedJobDescriptionTextCount;
+  useEffect(() => {
+      if (resumeTextAreaRef.current) {
+        resumeTextAreaRef.current.style.height = 'auto'; // Reset height to shrink if needed
+        resumeTextAreaRef.current.style.height = `${resumeTextAreaRef.current.scrollHeight}px`; // Set to scroll height
+      }
+    }, [resumeText]); // Dependency array includes resumeText to trigger effect when it changes
 
   return (
     <div className="analysis-section">
