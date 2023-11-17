@@ -6,15 +6,25 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
   const [jobDescriptionTextCount, setJobDescriptionTextCount] = useState(0);
   const resumeTextAreaRef = useRef(null);
   const jobDescriptionTextAreaRef = useRef(null);
+  
+  useEffect(() => {
+    if (resumeTextAreaRef.current) {
+      resumeTextAreaRef.current.style.height = 'auto'; // Reset height
+      resumeTextAreaRef.current.style.height = `${resumeTextAreaRef.current.scrollHeight}px`; // Adjust height
+    }
+
+    setResumeTextCount(resumeText.length); // Update character count
+  }, [resumeText]); // Dependency array includes resumeText
 
   const handleAnalyzeClick = () => {
     onSubmit(resumeText, jobDescriptionText);
   };
 
   const getCharacterMessage = (count, maxCount) => {
-    if (count >= 1) return `Keep going...(500 characters minimum; ${maxCount} characters maximum).`;
-    if (count >= maxCount) return `Maximum characters reached (${maxCount} maximum).`;
-    return `Analysis begins in ${500 - count} characters (${maxCount} characters maximum).`;
+    const formattedMaxCount = maxCount.toLocaleString();
+    if (count >= 1) return `Keep going...(500 characters minimum; ${formattedMaxCount} characters maximum).`;
+    if (count >= maxCount) return `Maximum characters reached (${formattedMaxCount} maximum).`;
+    return `Analysis begins in ${500 - count} characters (${formattedMaxCount} characters maximum).`;
   };
 
   const handleTextChange = (e, setText, setTextCount, textAreaRef, maxCount) => {
@@ -39,18 +49,26 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
     handleTextChange(e, setJobDescriptionText, setJobDescriptionTextCount, jobDescriptionTextAreaRef, 5000); // Updated maxCount to 5000
   };
 
-  // Cap the subtraction at 500 for each text box if they exceed 500
   const cappedResumeTextCount = resumeTextCount > 500 ? 500 : resumeTextCount;
   const cappedJobDescriptionTextCount = jobDescriptionTextCount > 500 ? 500 : jobDescriptionTextCount;
-
-  // Recalculate the remaining characters after capping
   const cappedRemainingCharacters = 1000 - cappedResumeTextCount - cappedJobDescriptionTextCount;
+  const formattedcappedRemainingCharacters = cappedRemainingCharacters.toLocaleString();
+  
   useEffect(() => {
       if (resumeTextAreaRef.current) {
         resumeTextAreaRef.current.style.height = 'auto'; // Reset height to shrink if needed
         resumeTextAreaRef.current.style.height = `${resumeTextAreaRef.current.scrollHeight}px`; // Set to scroll height
       }
-    }, [resumeText]); // Dependency array includes resumeText to trigger effect when it changes
+
+      if (jobDescriptionTextAreaRef.current) {
+        jobDescriptionTextAreaRef.current.style.height = 'auto';
+        jobDescriptionTextAreaRef.current.style.height = `${jobDescriptionTextAreaRef.current.scrollHeight}px`;
+      }
+    
+      setResumeTextCount(resumeText.length);
+      setJobDescriptionTextCount(jobDescriptionText.length);
+
+    }, [resumeText, jobDescriptionText]);
 
   return (
     <div className="analysis-section">
@@ -79,7 +97,7 @@ function AnalysisSection({ onSubmit, isAnalyzing, analysisCompleted, resumeText,
         <p className="char-count-left">{jobDescriptionTextCount} {jobDescriptionTextCount === 1 ? 'character' : 'characters'}</p>
       </div>
       {cappedRemainingCharacters > 0 && (
-        <h4>Analysis can commence in {cappedRemainingCharacters} characters.</h4>
+        <h4>Analysis can commence in {formattedcappedRemainingCharacters} characters.</h4>
       )}
       {(!isAnalyzing && !analysisCompleted && resumeTextCount > 500 && jobDescriptionTextCount > 500) && (
         <button className="analysis-button" onClick={handleAnalyzeClick}>Analyze</button>

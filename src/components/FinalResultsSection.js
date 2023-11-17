@@ -3,7 +3,7 @@ import './FinalResultsSection.css';
 import { saveAs } from 'file-saver';
 import { Document, Packer, Paragraph, HeadingLevel, SectionType, TextRun } from 'docx';
 
-const downloadDocument = (coverLetter, resume, fileName) => {
+export const downloadDocument = (coverLetter, resume, fileName) => {
   const fontSize = 22;
   const fontName = "Times New Roman";
   const coverLetterParagraphs = coverLetter.split('\n').map(
@@ -38,7 +38,7 @@ const downloadDocument = (coverLetter, resume, fileName) => {
   const doc = new Document({
     creator: "Advanced Resume",
     title: "Cover Letter and Resume",
-    description: "User Created Document",
+    description: "User-Created Document",
     sections: [
       {
         // Cover Letter Section
