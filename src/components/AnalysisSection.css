@@ -92,17 +92,29 @@ h5 {
   margin: 0;
 }
 
-/* Default style for character count messages */
+
 .char-count-left, .char-count-right {
-  font-size: 14px; /* Adjust the font size as needed */
-  margin-top: 5px; /* Add some top margin for spacing */
+  font-size: 14px; 
+  margin-top: 5px; 
 }
 
-/* Media query for screens with a maximum width of 768px (adjust the value as needed) */
+
 @media (max-width: 768px) {
-  /* Adjust the styling for smaller screens */
   .char-count-left, .char-count {
-    font-size: 8px; /* Reduce font size for smaller screens */
-    margin-top: 1px; /* Reduce top margin for spacing */
+    font-size: 8px;
+    margin-top: 1px;
   }
+}
+
+textarea {
+  align-items: center;
+  box-sizing: border-box;
+  width: 50vw; 
+  min-height: 25vh;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  resize: none;
 }

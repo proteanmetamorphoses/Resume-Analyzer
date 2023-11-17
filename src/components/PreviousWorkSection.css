@@ -1,32 +1,39 @@
 .documents-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px; /* Adjust the gap between items as needed */
-  justify-content: center; /* Align items in the center, you can change it as per your design */
-  width: 100%; /* Set the width to 100% */
-  padding: 10px; /* Add some padding */
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  background-color: #2280df; /* Set the background color to blue */
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .document-container {
-  flex: 0 1 calc(33.33% - 20px); /* Adjust the width minus gap for 3 items per row */
+  flex: 0 1 calc(10% - 20px);
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
   background-color: #f8f9fa;
   text-align: center;
-  height: 75px;
-  width: 120px;
+  height: 120px;
+  max-width: 95px;
+  width: 75px;
+  margin: 10px;
+  overflow: hidden;
 }
 
 .document-container h3 {
-  font-size: 16px; /* Adjust as needed */
+  font-size: 16px;
+  margin: 0;
 }
 
 .document-container .eScore {
-  font-size: 14px; /* Adjust as needed */
+  font-size: 14px;
   text-align: center;
 }
 
-.noDocs{
-  color:#f8f9fa;
+.noDocs {
+  color: #f8f9fa;
 }

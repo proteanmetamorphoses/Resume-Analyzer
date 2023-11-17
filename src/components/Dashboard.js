@@ -11,7 +11,7 @@ import Spinner from './Spinner';
 import { db } from '../utils/firebase';
 import { collection, addDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-
+import DocumentModal from './DocumentModal'; 
 
 
 function Dashboard() {
@@ -91,7 +91,16 @@ function Dashboard() {
     setShowRevisionSection(false);
   };
 
-  
+  const [selectedResumeContent, setSelectedResumeContent] = useState('');
+  const [selectedCoverLetterContent, setSelectedCoverLetterContent] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleDivClick = (resumeContent, coverLetterContent) => {
+    setSelectedResumeContent(resumeContent);
+    setSelectedCoverLetterContent(coverLetterContent);
+    setIsModalOpen(true);
+  };
+
   function parsePlainTextResponse(text) {
     // Split the entire message by new lines
     text = text.replace(/`/g, '');
@@ -168,29 +177,25 @@ function Dashboard() {
         finalResume = lines.slice(finalResumeIndex + 1, eScoreIndex).join('\n').trim();
     }
 
-    const singleLineText = responseText.replace(/\n/g, ' ');
+    if (eScoreIndex !== -1) {
+        const scoreLine = lines[eScoreIndex];
+        const scoreRegex = /EScore:\s*(\d+)/; // Updated regex to match 'EScore: [number]'
+        const scoreMatch = scoreLine.match(scoreRegex);
 
-    // Use a regex to find 'EScore: <number>/<total>'
-    const scoreRegex = /EScore:\s*(\d+)\/\d+/;
-    const scoreMatch = singleLineText.match(scoreRegex);
-
-    if (scoreMatch && scoreMatch[1]) {
-        newEmployabilityScore = parseInt(scoreMatch[1], 10);
+        if (scoreMatch && scoreMatch[1]) {
+            newEmployabilityScore = parseInt(scoreMatch[1], 10);
+        } else {
+            console.error("EScore parsing failed or not found");
+            newEmployabilityScore = "N/A"; // Default value in case of parsing failure
+        }
     } else {
-        console.error("EScore parsing failed or not found");
-        newEmployabilityScore = "N/A"; // Default value in case of parsing failure
+        newEmployabilityScore = "N/A"; // Default value if EScore line is not found
     }
-  
-  // Add a check to prevent rendering NaN
-  if (isNaN(newEmployabilityScore)) {
-      newEmployabilityScore = "N/A"; // or some default value
-  }
-    
-  // Add a check to prevent rendering NaN
-  if (isNaN(newEmployabilityScore)) {
-      newEmployabilityScore = "N/A"; // or some default value
-  }
-  
+
+    // Add a check to prevent rendering NaN
+    if (isNaN(newEmployabilityScore)) {
+        newEmployabilityScore = "N/A"; // or some default value
+    }
 
     if (coverLetterIndex !== -1) {
         coverLetter = lines.slice(coverLetterIndex + 1).join('\n').trim();
@@ -205,6 +210,7 @@ function Dashboard() {
         coverLetter
     };
 }
+
 
 
 
@@ -301,6 +307,16 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
       <nav className="logout-nav">
         <LogoutLink />
       </nav>
+      {isModalOpen && (
+        <DocumentModal
+          coverLetter={selectedCoverLetterContent}
+          resume={selectedResumeContent}
+          onClose={() => setIsModalOpen(false)}
+          onRework={() => {
+            // Implement logic to paste content into AnalysisSection
+          }}
+        />
+      )}
     </div>
   );
 }

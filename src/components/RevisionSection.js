@@ -31,9 +31,9 @@ function RevisionSection({ missingKeywords = [], assessment = '', employabilityS
         ))}
       </ul>
       <h4>Assessment:</h4>
-      <p>{assessment}</p>
+      <p className="Revision-Item">{assessment}</p>
       <h4>Best Possible Job:</h4>
-      <p>{bestPossibleJob}</p>
+      <p className="Revision-Item">{bestPossibleJob}</p>
     </div>
 
           <div className="missing-details">

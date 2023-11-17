@@ -1,12 +1,17 @@
+
+
 .dashboard {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    padding-top: 5vh;
-  }
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding-top: 5vh;
+  background-color: white;
+}
+
+
   
   @media (max-width: 768px) {
     .logout-nav {
@@ -36,11 +41,11 @@
 
   .previous-work-section {
     display: flex;
-    flex-direction: row; /* Change to row if you want items side by side */
-    flex-wrap: wrap; /* Allows items to wrap to the next line */
-    justify-content: center; /* Adjust as needed */
-    width: 100%; /* Use 100% for full width */
-    max-width: none; /* Remove max-width restriction or set a higher value */
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: center;
+    width: 100%; 
+    max-width: none; 
     margin: auto;
     padding: 20px;
     background-color: #2280df;

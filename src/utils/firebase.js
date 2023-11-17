@@ -24,8 +24,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 export { db };
-console.log(db); // Should log Firestore instance
-
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 export {
