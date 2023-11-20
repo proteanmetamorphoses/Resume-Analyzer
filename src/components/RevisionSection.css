@@ -29,11 +29,12 @@
   }
 
   
-  .revision-input textarea {
+  .revision-textarea {
     width: min-height;
-    min-height: 150px;
+    min-height: 300px;
     margin-bottom: 20px;
     padding: 10px;
+    padding-bottom: 50px;
     border: 1px solid #ccc;
     border-radius: 4px;
     resize: none;
@@ -41,6 +42,7 @@
     box-sizing: border-box;
   }
   
+
   
   .revision-section button {
     padding: 10px 20px; 

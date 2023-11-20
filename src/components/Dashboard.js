@@ -125,7 +125,7 @@ function Dashboard() {
   useEffect(() => {
     console.log("Modal open state changed:", isModalOpen);
   }, [isModalOpen]);
-  
+
   const handleDivClick = (resumeContent, coverLetterContent, documentId) => {
     setSelectedResumeContent(resumeContent);
     setSelectedCoverLetterContent(coverLetterContent);
@@ -302,7 +302,7 @@ const handleSaveToFirestore = async (title, finalResume, coverLetter, newEmploya
       <h1>Advanced Resume</h1>
       <h3>Add your current resume and a recent job description, below.</h3>
       <h2>Previous Resumes</h2>
-      <h4>Click a resume to view</h4>
+      <h4>Click a document to view</h4>
       <div className="previous-work-section">
       <PreviousWorkSection 
         documents={documents} 

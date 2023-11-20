@@ -9,7 +9,7 @@ function ResultsSection({ resumeKeywords, jobDescriptionKeywords, atsScore }) {
       <div className="keywords-container"><KeywordsList type="resume" keywords={resumeKeywords} /></div>
       <div className="keywords-container"><KeywordsList type="jobDescription" keywords={jobDescriptionKeywords} /></div>
       <h3>Initial Resume ATS Score (&gt;=90% is more competitive)</h3>
-      <div className="ats-score"><ATSScore score={atsScore} /></div>
+      <h3 className="results-ats-score"><ATSScore score={atsScore} /></h3>
     </div>
   );
 }

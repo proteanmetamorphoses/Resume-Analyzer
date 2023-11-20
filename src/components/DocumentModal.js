@@ -26,7 +26,7 @@ function DocumentModal({ coverLetter, resume, onClose, onRework, onDelete }) {
           </div>
         </div>
         <div className="buttons-container">
-          <button onClick={onRework}>Edit</button>
+          <button onClick={onRework}>Use Resume</button>
           <button onClick={handleDownload}>Download</button>
           <button onClick={onDelete} disabled={isDeleteDisabled}>Delete</button>
           <button onClick={onClose}>Close</button>

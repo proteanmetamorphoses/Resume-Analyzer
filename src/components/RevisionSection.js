@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './RevisionSection.css';
 import Spinner from './Spinner';
 
 function RevisionSection({ missingKeywords = [], assessment = '', employabilityScore = 0, bestPossibleJob = '', onSubmitRevisions, originalResume, originalJobDescription, isRevising, revisionCompleted }) {
   const [userRevisions, setUserRevisions] = useState('');
   const [isTouched, setIsTouched] = useState(false);
+  const revisionTextAreaRef = useRef(null);
 
+  useEffect(() => {
+    // Adjust the height of the textarea
+    if (revisionTextAreaRef.current) {
+      revisionTextAreaRef.current.style.height = 'auto'; // Reset height
+      revisionTextAreaRef.current.style.height = `${revisionTextAreaRef.current.scrollHeight}px`; // Set to scroll height
+    }
+  }, [userRevisions]);
 
   const handleFocus = () => {
       if (!isTouched) {
@@ -17,8 +25,6 @@ function RevisionSection({ missingKeywords = [], assessment = '', employabilityS
   const handleSubmitRevisions = () => {
     onSubmitRevisions(originalResume, originalJobDescription, userRevisions);
   };
-  
-
   return (
     <div className="revision-section">
     <h3>Resume Analysis Based on Job Description</h3>
@@ -35,15 +41,16 @@ function RevisionSection({ missingKeywords = [], assessment = '', employabilityS
       <h4>Best Possible Job:</h4>
       <p className="Revision-Item">{bestPossibleJob}</p>
     </div>
-
           <div className="missing-details">
           <h3>Add Missing Keyword Details for the following items:</h3>
-              <textarea
-                  value={userRevisions}
-                  onChange={(e) => setUserRevisions(e.target.value)}
-                  onFocus={handleFocus}
-                  placeholder={!isTouched ? missingKeywords.join('\n') : ''}
-              />
+          <textarea 
+          className="revision-textarea"
+          ref={revisionTextAreaRef} // Use the ref here
+          value={userRevisions}
+          onChange={(e) => setUserRevisions(e.target.value)}
+          onFocus={handleFocus}
+          placeholder={!isTouched ? missingKeywords.join('\n') : ''}
+        />
           </div>
           {!isRevising && !revisionCompleted && (
         <button className="analysis-button" onClick={handleSubmitRevisions}>Revise</button>
