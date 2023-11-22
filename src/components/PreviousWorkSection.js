@@ -1,10 +1,9 @@
 // PreviousWorkSection.js
-import React, { useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { db } from '../utils/firebase';
-import { collection, query, getDocs } from 'firebase/firestore';
-import './PreviousWorkSection.css';
-
+import React, { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { db } from "../utils/firebase";
+import { collection, query, getDocs } from "firebase/firestore";
+import "./PreviousWorkSection.css";
 
 function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
   const [loading, setLoading] = useState(true);
@@ -34,9 +33,7 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
   const handleDocumentClick = (document) => {
     onDocumentClick(document.finalResume, document.coverLetter, document.id);
   };
-  
 
-  
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -52,7 +49,7 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
             >
               <div className="document-info">
                 <h3>{doc.title}</h3>
-                <p className="eScore">Employability Score: {doc.newEmployabilityScore}</p>
+                <p className="eScore">Fit: {doc.newEmployabilityScore}%</p>
               </div>
             </div>
           ))}
@@ -63,8 +60,6 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
           <p className="noDocs">Start working below.</p>
         </div>
       )}
-
-      
     </div>
   );
 }

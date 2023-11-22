@@ -6,7 +6,6 @@
   min-height: 100vh;
   padding-top: 25vh;
   width: 100%;
-
 }
 
 form {
@@ -15,16 +14,16 @@ form {
   align-items: center;
   width: 100%;
 }
-  
-  .button-container {
-    text-align: center;
-  }
 
-  
+.button-container {
+  text-align: center;
+}
+
 input[type="email"],
 input[type="password"] {
   border: 1px solid #ccc;
   margin-bottom: 10px;
+  width: 350px;
 }
 
 input[type="email"],
@@ -32,58 +31,50 @@ input[type="password"] {
   padding: 10px;
 }
 
-
 form input {
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
-
 
 input[type="email"] {
-  margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
-
 
 input[type="email"],
 input[type="password"] {
-  margin-bottom: 20px; 
-  display: block; 
+  margin-bottom: 20px;
+  display: block;
 }
 
-
 input[type="email"] {
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 input[type="password"] {
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
-
-
 .login-button {
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
 .error-message {
   color: red;
-  
 }
 
 .google-sign-in-button {
   display: flex;
   align-items: center;
   justify-content: center;
- 
 }
 
 .google-sign-in-button img {
-  margin-right: 8px; 
-  width: 20px; 
-  height: 20px; 
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
 }
 
 .header-title {
   text-align: center;
   font-size: 5rem;
-  margin-top: 0; 
- }
+  margin-top: 0;
+}

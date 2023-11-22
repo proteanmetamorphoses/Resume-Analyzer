@@ -7,8 +7,8 @@ Dashboard
 Payment
 The dashboard will contain logic to enable the user to revise their resume according to a job description using the OpenAI API. Users can upload a resume. They can download a templated revised version in PDF. They can save multiple versions and the corresponding job description.
 
-
 # Resume-Analyzer
+
 Analyze resumes compared to job descriptions and suggest changes via OpenAI
 
 # Getting Started with Create React App

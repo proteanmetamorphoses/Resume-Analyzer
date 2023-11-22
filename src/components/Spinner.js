@@ -1,5 +1,5 @@
-import React from 'react';
-import { Dna } from 'react-loader-spinner';
+import React from "react";
+import { Dna } from "react-loader-spinner";
 
 const Spinner = () => (
   <div className="spinner-container">

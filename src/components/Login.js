@@ -1,9 +1,14 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from '../utils/firebase';
-import { Link } from 'react-router-dom';
-import './Login.css';
-import googleLogo from './GoogleG.png';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  auth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "../utils/firebase";
+import { Link } from "react-router-dom";
+import "./Login.css";
+import googleLogo from "./GoogleG.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -15,18 +20,17 @@ function Login() {
     event.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard'); 
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
-      
-      if (error.code === 'auth/invalid-email') {
-        setError('Invalid Email.');
+
+      if (error.code === "auth/invalid-email") {
+        setError("Invalid Email.");
       } else {
-        setError('An error occurred while trying to log in. Please try again.');
+        setError("An error occurred while trying to log in. Please try again.");
       }
     }
   };
-  
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -36,13 +40,13 @@ function Login() {
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in with Google:", error);
       setError("There was an issue with Google sign-in. Please try again.");
     }
   };
-  
+
   return (
     <div className="login-container">
       <h1 className="header-title">Advanced Resume</h1>
@@ -60,7 +64,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <div className="button-container">
-          <button className = "login-button" type="submit">Login</button>
+          <button className="login-button" type="submit">
+            Login
+          </button>
         </div>
       </form>
       {error && <p className="error-message">{error}</p>}

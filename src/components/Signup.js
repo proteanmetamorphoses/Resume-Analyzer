@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, createUserWithEmailAndPassword } from '../utils/firebase';
-import { Link } from 'react-router-dom';
-import './Signup.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth, createUserWithEmailAndPassword } from "../utils/firebase";
+import { Link } from "react-router-dom";
+import "./Signup.css";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -24,13 +24,15 @@ function Signup() {
     }
 
     if (!isStrongPassword(password)) {
-      setError("Password should be at least 8 characters, contain a number and an uppercase letter.");
+      setError(
+        "Password should be at least 8 characters, contain a number and an uppercase letter."
+      );
       return;
     }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (error) {
       console.error("Error signing up:", error);
       setError(error.message);

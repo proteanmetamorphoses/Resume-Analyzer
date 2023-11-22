@@ -1,19 +1,21 @@
-import { useState } from 'react';
-import { auth, sendPasswordResetEmail } from '../utils/firebase';
-import './PasswordReset.css'; 
+import { useState } from "react";
+import { auth, sendPasswordResetEmail } from "../utils/firebase";
+import "./PasswordReset.css";
 function PasswordReset() {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
   const handlePasswordReset = async (event) => {
     event.preventDefault();
     try {
       await sendPasswordResetEmail(auth, email);
-      setMessage('Check your email (including spam or junk box) for your password reset link.');
+      setMessage(
+        "Check your email (including spam or junk box) for your password reset link."
+      );
     } catch (error) {
-      console.error('Error sending password reset email:', error);
-      setError('Failed to send password reset email. Please try again.');
+      console.error("Error sending password reset email:", error);
+      setError("Failed to send password reset email. Please try again.");
     }
   };
 
@@ -32,7 +34,9 @@ function PasswordReset() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <button className="prbutton" type="submit">Submit</button>
+        <button className="prbutton" type="submit">
+          Submit
+        </button>
       </form>
       {message && <p className="message">{message}</p>}
       {error && <p className="error-message">{error}</p>}

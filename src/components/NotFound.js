@@ -1,6 +1,6 @@
 // NotFound.js
-import React from 'react';
-import './NotFound.css'; // Import a CSS file for styling
+import React from "react";
+import "./NotFound.css"; // Import a CSS file for styling
 
 const NotFound = () => {
   return (
@@ -9,6 +9,6 @@ const NotFound = () => {
       <p>The page you are looking for does not exist.</p>
     </div>
   );
-}
+};
 
 export default NotFound;

@@ -2,19 +2,18 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   width: 100%;
   max-width: 600px;
   margin: auto;
   padding: 20px;
 }
 
-
 .resume-input textarea,
 .job-description-input textarea {
   align-items: center;
   box-sizing: border-box;
-  width: 50vw; 
+  width: 50vw;
   min-height: 25vh;
   margin-bottom: 20px;
   padding: 10px;
@@ -29,7 +28,7 @@
     max-width: 100%; /* Allow the textarea to take full width on smaller screens */
     margin-bottom: 5px; /* Reduce margin for better spacing */
     padding: 5px; /* Adjust padding as needed */
-  };
+  }
 }
 
 .analysis-button {
@@ -59,7 +58,6 @@
   resize: none; /* Optional: Disable manual resizing */
 }
 
-
 @media (max-width: 768px) {
   /* Adjust the width for smaller screens */
   .styled-textarea {
@@ -81,7 +79,7 @@
   position: absolute;
   bottom: 30px;
   left: 5px;
-  margin: 0;
+  margin: 0px;
   color: rgba(14, 6, 239, 0.7);
   padding: 2px 5px;
   font-size: 0.8em;
@@ -93,15 +91,15 @@ h5 {
   margin: 0;
 }
 
-
-.char-count-left, .char-count-right {
-  font-size: 14px; 
-  margin-top: 5px; 
+.char-count-left,
+.char-count-right {
+  font-size: 14px;
+  margin-top: 5px;
 }
 
-
 @media (max-width: 768px) {
-  .char-count-left, .char-count {
+  .char-count-left,
+  .char-count {
     font-size: 8px;
     margin-top: 1px;
   }
@@ -110,7 +108,7 @@ h5 {
 textarea {
   align-items: center;
   box-sizing: border-box;
-  width: 50vw; 
+  width: 50vw;
   min-height: 25vh;
   margin-bottom: 20px;
   padding: 10px;
@@ -118,4 +116,10 @@ textarea {
   border-radius: 4px;
   box-sizing: border-box;
   resize: none;
+}
+
+h4,
+.char-count-total {
+  width: 700px;
+  text-align: center;
 }
