@@ -112,7 +112,21 @@ function AnalysisSection({
           className="styled-textarea"
           value={resumeText}
           onChange={handleResumeTextChange}
-          placeholder="Type or paste your current resume text here."
+          placeholder="Type or paste your current resume text here.
+          Include:
+          Header
+          • [Full Name]
+          • [Address]
+          • [Phone Number]
+          • [Email]
+          ---------------------------
+          Body
+          (Information strongly connecting you to the Job Description.)
+          • Education--How does your education meet the Job Description requirements?
+          • Experience--What experience do you have satisfying the Job Description?
+          • Skills--What skills do you possess to meet or exceed the Job description?
+          • Certifications--Do you possess the necessary certifications and licensing?"
+            style={{ whiteSpace: "pre-line" }}
         />
         <p className="char-count">
           {getCharacterMessage(resumeTextCount, 15000)}
@@ -130,7 +144,7 @@ function AnalysisSection({
           className="styled-textarea"
           value={jobDescriptionText}
           onChange={handleJobDescriptionTextChange}
-          placeholder="Paste your recent job description text here."
+          placeholder="Paste a recent job description text here."
         />
         <p className="char-count">
           {getCharacterMessage(jobDescriptionTextCount, 5000)}

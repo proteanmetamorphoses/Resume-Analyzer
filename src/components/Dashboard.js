@@ -7,8 +7,8 @@ import FinalResultsSection from "./FinalResultsSection";
 import LogoutLink from "./LogoutLink";
 import "./Dashboard.css";
 import axios from "axios";
-import Spinner from "./Spinner";
 import { db } from "../utils/firebase";
+import myGif from "./mugging-export.gif";
 import {
   collection,
   addDoc,
@@ -22,8 +22,8 @@ import {
 import { getAuth } from "firebase/auth";
 import DocumentModal from "./DocumentModal";
 import VoiceBotIframe from "./VoiceBotiFrame";
-
 function Dashboard() {
+  const [statusMessage, setStatusMessage] = useState("");
   const [showRevisionSection, setShowRevisionSection] = useState(false);
   const [resumeKeywords, setResumeKeywords] = useState([]);
   const [jobDescriptionKeywords, setJobDescriptionKeywords] = useState([]);
@@ -74,6 +74,7 @@ function Dashboard() {
   };
 
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
+    setStatusMessage("Working...");
     setIsAnalyzing(true);
     const resumeData = { resumeText, jobDescriptionText };
     await handleSubmit(resumeData);
@@ -85,6 +86,7 @@ function Dashboard() {
     revisions
   ) => {
     setIsRevising(true);
+    setStatusMessage("Working...");
     try {
       const response = await axios.post("/api/submit-revision", {
         resume,
@@ -369,9 +371,10 @@ function Dashboard() {
         />
       </div>
       <div className="analysis-section">
-        <div className="VoiceBot-container">
+      {!isAnalyzing && !showResults && (<div className="VoiceBot-container">
           <VoiceBotIframe />
         </div>
+        )}
         <AnalysisSection
           onSubmit={handleAnalysis}
           isAnalyzing={isAnalyzing}
@@ -383,7 +386,17 @@ function Dashboard() {
         />
       </div>
 
-      {isAnalyzing && <Spinner />}
+      {isAnalyzing && (
+        <div style={{ textAlign: "center" }}>
+          <img
+            className="GifSpin"
+            src={myGif}
+            alt="Communicating with OpenAI..."
+            style={{ marginBottom: "10px" }}
+          />
+          <div>{statusMessage}</div>
+        </div>
+      )}
 
       {!isAnalyzing && showResults && (
         <ResultsSection
@@ -393,12 +406,17 @@ function Dashboard() {
         />
       )}
 
-      {!isAnalyzing && (showResults || showRevisionSection) && (
+      {!isAnalyzing && (showResults || showRevisionSection) && !showFinalResults && (
         <div className="analysis-section">
           <div className="VoiceBot-container">
             <VoiceBotIframe />
           </div>
+          </div>
+      )}
+       {!isAnalyzing && (showResults || showRevisionSection) && (
+        <div className="analysis-section">
           <RevisionSection
+            statusMessage={statusMessage}
             missingKeywords={missingKeywords}
             assessment={assessment}
             employabilityScore={employabilityScore}

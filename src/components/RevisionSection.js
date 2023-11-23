@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./RevisionSection.css";
-import Spinner from "./Spinner";
+import myGif from './mugging-export.gif';
 
 function RevisionSection({
+  statusMessage = "",
   missingKeywords = [],
   assessment = "",
   employabilityScore = 0,
@@ -67,7 +68,15 @@ function RevisionSection({
           Revise
         </button>
       )}
-      {isRevising && <Spinner />}
+      {isRevising && <div style={{ textAlign: "center" }}>
+          <img
+            className="GifSpin2"
+            src={myGif}
+            alt="Communicating with OpenAI..."
+            style={{ marginBottom: "10px" }}
+          />
+          <div>{statusMessage}</div>
+        </div>}
     </div>
   );
 }

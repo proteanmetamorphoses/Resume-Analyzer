@@ -46,33 +46,32 @@
 
 .textarea-container {
   position: relative;
-  margin-bottom: 20px; /* Adjust as needed */
+  margin-bottom: 20px; 
 }
 
 .styled-textarea {
   width: min-height;
-  min-height: 150px; /* Minimum height */
-  overflow-y: hidden; /* Hide scrollbar */
-  padding-bottom: 50px; /* Increased padding for visibility of character counts */
+  min-height: 300px; 
+  overflow-y: hidden; 
+  padding-bottom: 50px; 
   box-sizing: border-box;
-  resize: none; /* Optional: Disable manual resizing */
+  resize: none; 
 }
 
 @media (max-width: 768px) {
-  /* Adjust the width for smaller screens */
   .styled-textarea {
-    width: 350px; /* Set the width to 350px for smaller screens */
+    width: 350px; 
   }
 }
 
 .char-count {
   position: absolute;
-  bottom: 30px; /* Adjust as needed */
-  right: 15px; /* Adjust as needed */
+  bottom: 30px; 
+  right: 15px;
   margin: 0;
-  color: rgba(14, 6, 239, 0.7); /* Optional for readability */
-  padding: 2px 5px; /* Optional for better presentation */
-  font-size: 0.8em; /* Adjust as needed */
+  color: rgba(14, 6, 239, 0.7); 
+  padding: 2px 5px; 
+  font-size: 0.8em; 
 }
 
 .char-count-left {
