@@ -359,7 +359,7 @@ function Dashboard() {
       <h1>Advanced Resume</h1>
       <h3>Add your current resume and a recent job description, below.</h3>
       <h2>Previous Resumes</h2>
-      <h4>Click a document to view</h4>
+      <h4 className="instruct1">Click a document to view</h4>
       <div className="previous-work-section">
         <PreviousWorkSection
           documents={documents}
@@ -368,31 +368,36 @@ function Dashboard() {
           onDeleteDocument={handleDeleteDocument}
         />
       </div>
-      <div className="VoiceBot-container">
-        <div className="analysis-section">
+      <div className="analysis-section">
+        <div className="VoiceBot-container">
           <VoiceBotIframe />
-          <AnalysisSection
-            onSubmit={handleAnalysis}
-            isAnalyzing={isAnalyzing}
-            analysisCompleted={analysisCompleted}
-            resumeText={resumeText}
-            setResumeText={setResumeText}
-            jobDescriptionText={jobDescriptionText}
-            setJobDescriptionText={setJobDescriptionText}
-          />
         </div>
+        <AnalysisSection
+          onSubmit={handleAnalysis}
+          isAnalyzing={isAnalyzing}
+          analysisCompleted={analysisCompleted}
+          resumeText={resumeText}
+          setResumeText={setResumeText}
+          jobDescriptionText={jobDescriptionText}
+          setJobDescriptionText={setJobDescriptionText}
+        />
+      </div>
 
-        {isAnalyzing && <Spinner />}
+      {isAnalyzing && <Spinner />}
 
-        {!isAnalyzing && showResults && (
-          <ResultsSection
-            resumeKeywords={resumeKeywords}
-            jobDescriptionKeywords={jobDescriptionKeywords}
-            atsScore={atsScore}
-          />
-        )}
+      {!isAnalyzing && showResults && (
+        <ResultsSection
+          resumeKeywords={resumeKeywords}
+          jobDescriptionKeywords={jobDescriptionKeywords}
+          atsScore={atsScore}
+        />
+      )}
 
-        {!isAnalyzing && (showResults || showRevisionSection) && (
+      {!isAnalyzing && (showResults || showRevisionSection) && (
+        <div className="analysis-section">
+          <div className="VoiceBot-container">
+            <VoiceBotIframe />
+          </div>
           <RevisionSection
             missingKeywords={missingKeywords}
             assessment={assessment}
@@ -404,30 +409,35 @@ function Dashboard() {
             isRevising={isRevising}
             revisionCompleted={revisionCompleted}
           />
-        )}
+        </div>
+      )}
 
-        {!isAnalyzing && showFinalResults && (
+      {!isAnalyzing && showFinalResults && (
+        <div className="analysis-section">
+          <div className="VoiceBot-container">
+            <VoiceBotIframe />
+          </div>
           <FinalResultsSection
             finalResume={finalResume}
             coverLetter={coverLetter}
             newEmployabilityScore={newEmployabilityScore}
             onSave={handleSaveToFirestore}
           />
-        )}
+        </div>
+      )}
 
-        <nav className="logout-nav">
-          <LogoutLink />
-        </nav>
-        {isModalOpen && (
-          <DocumentModal
-            coverLetter={selectedCoverLetterContent}
-            resume={selectedResumeContent}
-            onClose={() => setIsModalOpen(false)}
-            onRework={handleRework}
-            onDelete={() => handleDeleteDocument(selectedDocumentId)}
-          />
-        )}
-      </div>
+      <nav className="logout-nav">
+        <LogoutLink />
+      </nav>
+      {isModalOpen && (
+        <DocumentModal
+          coverLetter={selectedCoverLetterContent}
+          resume={selectedResumeContent}
+          onClose={() => setIsModalOpen(false)}
+          onRework={handleRework}
+          onDelete={() => handleDeleteDocument(selectedDocumentId)}
+        />
+      )}
     </div>
   );
 }

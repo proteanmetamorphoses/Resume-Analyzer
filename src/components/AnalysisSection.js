@@ -143,8 +143,8 @@ function AnalysisSection({
       </div>
       {cappedRemainingCharacters > 0 && (
         <h4 className="char-count-total">
-          Analysis can commence in {formattedcappedRemainingCharacters}{" "}
-          characters (500 Resume & 500 Job Description).
+          Analysis commencing in {formattedcappedRemainingCharacters}{" "}
+          characters.
         </h4>
       )}
       {!isAnalyzing &&

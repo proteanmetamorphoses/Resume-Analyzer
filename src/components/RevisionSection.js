@@ -52,7 +52,7 @@ function RevisionSection({
         <p className="Revision-Item">{bestPossibleJob}</p>
       </div>
       <div className="missing-details">
-        <h3>Add Missing Keyword Details for the following items:</h3>
+        <h3>To be competetive, add specific details about the following missing keywords:</h3>
         <textarea
           className="revision-textarea"
           ref={revisionTextAreaRef} // Use the ref here

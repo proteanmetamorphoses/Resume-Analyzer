@@ -1,8 +1,9 @@
 #wrap {
     width:235%;
-    height: 430px;
+    height: 427px;
     padding: 0;
     overflow: hidden;
+
   }
   
   #theBot {
@@ -14,12 +15,15 @@
   #theBot {
     zoom: 0.7;
     -moz-transform: scale(0.7);
-    -moz-transform-origin: 0 0;
     -o-transform: scale(0.7);
-    -o-transform-origin: 0 0;
     -webkit-transform: scale(0.7);
+    transform: scale(0.7); /* Standard property */
+    -moz-transform-origin: 0 0;
+    -o-transform-origin: 0 0;
     -webkit-transform-origin: 0 0;
-  }
+    transform-origin: 0 0; /* Standard property */
+}
+
   
   @media screen and (-webkit-min-device-pixel-ratio:0) {
     #scaled-frame {
