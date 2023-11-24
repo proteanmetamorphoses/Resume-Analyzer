@@ -22,7 +22,10 @@ const HexagonBackground = () => {
 
   const sketch = (p) => {
     let shouldRunAnimation = true; // State to control animation
-    let cycle = 0;
+    let minStrokeWeight = 1; // Minimum line thickness
+    let maxStrokeWeight = 3; // Maximum line thickness
+    let increasing = true; // Boolean to track whether stroke weight is increasing or decreasing
+    let currentStrokeWeight = minStrokeWeight; // Initialize stroke weight
 
     p.setup = () => {
       p.createCanvas(p.windowWidth * 0.99, p.windowHeight * 0.99);
@@ -41,16 +44,24 @@ const HexagonBackground = () => {
     };
 
     p.draw = () => {
-      if (cycle >= 2 && shouldRunAnimation === false) {
+      if (shouldRunAnimation === false) {
         shouldRunAnimation = true;
-        cycle = 0;
-      } else{
-        cycle++;
       }
-      console.log(cycle);
       if (!shouldRunAnimation) return; // Stop animation
       p.background(175);
-      p.frameRate(50);
+      p.frameRate(6);
+        // Update stroke weight based on a time-dependent pattern
+      if (increasing) {
+        currentStrokeWeight += 0.1; // Adjust the rate of increase as needed
+        if (currentStrokeWeight >= maxStrokeWeight) {
+          increasing = false;
+        }
+      } else {
+        currentStrokeWeight -= 0.1; // Adjust the rate of decrease as needed
+        if (currentStrokeWeight <= minStrokeWeight) {
+          increasing = true;
+        }
+      }
       for (const blob of blobs) {
         // Adjust the blob's position and radius based on frame count
         const speed = 2; // Adjust the speed as needed
@@ -66,6 +77,7 @@ const HexagonBackground = () => {
 
         // Set the stroke color for the blob
         p.stroke(blob.color);
+        p.strokeWeight(currentStrokeWeight);
 
         // Adjust the opacity of the hexagonal grid based on blob position
         const x_offset = R * p.cos(p.PI / 6);
