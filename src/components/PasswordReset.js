@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { auth, sendPasswordResetEmail } from "../utils/firebase";
 import "./PasswordReset.css";
+import HexagonBackground from "./HexagonBackground";
+
 function PasswordReset() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -21,6 +23,9 @@ function PasswordReset() {
 
   return (
     <div className="password-reset-container">
+      <div className="background-container">
+        <HexagonBackground />
+      </div>
       <div className="header-container">
         <h1 className="header-title">Advanced Resume</h1>
         <p className="header-subtitle">Password Reset</p>

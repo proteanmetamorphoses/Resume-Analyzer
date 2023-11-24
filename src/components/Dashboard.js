@@ -24,6 +24,7 @@ import { getAuth } from "firebase/auth";
 import DocumentModal from "./DocumentModal";
 import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
+import JobSearch from "./JobSearch";
 
 function Dashboard() {
   const [statusMessage, setStatusMessage] = useState("");
@@ -382,7 +383,9 @@ function Dashboard() {
         <HexagonBackground />
       </div>
       <h1 className="Main-Header">Advanced Resume</h1>
-      <h3 className="Main-Header">Add your current resume and a recent job description, below.</h3>
+      <h3 className="Main-Header">
+        Add your current resume and a recent job description, below.
+      </h3>
       <h2 className="Main-Header">Previous Resumes</h2>
       <h4 className="instruct1">Click a document to view</h4>
       <div className="previous-work-section">
@@ -392,6 +395,11 @@ function Dashboard() {
           onDocumentClick={handleDivClick}
           onDeleteDocument={handleDeleteDocument}
         />
+      </div>
+      <div className="jobOps">
+        <h2 className="Main-Header">Job Opportunities to Search</h2>
+        <h4 className="instruct1">Find a Job Description of Interest to Add</h4>
+        <JobSearch />
       </div>
       <div className="analysis-section">
         {!isAnalyzing && !showResults && (
@@ -483,7 +491,6 @@ function Dashboard() {
           onDelete={() => handleDeleteDocument(selectedDocumentId)}
         />
       )}
-      
     </div>
   );
 }

@@ -77,11 +77,11 @@ function Login() {
         <img src={googleLogo} alt="Google sign-in" />
         Sign in with Google
       </button>
-      <p>
-        Don't have an account? <Link to="/signup">Sign up</Link>
+      <p className = ".noAccount">
+        Don't have an account? <Link to="/signup" className="signup-link">Sign up</Link>
       </p>
-      <p>
-        Forgot your password? <Link to="/password-reset">Reset it here</Link>
+      <p className = ".forgotPWD">
+        Forgot your password? <Link to="/password-reset" className="pwReset-link">Reset it here</Link>
       </p>
     </div>
   );

@@ -85,7 +85,7 @@
 }
 
 h5 {
-  color: #2281df58;
+  color: #2281dfe4;
   font-size: 0.8em;
   margin: 0;
 }
@@ -117,8 +117,9 @@ textarea {
   resize: none;
 }
 
-h4,
+h4, h3,
 .char-count-total {
   width: 700px;
   text-align: center;
+  color: white;
 }

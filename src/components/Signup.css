@@ -6,6 +6,7 @@
   min-height: 100vh;
   padding-top: 25vh;
   width: 100%;
+  color: white;
 }
 
 suform {
@@ -46,6 +47,7 @@ subutton:hover {
 
 .link-text {
   margin-top: 20px;
+  color: white;
 }
 
 .supheader-title {

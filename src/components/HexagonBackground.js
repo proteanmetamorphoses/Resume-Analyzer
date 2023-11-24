@@ -28,7 +28,7 @@ const HexagonBackground = () => {
     let currentStrokeWeight = minStrokeWeight; // Initialize stroke weight
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth * 0.99, p.windowHeight * 0.99);
+      p.createCanvas(p.windowWidth, p.windowHeight);
       createBlobs();
     };
 
@@ -48,7 +48,7 @@ const HexagonBackground = () => {
         shouldRunAnimation = true;
       }
       if (!shouldRunAnimation) return; // Stop animation
-      p.background(175);
+      p.background(25);
       p.frameRate(6);
         // Update stroke weight based on a time-dependent pattern
       if (increasing) {
