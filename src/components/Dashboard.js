@@ -18,10 +18,13 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import DocumentModal from "./DocumentModal";
 import VoiceBotIframe from "./VoiceBotiFrame";
+import HexagonBackground from "./HexagonBackground";
+
 function Dashboard() {
   const [statusMessage, setStatusMessage] = useState("");
   const [showRevisionSection, setShowRevisionSection] = useState(false);
@@ -46,12 +49,19 @@ function Dashboard() {
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
   const [deletionCount, setDeletionCount] = useState(0);
   const [documents, setDocuments] = useState([]);
+  const [overwriteCount, setoverwriteCount] = useState(0);
 
   useEffect(() => {
     if (deletionCount > 0) {
       fetchUserData();
     }
   }, [deletionCount]);
+
+  useEffect(() => {
+    if (overwriteCount > 0) {
+      fetchUserData();
+    }
+  }, [overwriteCount]);
 
   const fetchUserData = async () => {
     const auth = getAuth();
@@ -309,10 +319,19 @@ function Dashboard() {
         const querySnapshot = await getDocs(q);
         if (!querySnapshot.empty) {
           // A document with the same title exists
-          console.warn("A document with this title already exists.");
-          // Add logic to handle this scenario (e.g., prompt user for action)
+          const existingDoc = querySnapshot.docs[0];
+          await updateDoc(existingDoc.ref, {
+            title,
+            finalResume,
+            coverLetter,
+            newEmployabilityScore,
+            createdAt: serverTimestamp(),
+          });
+
+          console.log("Document overwritten with ID: ", existingDoc.id);
+          setoverwriteCount(overwriteCount + 1);
         } else {
-          // Save the new document as no duplicate was found
+          // Save the new document (no existing document found)
           console.log(
             "newEmployabilityScore before addDoc:",
             newEmployabilityScore
@@ -321,6 +340,7 @@ function Dashboard() {
             console.error("newEmployabilityScore is undefined, aborting save");
             return;
           }
+
           const docRef = await addDoc(
             collection(db, "users", user.uid, "documents"),
             {
@@ -331,7 +351,7 @@ function Dashboard() {
               createdAt: serverTimestamp(),
             }
           );
-          console.log("Document written with ID: ", docRef.id);
+          console.log("New document written with ID: ", docRef.id);
         }
       } catch (error) {
         console.error("Error saving document: ", error);
@@ -358,9 +378,12 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <h1>Advanced Resume</h1>
-      <h3>Add your current resume and a recent job description, below.</h3>
-      <h2>Previous Resumes</h2>
+      <div className="background-container">
+        <HexagonBackground />
+      </div>
+      <h1 className="Main-Header">Advanced Resume</h1>
+      <h3 className="Main-Header">Add your current resume and a recent job description, below.</h3>
+      <h2 className="Main-Header">Previous Resumes</h2>
       <h4 className="instruct1">Click a document to view</h4>
       <div className="previous-work-section">
         <PreviousWorkSection
@@ -371,9 +394,10 @@ function Dashboard() {
         />
       </div>
       <div className="analysis-section">
-      {!isAnalyzing && !showResults && (<div className="VoiceBot-container">
-          <VoiceBotIframe />
-        </div>
+        {!isAnalyzing && !showResults && (
+          <div className="VoiceBot-container">
+            <VoiceBotIframe />
+          </div>
         )}
         <AnalysisSection
           onSubmit={handleAnalysis}
@@ -406,14 +430,16 @@ function Dashboard() {
         />
       )}
 
-      {!isAnalyzing && (showResults || showRevisionSection) && !showFinalResults && (
-        <div className="analysis-section">
-          <div className="VoiceBot-container">
-            <VoiceBotIframe />
+      {!isAnalyzing &&
+        (showResults || showRevisionSection) &&
+        !showFinalResults && (
+          <div className="analysis-section">
+            <div className="VoiceBot-container">
+              <VoiceBotIframe />
+            </div>
           </div>
-          </div>
-      )}
-       {!isAnalyzing && (showResults || showRevisionSection) && (
+        )}
+      {!isAnalyzing && (showResults || showRevisionSection) && (
         <div className="analysis-section">
           <RevisionSection
             statusMessage={statusMessage}
@@ -447,6 +473,7 @@ function Dashboard() {
       <nav className="logout-nav">
         <LogoutLink />
       </nav>
+
       {isModalOpen && (
         <DocumentModal
           coverLetter={selectedCoverLetterContent}
@@ -456,6 +483,7 @@ function Dashboard() {
           onDelete={() => handleDeleteDocument(selectedDocumentId)}
         />
       )}
+      
     </div>
   );
 }

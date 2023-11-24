@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, createUserWithEmailAndPassword } from "../utils/firebase";
 import { Link } from "react-router-dom";
 import "./Signup.css";
+import HexagonBackground from "./HexagonBackground";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -41,6 +42,9 @@ function Signup() {
 
   return (
     <div className="signup-container">
+      <div className="background-container">
+        <HexagonBackground />
+      </div>
       <h1 className="supheader-title">Advanced Resume</h1>
       <form onSubmit={handleSignup}>
         <input

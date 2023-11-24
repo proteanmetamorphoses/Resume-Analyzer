@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./FinalResultsSection.css";
 import { saveAs } from "file-saver";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   Document,
   Packer,
@@ -9,6 +10,8 @@ import {
   SectionType,
   TextRun,
 } from "docx";
+import Modal from "@mui/material/Modal";
+import checkDocumentsExist from "./checkDocumentsExist";
 
 export const downloadDocument = (coverLetter, resume, fileName) => {
   const fontSize = 22;
@@ -87,10 +90,43 @@ function FinalResultsSection({
   onSave,
 }) {
   const [title, setTitle] = useState(""); // State to store the title
-  const handleSave = () => {
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [userUid, setUserUid] = useState(null); // State to store the user's UID
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is authenticated
+        setUserUid(user.uid); // Set the user's UID in state
+      } else {
+        // User is not authenticated
+        setUserUid(null); // Clear the user's UID in state
+      }
+    });
+
+    // Cleanup the subscription when the component unmounts
+    return () => unsubscribe();
+  }, []);
+
+const handleOverWrite = async () =>{
+  console.log("Attempting to overwrite.");
+  console.log(userUid);
+  onSave(title, finalResume, coverLetter, newEmployabilityScore);
+  setShowErrorModal(false);
+}
+
+  const handleSave = async () => {
     if (title) {
-      console.log("newEmployabilityScore on Save:", newEmployabilityScore);
-      onSave(title, finalResume, coverLetter, newEmployabilityScore);
+      // Check if documents with the same title exist in Firestore
+      const documentsExist = await checkDocumentsExist(userUid, title);
+
+      if (documentsExist) {
+        setShowErrorModal(true);
+        console.log("A document with the same title already exists.  OverWrite?");
+      } else {
+        onSave(title, finalResume, coverLetter, newEmployabilityScore);
+      }
     } else {
       console.log("Please enter a title for the document.");
     }
@@ -128,7 +164,7 @@ function FinalResultsSection({
       </div>
       <input
         type="text"
-        placeholder="Enter document title"
+        placeholder="Enter title to save docx."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
@@ -136,6 +172,14 @@ function FinalResultsSection({
         <button onClick={handleSave}>Save</button>
         <button onClick={handleDownload}>Download</button>
       </div>
+      <Modal open={showErrorModal}>
+        <div className="modal-content">
+          <h3>Just a moment...</h3>
+          <p>A document with the same title already exists.  OverWrite?</p>
+          <button onClick={handleOverWrite}>Overwrite</button>
+          <button onClick={() => setShowErrorModal(false)}>Abort Save</button>
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./RevisionSection.css";
-import myGif from './mugging-export.gif';
+import myGif from "./mugging-export.gif";
 
 function RevisionSection({
   statusMessage = "",
@@ -17,6 +17,7 @@ function RevisionSection({
   const [userRevisions, setUserRevisions] = useState("");
   const [isTouched, setIsTouched] = useState(false);
   const revisionTextAreaRef = useRef(null);
+  const [userRevisionsTextCount, setUserRevisionsTextCount] = useState(0);
 
   useEffect(() => {
     // Adjust the height of the textarea
@@ -24,6 +25,7 @@ function RevisionSection({
       revisionTextAreaRef.current.style.height = "auto"; // Reset height
       revisionTextAreaRef.current.style.height = `${revisionTextAreaRef.current.scrollHeight}px`; // Set to scroll height
     }
+    setUserRevisionsTextCount(userRevisions.length);
   }, [userRevisions]);
 
   const handleFocus = () => {
@@ -53,7 +55,10 @@ function RevisionSection({
         <p className="Revision-Item">{bestPossibleJob}</p>
       </div>
       <div className="missing-details">
-        <h3>To be competetive, add specific details about the following missing keywords:</h3>
+        <h3>
+          To be competetive, add specific details about the following missing
+          keywords:
+        </h3>
         <textarea
           className="revision-textarea"
           ref={revisionTextAreaRef} // Use the ref here
@@ -63,12 +68,14 @@ function RevisionSection({
           placeholder={!isTouched ? missingKeywords.join("\n") : ""}
         />
       </div>
-      {!isRevising && !revisionCompleted && (
+
+      {!isRevising && !revisionCompleted && userRevisionsTextCount > 1 && (
         <button className="analysis-button" onClick={handleSubmitRevisions}>
           Revise
         </button>
       )}
-      {isRevising && <div style={{ textAlign: "center" }}>
+      {isRevising && (
+        <div style={{ textAlign: "center" }}>
           <img
             className="GifSpin2"
             src={myGif}
@@ -76,7 +83,8 @@ function RevisionSection({
             style={{ marginBottom: "10px" }}
           />
           <div>{statusMessage}</div>
-        </div>}
+        </div>
+      )}
     </div>
   );
 }

@@ -13,9 +13,9 @@ function ResultsSection({ resumeKeywords, jobDescriptionKeywords, atsScore }) {
         <KeywordsList type="jobDescription" keywords={jobDescriptionKeywords} />
       </div>
       <h3>Initial Resume ATS Score (&gt;=90% is more competitive)</h3>
-      <h3 className="results-ats-score">
+      <div className="results-ats-score">
         <ATSScore score={atsScore} />
-      </h3>
+      </div>
     </div>
   );
 }

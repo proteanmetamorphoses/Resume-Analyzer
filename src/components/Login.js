@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import "./Login.css";
 import googleLogo from "./GoogleG.png";
-
+import HexagonBackground from "./HexagonBackground";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,6 +49,9 @@ function Login() {
 
   return (
     <div className="login-container">
+      <div className="background-container">
+        <HexagonBackground />
+      </div>
       <h1 className="header-title">Advanced Resume</h1>
       <form onSubmit={handleLogin}>
         <input

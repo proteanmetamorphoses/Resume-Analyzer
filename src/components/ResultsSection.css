@@ -43,3 +43,11 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.results-ats-score{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
