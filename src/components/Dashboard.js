@@ -8,7 +8,7 @@ import LogoutLink from "./LogoutLink";
 import "./Dashboard.css";
 import axios from "axios";
 import { db } from "../utils/firebase";
-import myGif from "./mugging-export.gif";
+import Spinner from "./Spinner";
 import {
   collection,
   addDoc,
@@ -51,7 +51,9 @@ function Dashboard() {
   const [deletionCount, setDeletionCount] = useState(0);
   const [documents, setDocuments] = useState([]);
   const [overwriteCount, setoverwriteCount] = useState(0);
-
+  const [showVoiceBot, setShowVoiceBot] = useState(false);
+  
+  
   useEffect(() => {
     if (deletionCount > 0) {
       fetchUserData();
@@ -377,6 +379,10 @@ function Dashboard() {
     }
   };
 
+  const handleButtonClick = () => {
+    setShowVoiceBot(true);
+  };
+
   return (
     <div className="dashboard">
       <div className="background-container">
@@ -403,9 +409,13 @@ function Dashboard() {
       </div>
       <div className="analysis-section">
         {!isAnalyzing && !showResults && (
-          <div className="VoiceBot-container">
-            <VoiceBotIframe />
-          </div>
+          showVoiceBot ? (
+            <div className="VoiceBot-container">
+              <VoiceBotIframe />
+            </div>
+          ) : (
+            <button onClick={handleButtonClick}>Activate Voice Bot</button>
+          )
         )}
         <AnalysisSection
           onSubmit={handleAnalysis}
@@ -420,13 +430,7 @@ function Dashboard() {
 
       {isAnalyzing && (
         <div style={{ textAlign: "center" }}>
-          <img
-            className="GifSpin"
-            src={myGif}
-            alt="Communicating with OpenAI..."
-            style={{ marginBottom: "10px" }}
-          />
-          <div>{statusMessage}</div>
+          <Spinner />
         </div>
       )}
 
@@ -437,7 +441,7 @@ function Dashboard() {
           atsScore={atsScore}
         />
       )}
-
+      
       {!isAnalyzing &&
         (showResults || showRevisionSection) &&
         !showFinalResults && (

@@ -53,6 +53,7 @@ h3 {
   width: auto;
   margin: 0 auto;
   display: inline-block;
+  color: black;
 }
 
 .ats-score-header,
@@ -72,4 +73,7 @@ h3 {
   width: 100%;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.582);
+}
+.modalH3{
+  color: black;
 }

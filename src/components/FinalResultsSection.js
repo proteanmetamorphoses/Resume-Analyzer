@@ -149,7 +149,7 @@ const handleOverWrite = async () =>{
           ))}
         </div>
       </div>
-      <h3 className="ats-score-header">Revised ATS Score</h3>
+      <h3 className="ats-score-header">Revised Fit</h3>
       <h3 className="revised-ats-score">{newEmployabilityScore}</h3>
       <div>
         <h3 className="cover-letter-header">Cover Letter</h3>
@@ -174,7 +174,7 @@ const handleOverWrite = async () =>{
       </div>
       <Modal open={showErrorModal}>
         <div className="modal-content">
-          <h3>Just a moment...</h3>
+          <h3 className="modalH3">Just a moment...</h3>
           <p>A document with the same title already exists.  OverWrite?</p>
           <button onClick={handleOverWrite}>Overwrite</button>
           <button onClick={() => setShowErrorModal(false)}>Abort Save</button>

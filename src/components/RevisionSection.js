@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./RevisionSection.css";
-import myGif from "./mugging-export.gif";
+import Spinner from "./Spinner";
 
 function RevisionSection({
   statusMessage = "",
@@ -76,13 +76,7 @@ function RevisionSection({
       )}
       {isRevising && (
         <div style={{ textAlign: "center" }}>
-          <img
-            className="GifSpin2"
-            src={myGif}
-            alt="Communicating with OpenAI..."
-            style={{ marginBottom: "10px" }}
-          />
-          <div>{statusMessage}</div>
+          <Spinner />
         </div>
       )}
     </div>

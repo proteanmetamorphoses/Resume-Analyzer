@@ -14,6 +14,7 @@ const JobSearchComponent = () => {
                 params: { query: searchTerm }
             });
             setJobs(response.data.jobs_results);
+            console.log(response.data.jobs_results);
         } catch (error) {
             console.error("Error fetching jobs:", error);
         } finally {
