@@ -1,0 +1,52 @@
+.search-input {
+    width: 100%; /* Adjust as needed */
+    font-size: 1.2em; /* Adjust as needed */
+    
+}
+
+.job-modal {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    background-color: rgb(240, 240, 240);
+    padding: 20px;
+    overflow-y: auto; /* Makes content scrollable */
+    border-radius: 10px;
+}
+
+.job-card {
+    width: 50px;
+    height: 50px; /* Adjust as needed for box shape */
+    margin: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc; /* Optional, adds a border */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional, adds subtle shadow */
+}
+
+
+.job-card img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
+}
+
+.company-initial {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+    color: white;
+    width: 100%;
+    height: 100%;
+}
+
+.jobsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Creates a responsive grid */
+    grid-gap: 10px; /* Adjust spacing between cards */
+    padding: 10px; /* Optional: Adds padding inside the container */
+    overflow-y: auto; /* Makes the container scrollable if content overflows */
+    max-height: 400px; /* Adjust as needed to contain within boundaries */
+}
