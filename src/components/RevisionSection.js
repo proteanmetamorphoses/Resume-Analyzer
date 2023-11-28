@@ -43,15 +43,15 @@ function RevisionSection({
       <h3>Resume Analysis Based on Job Description</h3>
 
       <div className="missing-keywords">
-        <h4>Missing Keywords:</h4>
+        <h4 className="Revision-Headers">Missing Keywords:</h4>
         <ul>
           {missingKeywords.map((keyword, index) => (
             <li key={index}>{keyword}</li>
           ))}
         </ul>
-        <h4>Assessment:</h4>
+        <h4 className="Revision-Headers">Assessment:</h4>
         <p className="Revision-Item">{assessment}</p>
-        <h4>Best Possible Job:</h4>
+        <h4 className="Revision-Headers">Best Possible Job:</h4>
         <p className="Revision-Item">{bestPossibleJob}</p>
       </div>
       <div className="missing-details">

@@ -51,6 +51,7 @@ function Dashboard() {
   const [deletionCount, setDeletionCount] = useState(0);
   const [documents, setDocuments] = useState([]);
   const [overwriteCount, setoverwriteCount] = useState(0);
+  const [saveCount, setSaveCount] = useState(0);
   const [showVoiceBot, setShowVoiceBot] = useState(false);
   
   
@@ -65,6 +66,12 @@ function Dashboard() {
       fetchUserData();
     }
   }, [overwriteCount]);
+
+  useEffect(() => {
+    if (saveCount > 0) {
+      fetchUserData();
+    }
+  }, [saveCount]);
 
   const fetchUserData = async () => {
     const auth = getAuth();
@@ -86,6 +93,8 @@ function Dashboard() {
     }
   };
 
+
+  
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
     setStatusMessage("Working...");
     setIsAnalyzing(true);
@@ -333,6 +342,7 @@ function Dashboard() {
 
           console.log("Document overwritten with ID: ", existingDoc.id);
           setoverwriteCount(overwriteCount + 1);
+          window.scrollTo(0, 0);
         } else {
           // Save the new document (no existing document found)
           console.log(
@@ -355,6 +365,8 @@ function Dashboard() {
             }
           );
           console.log("New document written with ID: ", docRef.id);
+          setSaveCount(saveCount + 1);
+          window.scrollTo(0, 0);
         }
       } catch (error) {
         console.error("Error saving document: ", error);
@@ -414,7 +426,7 @@ function Dashboard() {
               <VoiceBotIframe />
             </div>
           ) : (
-            <button onClick={handleButtonClick}>Activate Voice Bot</button>
+            <button onClick={handleButtonClick}>Activate Resume Coach</button>
           )
         )}
         <AnalysisSection

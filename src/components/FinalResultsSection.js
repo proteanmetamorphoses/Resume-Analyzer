@@ -126,6 +126,7 @@ const handleOverWrite = async () =>{
         console.log("A document with the same title already exists.  OverWrite?");
       } else {
         onSave(title, finalResume, coverLetter, newEmployabilityScore);
+        
       }
     } else {
       console.log("Please enter a title for the document.");

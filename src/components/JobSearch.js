@@ -48,7 +48,7 @@ const JobSearchComponent = () => {
                             ))}
                         </ul>
                     ) : (
-                        <p>No jobs found. Try a different search!</p>
+                        <p>No jobs found. Try a different search.</p>
                     )}
                 </div>
             )}
