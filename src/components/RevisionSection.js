@@ -3,10 +3,8 @@ import "./RevisionSection.css";
 import Spinner from "./Spinner";
 
 function RevisionSection({
-  statusMessage = "",
   missingKeywords = [],
   assessment = "",
-  employabilityScore = 0,
   bestPossibleJob = "",
   onSubmitRevisions,
   originalResume,

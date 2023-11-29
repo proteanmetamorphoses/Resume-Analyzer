@@ -27,7 +27,7 @@ import HexagonBackground from "./HexagonBackground";
 import JobSearch from "./JobSearch";
 
 function Dashboard() {
-  const [statusMessage, setStatusMessage] = useState("");
+
   const [showRevisionSection, setShowRevisionSection] = useState(false);
   const [resumeKeywords, setResumeKeywords] = useState([]);
   const [jobDescriptionKeywords, setJobDescriptionKeywords] = useState([]);
@@ -96,7 +96,6 @@ function Dashboard() {
 
   
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
-    setStatusMessage("Working...");
     setIsAnalyzing(true);
     const resumeData = { resumeText, jobDescriptionText };
     await handleSubmit(resumeData);
@@ -108,7 +107,6 @@ function Dashboard() {
     revisions
   ) => {
     setIsRevising(true);
-    setStatusMessage("Working...");
     try {
       const response = await axios.post("/api/submit-revision", {
         resume,
@@ -466,7 +464,6 @@ function Dashboard() {
       {!isAnalyzing && (showResults || showRevisionSection) && (
         <div className="analysis-section">
           <RevisionSection
-            statusMessage={statusMessage}
             missingKeywords={missingKeywords}
             assessment={assessment}
             employabilityScore={employabilityScore}
