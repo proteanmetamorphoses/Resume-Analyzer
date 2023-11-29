@@ -3,7 +3,7 @@ import axios from 'axios';
 import "./JobSearch.css";
 import Modal from '@mui/material/Modal';
 
-const JobSearchComponent = () => {
+const JobSearchComponent = ({ onUpdateReplacementJobDescription }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [jobs, setJobs] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +17,18 @@ const JobSearchComponent = () => {
     
     const handleClose = () => {
       setOpen(false);
+    };
+
+    const handleAddToJobDescription = () => {
+        if (selectedJob) {
+          onUpdateReplacementJobDescription(
+            selectedJob.company_name,
+            selectedJob.location,
+            selectedJob.via,
+            selectedJob.description
+          );
+          setOpen(false);
+        }
     };
 
     const JobCard = ({ job, onClick }) => {
@@ -82,10 +94,10 @@ const JobSearchComponent = () => {
                     <p><strong>Company:</strong> {selectedJob.company_name}</p>
                     <p><strong>Location:</strong> {selectedJob.location}</p>
                     <p><strong>Via:</strong> {selectedJob.via}</p>
-                    <p>{selectedJob.description}</p>
+                    <p><strong>Description:</strong> {selectedJob.description}</p>
                     {/* Display related_links */}
                     <button className="close_button" onClick={handleClose}>Close</button>
-                    <button className="add_button" onClick={handleClose}>Add to Job Description</button>
+                    <button className="add_button" onClick={handleAddToJobDescription}>Add to Job Description</button>
                 </>
                 )}
             </div>

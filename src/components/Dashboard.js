@@ -53,8 +53,14 @@ function Dashboard() {
   const [overwriteCount, setoverwriteCount] = useState(0);
   const [saveCount, setSaveCount] = useState(0);
   const [showVoiceBot, setShowVoiceBot] = useState(false);
-  
-  
+  const [ReplacementJobDescription, setReplacementJobDescription] = useState("");
+
+
+  const updateReplacementJobDescription = (companyName, location, via, description) => {
+    const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
+    setReplacementJobDescription(newJobDetails);
+  };
+
   useEffect(() => {
     if (deletionCount > 0) {
       fetchUserData();
@@ -393,6 +399,37 @@ function Dashboard() {
     setShowVoiceBot(true);
   };
 
+  const resetDashboard = () => {
+    setShowRevisionSection(false);
+    setResumeKeywords([]);
+    setJobDescriptionKeywords([]);
+    setAtsScore(0);
+    setIsAnalyzing(false);
+    setAnalysisCompleted(false);
+    setShowResults(false);
+    setShowFinalResults(false);
+    setMissingKeywords([]);
+    setAssessment("");
+    setEmployabilityScore(0);
+    setBestPossibleJob("");
+    setResumeText("");
+    setJobDescriptionText("");
+    setIsRevising(false);
+    setRevisionCompleted(false);
+    setFinalResume("");
+    setCoverLetter("");
+    setNewEmployabilityScore(0);
+    setSelectedDocumentId(null);
+    setDeletionCount(0);
+    setDocuments([]);
+    setoverwriteCount(0);
+    setSaveCount(0);
+    setShowVoiceBot(false);
+    setReplacementJobDescription("");
+    setSaveCount(saveCount + 1); //refresh the PreviousWorkSection
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div className="dashboard">
       <div className="background-container">
@@ -415,7 +452,7 @@ function Dashboard() {
       <div className="jobOps">
         <h2 className="Main-Header">Job Opportunities to Search</h2>
         <h4 className="instruct1">Find a Job Description of Interest to Add</h4>
-        <JobSearch />
+        <JobSearch onUpdateReplacementJobDescription={updateReplacementJobDescription} />
       </div>
       <div className="analysis-section">
         {!isAnalyzing && !showResults && (
@@ -433,7 +470,7 @@ function Dashboard() {
           analysisCompleted={analysisCompleted}
           resumeText={resumeText}
           setResumeText={setResumeText}
-          jobDescriptionText={jobDescriptionText}
+          jobDescriptionText={ReplacementJobDescription}
           setJobDescriptionText={setJobDescriptionText}
         />
       </div>
@@ -488,10 +525,12 @@ function Dashboard() {
             newEmployabilityScore={newEmployabilityScore}
             onSave={handleSaveToFirestore}
           />
+          <button className="resetter" onClick={resetDashboard}>Start Over</button>
         </div>
       )}
 
       <nav className="logout-nav">
+        <button className="resetter" onClick={resetDashboard}>Start Over</button>
         <LogoutLink />
       </nav>
 
