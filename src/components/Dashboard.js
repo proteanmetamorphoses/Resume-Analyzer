@@ -399,6 +399,22 @@ function Dashboard() {
     setShowVoiceBot(true);
   };
 
+
+  function handleVBLastButtonClick(filename) {
+    var iframeWindow = document.getElementById('theBot').contentWindow;
+    iframeWindow.postMessage(62, 'https://www.ispeakwell.ca/');
+  }
+ 
+  function handleVBRepeatButtonClick(filename) {
+    var iframeWindow = document.getElementById('theBot').contentWindow;
+    iframeWindow.postMessage(32, 'https://www.ispeakwell.ca/');
+  }
+
+  function handleVBNextButtonClick(filename) {
+    var iframeWindow = document.getElementById('theBot').contentWindow;
+    iframeWindow.postMessage(4, 'https://www.ispeakwell.ca/');
+  }
+
   const resetDashboard = () => {
     setShowRevisionSection(false);
     setResumeKeywords([]);
@@ -459,6 +475,11 @@ function Dashboard() {
           showVoiceBot ? (
             <div className="VoiceBot-container">
               <VoiceBotIframe />
+              <div className="VBButtons">
+                <button onClick={handleVBLastButtonClick}>Last</button>
+                <button onClick={handleVBRepeatButtonClick}>Repeat</button>
+                <button onClick={handleVBNextButtonClick}>Next</button>
+              </div>
             </div>
           ) : (
             <button onClick={handleButtonClick}>Activate Resume Coach</button>
@@ -470,7 +491,7 @@ function Dashboard() {
           analysisCompleted={analysisCompleted}
           resumeText={resumeText}
           setResumeText={setResumeText}
-          jobDescriptionText={ReplacementJobDescription}
+          jobDescriptionText={jobDescriptionText + ReplacementJobDescription}
           setJobDescriptionText={setJobDescriptionText}
         />
       </div>
@@ -525,12 +546,11 @@ function Dashboard() {
             newEmployabilityScore={newEmployabilityScore}
             onSave={handleSaveToFirestore}
           />
-          <button className="resetter" onClick={resetDashboard}>Start Over</button>
         </div>
       )}
 
       <nav className="logout-nav">
-        <button className="resetter" onClick={resetDashboard}>Start Over</button>
+        <button className="resetter" onClick={resetDashboard}>Reset</button>
         <LogoutLink />
       </nav>
 

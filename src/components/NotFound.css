@@ -6,6 +6,7 @@
   justify-content: center;
   height: 100vh; /* Set the container to full viewport height */
   text-align: center;
+  color: white;
 }
 
 .not-found-text {

@@ -63,9 +63,17 @@ p {
   width: 100%;
 }
 
+.DocModal {
+  background: #2280df;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 button {
-  margin: 0 10px;
-  margin-top: 20px;
+  margin: 5px 10px;
   background: #2280df;
   color: #fff;
   border: none;

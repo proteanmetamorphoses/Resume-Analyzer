@@ -1,6 +1,6 @@
 import './HexagonBackground.css';
 import { ReactP5Wrapper } from 'react-p5-wrapper';
-import React from "react";
+import React, { useEffect } from 'react';
 
 const HexagonBackground = () => {
   let R = 50;
@@ -19,6 +19,19 @@ const HexagonBackground = () => {
     }
     p.endShape();
   };
+  useEffect(() => {
+    const preventZoom = (event) => {
+      if (event.ctrlKey) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('wheel', preventZoom, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', preventZoom);
+    };
+  }, []);
 
   const sketch = (p) => {
     let shouldRunAnimation = true; // State to control animation
@@ -28,7 +41,9 @@ const HexagonBackground = () => {
     let currentStrokeWeight = minStrokeWeight; // Initialize stroke weight
 
     p.setup = () => {
-      p.createCanvas(p.windowWidth, p.windowHeight);
+      const canvasWidth = 1660; // Fixed width
+      const canvasHeight = 1080; // Fixed height
+      p.createCanvas(canvasWidth, canvasHeight);
       createBlobs();
     };
 
