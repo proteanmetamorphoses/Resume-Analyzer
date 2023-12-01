@@ -55,7 +55,7 @@ function Dashboard() {
   const [saveCount, setSaveCount] = useState(0);
   const [showVoiceBot, setShowVoiceBot] = useState(false);
   const [ReplacementJobDescription, setReplacementJobDescription] = useState("");
-  let AudioFile = 0; 
+  let AudioFile = -1; 
 
   const updateReplacementJobDescription = (companyName, location, via, description) => {
     const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
