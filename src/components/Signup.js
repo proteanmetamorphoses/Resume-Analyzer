@@ -69,7 +69,7 @@ function Signup() {
       </form>
       {error && <p className="error-message">{error}</p>}
       <p className="link-text">
-        Already have an account? <Link to="/login">Login</Link>
+        Already have an account? <Link className="LogLink" to="/login">Login</Link>
       </p>
     </div>
   );

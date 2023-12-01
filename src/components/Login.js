@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,9 +7,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "../utils/firebase";
-
-
-
 import { Link } from "react-router-dom";
 import "./Login.css";
 import googleLogo from "./GoogleG.png";
@@ -18,7 +16,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -26,7 +23,6 @@ function Login() {
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
-
       if (error.code === "auth/invalid-email") {
         setError("Invalid Email.");
       } else {
@@ -34,7 +30,6 @@ function Login() {
       }
     }
   };
-
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -49,7 +44,6 @@ function Login() {
       setError("There was an issue with Google sign-in. Please try again.");
     }
   };
-
   return (
     <div className="login-container">
       <div className="background-container">

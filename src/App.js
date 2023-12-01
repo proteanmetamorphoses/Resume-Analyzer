@@ -7,8 +7,8 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import PasswordReset from "./components/PasswordReset";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./components/NotFound";
+import InterviewPractice from "./components/InterviewPractice";
 import axios from "axios";
-
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
 function App() {
@@ -19,9 +19,21 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route
+        <Route 
           path="/dashboard"
-          element={<ProtectedRoute component={Dashboard} />}
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route 
+          path="/interview-practice"
+          element={
+            <ProtectedRoute>
+              <InterviewPractice />
+            </ProtectedRoute>
+          }
         />
         <Route path="/password-reset" element={<PasswordReset />} />
         <Route path="*" element={<NotFound />} />

@@ -25,9 +25,10 @@ import DocumentModal from "./DocumentModal";
 import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
 import JobSearch from "./JobSearch";
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-
+  const navigate = useNavigate();
   const [showRevisionSection, setShowRevisionSection] = useState(false);
   const [resumeKeywords, setResumeKeywords] = useState([]);
   const [jobDescriptionKeywords, setJobDescriptionKeywords] = useState([]);
@@ -54,12 +55,13 @@ function Dashboard() {
   const [saveCount, setSaveCount] = useState(0);
   const [showVoiceBot, setShowVoiceBot] = useState(false);
   const [ReplacementJobDescription, setReplacementJobDescription] = useState("");
-
+  let AudioFile = 0; 
 
   const updateReplacementJobDescription = (companyName, location, via, description) => {
     const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
     setReplacementJobDescription(newJobDetails);
   };
+  
 
   useEffect(() => {
     if (deletionCount > 0) {
@@ -401,18 +403,21 @@ function Dashboard() {
 
 
   function handleVBLastButtonClick(filename) {
+    AudioFile--;
+    if(AudioFile < 0){
+      AudioFile = 0;
+    }
     var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(62, 'https://www.ispeakwell.ca/');
-  }
- 
-  function handleVBRepeatButtonClick(filename) {
-    var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(32, 'https://www.ispeakwell.ca/');
+    iframeWindow.postMessage(AudioFile, 'https://www.ispeakwell.ca/');
   }
 
-  function handleVBNextButtonClick(filename) {
+  function handleVBNextButtonClick() {
+    AudioFile++;
+    if(AudioFile > 26){
+      AudioFile = 26;
+    }
     var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(4, 'https://www.ispeakwell.ca/');
+    iframeWindow.postMessage(AudioFile, 'https://www.ispeakwell.ca/');
   }
 
   const resetDashboard = () => {
@@ -442,8 +447,14 @@ function Dashboard() {
     setSaveCount(0);
     setShowVoiceBot(false);
     setReplacementJobDescription("");
-    setSaveCount(saveCount + 1); //refresh the PreviousWorkSection
+    setSaveCount(saveCount + 1); 
+    AudioFile = 0;
     window.scrollTo(0, 0);
+  };
+
+  const InterViewPractice = () => {
+    // Navigate to the InterviewPractice page
+    navigate('/interview-practice');
   };
 
   return (
@@ -477,7 +488,6 @@ function Dashboard() {
               <VoiceBotIframe />
               <div className="VBButtons">
                 <button onClick={handleVBLastButtonClick}>Last</button>
-                <button onClick={handleVBRepeatButtonClick}>Repeat</button>
                 <button onClick={handleVBNextButtonClick}>Next</button>
               </div>
             </div>
@@ -513,12 +523,19 @@ function Dashboard() {
       {!isAnalyzing &&
         (showResults || showRevisionSection) &&
         !showFinalResults && (
-          <div className="analysis-section">
+          showVoiceBot ? (
             <div className="VoiceBot-container">
               <VoiceBotIframe />
+              <div className="VBButtons">
+                <button onClick={handleVBLastButtonClick}>Last</button>
+                <button onClick={handleVBNextButtonClick}>Next</button>
+              </div>
             </div>
-          </div>
+          ) : (
+            <button onClick={handleButtonClick}>Activate Resume Coach</button>
+          )
         )}
+
       {!isAnalyzing && (showResults || showRevisionSection) && (
         <div className="analysis-section">
           <RevisionSection
@@ -535,11 +552,23 @@ function Dashboard() {
         </div>
       )}
 
+{!isAnalyzing && showFinalResults && (
+          showVoiceBot ? (
+            <div className="VoiceBot-container">
+              <VoiceBotIframe />
+              <div className="VBButtons">
+                <button onClick={handleVBLastButtonClick}>Last</button>
+                <button onClick={handleVBNextButtonClick}>Next</button>
+              </div>
+            </div>
+          ) : (
+            <button onClick={handleButtonClick}>Activate Resume Coach</button>
+          )
+          
+      )}
+
       {!isAnalyzing && showFinalResults && (
         <div className="analysis-section">
-          <div className="VoiceBot-container">
-            <VoiceBotIframe />
-          </div>
           <FinalResultsSection
             finalResume={finalResume}
             coverLetter={coverLetter}
@@ -550,6 +579,7 @@ function Dashboard() {
       )}
 
       <nav className="logout-nav">
+        <button className="interView" onClick={InterViewPractice}>Interview Practice</button>
         <button className="resetter" onClick={resetDashboard}>Reset</button>
         <LogoutLink />
       </nav>

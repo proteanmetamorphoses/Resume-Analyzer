@@ -1,0 +1,17 @@
+﻿Intro,0,0
+Instructions,1,26
+InterviewIntro,27,38
+InterviewStart,39,39
+InterviewSignPost,40,44
+InterviewGeneral,45,45
+GeneralQuestion,46,55
+InterviewExperience,56,56
+ExperienceQuestion,57,66
+InterviewSkills,67,67
+SkillQuestions,68,76
+InterviewJobSpecific,77,77
+SpecificQuestions,78,87
+InterviewCulturalFit,88,88
+FitQuestions,89,99
+InterviewConclusion,100,100
+ScoreCalculation,101,101

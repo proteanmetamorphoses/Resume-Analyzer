@@ -55,3 +55,16 @@ subutton:hover {
   font-size: 5rem;
   margin-top: 0;
 }
+
+.LogLink{
+  color: #f7e14f; /* Bright color for visibility */
+  text-decoration: underline; /* Underline to distinguish links */
+  font-weight: bold; /* Bold font for links */
+}
+
+.LogLink:hover{
+  color: #f69d29; /* Lighter or different color on hover/focus */
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background highlight */
+  outline: none; /* Removing default outline, optional */
+  cursor: pointer; /* Change cursor to indicate clickable item */
+}
