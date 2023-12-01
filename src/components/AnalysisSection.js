@@ -105,7 +105,7 @@ function AnalysisSection({
   return (
     <div className="analysis-section">
       <div className="textarea-container">
-        <h3>Resume</h3>
+        <h3>1. Resume</h3>
         <h5>(minimum 500 characters)</h5>
         <textarea
           ref={resumeTextAreaRef}
@@ -137,7 +137,7 @@ function AnalysisSection({
         </p>
       </div>
       <div className="textarea-container">
-        <h3>Job Description</h3>
+        <h3>2. Job Description</h3>
         <h5>(minimum 500 characters)</h5>
         <textarea
           ref={jobDescriptionTextAreaRef}

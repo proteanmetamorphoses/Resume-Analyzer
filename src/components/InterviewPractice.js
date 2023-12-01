@@ -3,12 +3,43 @@ import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
 import "./InterviewPractice.css";
 import { useNavigate } from 'react-router-dom';
+import Papa from 'papaparse';
 
   
 const InterviewPractice = () => {
   const navigate = useNavigate();
   let AudioFile = -1;
+  let voiceBotText = "";
+  let sentences = [];
+  const parseCSV = () => {
+    return new Promise((resolve, reject) => {
+      Papa.parse("/data/AudioFiles.csv", {
+        download: true,
+        header: false,
+        complete: (results) => {
+          const arrayOfSentences = results.data.map(row => row[0]).filter(sentence => sentence.trim() !== '');
+          resolve(arrayOfSentences);
+        },
+        error: (error) => {
+          reject(error);
+        }
+      });
+    });
+  };
+  
+  async function init() {
+    try {
+      sentences = await parseCSV();
+      // At this point, sentences is populated
+      console.log(sentences);
+    } catch (error) {
+      console.error("Error parsing CSV: ", error);
+    }
+  }
 
+  init();
+  console.log(sentences);
+  
   function createNumericalSequence() {
     // This function generates a random number between min and max (inclusive)
     const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -39,12 +70,14 @@ const InterviewPractice = () => {
   // Usage
   const mySequence = createNumericalSequence();
 
+
   function handleVBLastButtonClick(filename) {
     console.log(AudioFile + 1);
     AudioFile--;
     if(AudioFile < 0){
       AudioFile = 0;
     }
+    updateVoiceBotText(sentences[mySequence[AudioFile]]);
     var iframeWindow = document.getElementById('theBot').contentWindow;
     iframeWindow.postMessage(mySequence[AudioFile], 'https://www.ispeakwell.ca/');
   }
@@ -55,9 +88,21 @@ const InterviewPractice = () => {
     if(AudioFile > 30){
       AudioFile = 30;
     }
+    updateVoiceBotText(sentences[mySequence[AudioFile]]);
     var iframeWindow = document.getElementById('theBot').contentWindow;
     iframeWindow.postMessage(mySequence[AudioFile], 'https://www.ispeakwell.ca/');
   }
+
+  function updateVoiceBotText(text) {
+    const textElement = document.getElementById('voiceBotTextElement');
+    if (textElement) {
+      textElement.textContent = text;
+      console.log("VoiceBot says: ", text);
+    }
+  }
+
+
+
   const resetInterview = () => {
     AudioFile = 0;
   };
@@ -84,6 +129,9 @@ const InterviewPractice = () => {
           <button onClick={handleVBLastButtonClick}>Last</button>
           <button onClick={handleVBNextButtonClick}>Next</button>
         </div>
+      </div>
+      <div>
+        <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
       </div>
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>

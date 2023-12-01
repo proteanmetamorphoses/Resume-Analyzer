@@ -16,3 +16,17 @@
   .interView{
     color: white;
   }
+
+  .VoiceBotText {
+    color: white;
+    background-color: black; /* Set the background color to black */
+    border: 2px solid white; /* Add a border, change color and width as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center; /* Center align the text */
+    border:5px solid #2281df58;
+    border-radius: 4px; 
+  }

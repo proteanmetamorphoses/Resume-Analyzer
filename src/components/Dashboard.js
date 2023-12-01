@@ -26,6 +26,8 @@ import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
 import JobSearch from "./JobSearch";
 import { useNavigate } from 'react-router-dom';
+import Papa from 'papaparse';
+
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -55,13 +57,42 @@ function Dashboard() {
   const [saveCount, setSaveCount] = useState(0);
   const [showVoiceBot, setShowVoiceBot] = useState(false);
   const [ReplacementJobDescription, setReplacementJobDescription] = useState("");
+  let voiceBotText = "";
   let AudioFile = -1; 
 
   const updateReplacementJobDescription = (companyName, location, via, description) => {
     const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
     setReplacementJobDescription(newJobDetails);
   };
+  let sentences = [];
+  const parseCSV = () => {
+    return new Promise((resolve, reject) => {
+      Papa.parse("/data/AudioFiles.csv", {
+        download: true,
+        header: false,
+        complete: (results) => {
+          const arrayOfSentences = results.data.map(row => row[0]).filter(sentence => sentence.trim() !== '');
+          resolve(arrayOfSentences);
+        },
+        error: (error) => {
+          reject(error);
+        }
+      });
+    });
+  };
   
+  async function init() {
+    try {
+      sentences = await parseCSV();
+      // At this point, sentences is populated
+      console.log(sentences);
+    } catch (error) {
+      console.error("Error parsing CSV: ", error);
+    }
+  }
+
+  init();
+  console.log(sentences);
 
   useEffect(() => {
     if (deletionCount > 0) {
@@ -100,7 +131,6 @@ function Dashboard() {
       }
     }
   };
-
 
   
   const handleAnalysis = async (resumeText, jobDescriptionText) => {
@@ -401,12 +431,12 @@ function Dashboard() {
     setShowVoiceBot(true);
   };
 
-
   function handleVBLastButtonClick(filename) {
     AudioFile--;
     if(AudioFile < 0){
       AudioFile = 0;
     }
+    updateVoiceBotText(sentences[AudioFile]);
     var iframeWindow = document.getElementById('theBot').contentWindow;
     iframeWindow.postMessage(AudioFile, 'https://www.ispeakwell.ca/');
   }
@@ -416,9 +446,19 @@ function Dashboard() {
     if(AudioFile > 26){
       AudioFile = 26;
     }
+    updateVoiceBotText(sentences[AudioFile]);
     var iframeWindow = document.getElementById('theBot').contentWindow;
     iframeWindow.postMessage(AudioFile, 'https://www.ispeakwell.ca/');
   }
+  
+  function updateVoiceBotText(text) {
+    const textElement = document.getElementById('voiceBotTextElement');
+    if (textElement) {
+      textElement.textContent = text;
+      console.log("VoiceBot says: ", text);
+    }
+  }
+  
 
   const resetDashboard = () => {
     setShowRevisionSection(false);
@@ -449,6 +489,7 @@ function Dashboard() {
     setReplacementJobDescription("");
     setSaveCount(saveCount + 1); 
     AudioFile = 0;
+    voiceBotText = "";
     window.scrollTo(0, 0);
   };
 
@@ -495,6 +536,11 @@ function Dashboard() {
             <button onClick={handleButtonClick}>Activate Resume Coach</button>
           )
         )}
+        <div>
+          {!isAnalyzing && !showResults && showVoiceBot && (
+            <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
+          )}
+        </div>
         <AnalysisSection
           onSubmit={handleAnalysis}
           isAnalyzing={isAnalyzing}
@@ -535,7 +581,11 @@ function Dashboard() {
             <button onClick={handleButtonClick}>Activate Resume Coach</button>
           )
         )}
-
+        <div>
+          {!isAnalyzing && !showResults && showVoiceBot && (
+            <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
+          )}
+        </div>
       {!isAnalyzing && (showResults || showRevisionSection) && (
         <div className="analysis-section">
           <RevisionSection
@@ -566,7 +616,11 @@ function Dashboard() {
           )
           
       )}
-
+        <div>
+          {!isAnalyzing && !showResults && showVoiceBot && (
+            <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
+          )}
+        </div>
       {!isAnalyzing && showFinalResults && (
         <div className="analysis-section">
           <FinalResultsSection
