@@ -1,3 +1,4 @@
+import React, { useRef, useEffect } from 'react';
 import LogoutLink from "./LogoutLink";
 import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
@@ -7,10 +8,15 @@ import Papa from 'papaparse';
 
   
 const InterviewPractice = () => {
+  const userSpeechRef = useRef(null);
+  const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new speechRecognition();
   const navigate = useNavigate();
   let AudioFile = -1;
   let voiceBotText = "";
   let sentences = [];
+  let isListening = "false";
+  let userSpeech = "";
   const parseCSV = () => {
     return new Promise((resolve, reject) => {
       Papa.parse("/data/AudioFiles.csv", {
@@ -101,15 +107,57 @@ const InterviewPractice = () => {
     }
   }
 
-
-
   const resetInterview = () => {
     AudioFile = 0;
   };
+
   const Dashboard = () => {
-    // Navigate to the InterviewPractice page
+    // Navigate to the Dashboard
     navigate('/Dashboard');
   };
+  const startListening = () => {
+    recognition.onstart = () => {
+        isListening = "true";
+    };
+
+    recognition.onend = () => {
+        isListening = "false";
+    };
+
+    recognition.onerror = (event) => {
+        console.error("Speech recognition error", event.error);
+    };
+
+    recognition.onresult = (event) => {
+      const current = event.resultIndex;
+      const transcript = event.results[current][0].transcript;
+  
+      // Update the textarea using the ref
+      if (userSpeechRef.current) {
+        userSpeechRef.current.value = transcript;
+      }
+    };
+  
+    
+
+    recognition.lang = 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.start();
+};
+
+// Handler for user typing in the textarea
+    const handleUserTyping = (e) => {
+      userSpeech = e.target.value; // Update your userSpeech variable if needed
+    };
+
+  const stopListening = () => {
+    recognition.stop();
+  };
+
+  useEffect(() => {
+    
+  }, []);
 
     return <div className = "InterviewPractice">
       <div className="background-container">
@@ -132,6 +180,19 @@ const InterviewPractice = () => {
       </div>
       <div>
         <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
+      </div>
+      <div>
+        <textarea
+            ref={userSpeechRef}
+            id="speech"
+            className="userSpeech"
+            onChange={handleUserTyping}
+            placeholder="Type here or use speech recognition..."
+          />
+          <div className="SpeechRecButtons">
+            <button onClick={startListening} disabled={isListening === "true"}>Start Listening</button>
+            <button onClick={stopListening} disabled={!isListening}>Stop Listening</button>
+          </div>
       </div>
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
