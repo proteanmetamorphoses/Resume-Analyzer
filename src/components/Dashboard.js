@@ -582,7 +582,9 @@ function Dashboard() {
           )
         )}
         <div>
-          {!isAnalyzing && !showResults && showVoiceBot && (
+          {!isAnalyzing &&
+        (showResults || showRevisionSection) &&
+        !showFinalResults && showVoiceBot && (
             <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
           )}
         </div>
@@ -602,7 +604,7 @@ function Dashboard() {
         </div>
       )}
 
-{!isAnalyzing && showFinalResults && (
+      {!isAnalyzing && showFinalResults && (
           showVoiceBot ? (
             <div className="VoiceBot-container">
               <VoiceBotIframe />

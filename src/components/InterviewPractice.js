@@ -1,176 +1,289 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useContext, useEffect, useState } from "react";
 import LogoutLink from "./LogoutLink";
 import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
 import "./InterviewPractice.css";
-import { useNavigate } from 'react-router-dom';
-import Papa from 'papaparse';
+import { useNavigate } from "react-router-dom";
+import Papa from "papaparse";
+import { VoiceBotStateContext } from "./VoiceBotStateContext";
 
-  
 const InterviewPractice = () => {
+  const { voiceBotState, setVoiceBotState } = useContext(VoiceBotStateContext);
   const userSpeechRef = useRef(null);
-  const speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const speechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new speechRecognition();
   const navigate = useNavigate();
-  let AudioFile = -1;
-  let voiceBotText = "";
-  let sentences = [];
-  let isListening = "false";
-  let userSpeech = "";
+  const isListeningRef = useRef(false);
+  const voiceBotTextRef = useRef("");
+  const [qaPairs, setQAPairs] = useState([]);
+  const [sequence, setSequence] = useState([]);
+
   const parseCSV = () => {
     return new Promise((resolve, reject) => {
       Papa.parse("/data/AudioFiles.csv", {
         download: true,
         header: false,
         complete: (results) => {
-          const arrayOfSentences = results.data.map(row => row[0]).filter(sentence => sentence.trim() !== '');
+          const arrayOfSentences = results.data
+            .map((row) => row[0])
+            .filter((sentence) => sentence.trim() !== "");
           resolve(arrayOfSentences);
         },
         error: (error) => {
           reject(error);
-        }
+        },
       });
     });
   };
-  
-  async function init() {
-    try {
-      sentences = await parseCSV();
-      // At this point, sentences is populated
-      console.log(sentences);
-    } catch (error) {
-      console.error("Error parsing CSV: ", error);
-    }
-  }
 
-  init();
-  console.log(sentences);
+  useEffect(() => {
+    if (sequence.length === 0) {
+      setSequence(createNumericalSequence());
+    }
+
+    async function init() {
+      try {
+        const sentences = await parseCSV();
+        setVoiceBotState((prevState) => ({
+          ...prevState,
+          sentences,
+        }));
+      } catch (error) {
+        console.error("Error parsing CSV: ", error);
+      }
+    }
+
+    init();
+  }, [setVoiceBotState, sequence.length]);
+
   
   function createNumericalSequence() {
     // This function generates a random number between min and max (inclusive)
-    const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-  
+    const getRandomNumber = (min, max) =>
+      Math.floor(Math.random() * (max - min + 1)) + min;
+
     // Initialize the array with the fixed part of the sequence
     const sequence = [
-      27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 45,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      45,
       // Random number between 46 and 55
       getRandomNumber(46, 55),
-      41, 56,
+      41,
+      56,
       // Random number between 57 and 66
       getRandomNumber(57, 66),
-      42, 67,
+      42,
+      67,
       // Random number between 68 and 76
       getRandomNumber(68, 76),
-      43, 77,
+      43,
+      77,
       // Random number between 78 and 87
       getRandomNumber(78, 87),
-      44, 88,
+      44,
+      88,
       // Random number between 89 and 99
       getRandomNumber(89, 99),
-      100, 101
+      100,
+      101,
     ];
-  
+
     return sequence;
   }
+
+  function handleVBLastButtonClick() {
+    const newAudioFileIndex =
+      voiceBotState.audioFileIndex - 1 < 0
+        ? 0
+        : voiceBotState.audioFileIndex - 1;
+    const newVoiceBotText =
+      voiceBotState.sentences[sequence[newAudioFileIndex]];
   
-  // Usage
-  const mySequence = createNumericalSequence();
-
-
-  function handleVBLastButtonClick(filename) {
-    console.log(AudioFile + 1);
-    AudioFile--;
-    if(AudioFile < 0){
-      AudioFile = 0;
-    }
-    updateVoiceBotText(sentences[mySequence[AudioFile]]);
-    var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(mySequence[AudioFile], 'https://www.ispeakwell.ca/');
+    setVoiceBotState((prevState) => ({
+      ...prevState,
+      audioFileIndex: newAudioFileIndex,
+      voiceBotText: newVoiceBotText,
+    }));
+  
+    updateVoiceBotText(newVoiceBotText);
+    var iframeWindow = document.getElementById("theBot").contentWindow;
+    iframeWindow.postMessage(
+      sequence[newAudioFileIndex],
+      "https://www.ispeakwell.ca/"
+    );
   }
   
   function handleVBNextButtonClick() {
-    console.log(AudioFile + 1);
-    AudioFile++;
-    if(AudioFile > 30){
-      AudioFile = 30;
-    }
-    updateVoiceBotText(sentences[mySequence[AudioFile]]);
-    var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(mySequence[AudioFile], 'https://www.ispeakwell.ca/');
+    const newAudioFileIndex =
+      voiceBotState.audioFileIndex + 1 > sequence.length - 1
+        ? sequence.length - 1
+        : voiceBotState.audioFileIndex + 1;
+    const newVoiceBotText =
+      voiceBotState.sentences[sequence[newAudioFileIndex]];
+  
+    setVoiceBotState((prevState) => ({
+      ...prevState,
+      audioFileIndex: newAudioFileIndex,
+      voiceBotText: newVoiceBotText,
+    }));
+  
+    updateVoiceBotText(newVoiceBotText);
+    var iframeWindow = document.getElementById("theBot").contentWindow;
+    iframeWindow.postMessage(
+      sequence[newAudioFileIndex],
+      "https://www.ispeakwell.ca/"
+    );
   }
 
   function updateVoiceBotText(text) {
-    const textElement = document.getElementById('voiceBotTextElement');
+    const textElement = document.getElementById("voiceBotTextElement");
     if (textElement) {
       textElement.textContent = text;
-      console.log("VoiceBot says: ", text);
+      voiceBotTextRef.current = text; // Update the ref
     }
   }
 
   const resetInterview = () => {
-    AudioFile = 0;
+    setVoiceBotState((prevState) => ({
+      ...prevState,
+      audioFileIndex: 0,
+      combinedText: "",
+      prevCombinedText: "",
+    }));
   };
 
   const Dashboard = () => {
-    // Navigate to the Dashboard
-    navigate('/Dashboard');
+    navigate("/Dashboard");
   };
+
   const startListening = () => {
+    if (isListeningRef.current) {
+      console.log("Already listening");
+      return;
+    }
     recognition.onstart = () => {
-        isListening = "true";
+      isListeningRef.current = true;
+      setVoiceBotState((prevState) => ({ ...prevState, isListening: true }));
+      updateListeningButtonState(true);
     };
 
     recognition.onend = () => {
-        isListening = "false";
+      isListeningRef.current = false;
+      setVoiceBotState((prevState) => ({ ...prevState, isListening: false }));
+      updateListeningButtonState(false);
     };
 
     recognition.onerror = (event) => {
-        console.error("Speech recognition error", event.error);
+      console.error("Speech recognition error", event.error);
     };
 
     recognition.onresult = (event) => {
       const current = event.resultIndex;
       const transcript = event.results[current][0].transcript;
-  
+
       // Update the textarea using the ref
       if (userSpeechRef.current) {
         userSpeechRef.current.value = transcript;
       }
     };
-  
-    
 
-    recognition.lang = 'en-US';
+    recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     recognition.start();
-};
+  };
 
-// Handler for user typing in the textarea
-    const handleUserTyping = (e) => {
-      userSpeech = e.target.value; // Update your userSpeech variable if needed
-    };
+  // Handler for user typing in the textarea
+  const handleUserTyping = (e) => {
+    userSpeechRef.current = e.target.value; // Update your userSpeech variable if needed
+  };
 
   const stopListening = () => {
     recognition.stop();
+    isListeningRef.current = false;
+    setVoiceBotState((prevState) => ({ ...prevState, isListening: false }));
+    updateListeningButtonState(false);
   };
 
-  useEffect(() => {
-    
-  }, []);
+  const updateListeningButtonState = (isListening) => {
+    const button = document.querySelector(".StartListeningButton");
+    if (button) {
+      if (isListening) {
+        button.style.backgroundColor = "green";
+        button.textContent = "Listening...";
+      } else {
+        button.style.backgroundColor = "";
+        button.textContent = "Start Listening";
+      }
+    } else {
+      console.error("Start Listening button not found");
+    }
+  };
 
-    return <div className = "InterviewPractice">
+  const handleSubmit = () => {
+    const userSpeech = userSpeechRef.current ? userSpeechRef.current.value.trim() : "";
+  
+    if (userSpeech === "") {
+      alert("Please enter a response before submitting.");
+      return;
+    }
+  
+    stopListening(); 
+  
+    const currentQuestion = voiceBotState.voiceBotText;
+    const existingQAPairIndex = qaPairs.findIndex(pair => pair.question === currentQuestion);
+  
+    if (existingQAPairIndex >= 0) {
+      // Append additional answer to existing question
+      const updatedQAPairs = [...qaPairs];
+      updatedQAPairs[existingQAPairIndex].answers.push(userSpeech);
+      setQAPairs(updatedQAPairs);
+    } else {
+      // Add new question-answer pair
+      const newQAPair = {
+        question: currentQuestion,
+        answers: [userSpeech],
+      };
+      setQAPairs([...qaPairs, newQAPair]);
+    }
+  
+    if (userSpeechRef.current) {
+      userSpeechRef.current.value = ""; // Clear the user's speech input area
+    }
+  };
+  
+  
+
+  const handleLowerSubmit = () => {};
+  return (
+    <div className="InterviewPractice">
       <div className="background-container">
         <HexagonBackground />
       </div>
       <h1 className="Main-Header">Advanced Resume</h1>
-      <h2 className="Main-Header">
-        Interview Practice
-      </h2>
+      <h2 className="Main-Header">Interview Practice</h2>
       <h3 className="instruct1">Click the Interviewer to start.</h3>
       <h4 className="instruct1">Double-click to hear each statement.</h4>
-      <h3 className="instruct1">Click the buttons to navigate the interview dialogue.</h3>
-      <h4 className="instruct1">Connect your microphone for speech practice.</h4>
+      <h3 className="instruct1">
+        Click the buttons to navigate the interview dialogue.
+      </h3>
+      <h4 className="instruct1">
+        Connect your microphone for speech practice.
+      </h4>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
         <div className="VBButtons">
@@ -179,29 +292,62 @@ const InterviewPractice = () => {
         </div>
       </div>
       <div>
-        <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
+        <h2 id="voiceBotTextElement" className="VoiceBotText">
+          {voiceBotState.voiceBotText}
+        </h2>
       </div>
       <div>
         <textarea
-            ref={userSpeechRef}
-            id="speech"
-            className="userSpeech"
-            onChange={handleUserTyping}
-            placeholder="Type here or use speech recognition..."
-          />
-          <div className="SpeechRecButtons">
-            <button onClick={startListening} disabled={isListening === "true"}>Start Listening</button>
-            <button onClick={stopListening} disabled={!isListening}>Stop Listening</button>
+          ref={userSpeechRef}
+          id="speech"
+          className="userSpeech"
+          onChange={handleUserTyping}
+          placeholder="Type here or click the `Start Listening` button, below, to use speech recognition..."
+        />
+        <div className="SpeechRecButtons">
+          <button
+            className="StartListeningButton"
+            onClick={startListening}
+            disabled={voiceBotState.isListening}
+          >
+            Start Listening
+          </button>
+          <button
+            className="StpBttn"
+            onClick={stopListening}
+            disabled={!voiceBotState.isListening}
+          >
+            Stop
+          </button>
+          <button className="submitAnswer" onClick={handleSubmit}>
+            Submit Answer
+          </button>
+        </div>
+      </div>
+      <div>
+        {qaPairs.map((pair, index) => (
+          <div key={index} className="qaPair">
+            <h3>Question:</h3>
+            <p>{pair.question}</p>
+            {pair.answers.map((answer, answerIndex) => (
+              <div key={answerIndex}>
+                <h4>Answer {answerIndex + 1}:</h4>
+                <p>{answer}</p>
+              </div>
+            ))}
           </div>
+        ))}
+        <button onClick={handleLowerSubmit}>Submit</button>
       </div>
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
-        <button className="resetter" onClick={resetInterview}>Reset</button>
+        <button className="resetter" onClick={resetInterview}>
+          Reset
+        </button>
         <LogoutLink />
       </nav>
+    </div>
+  );
+};
 
-      </div>;
-      };
-  
-  export default InterviewPractice;
-  
+export default InterviewPractice;
