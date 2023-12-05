@@ -20,13 +20,18 @@ const InterviewPractice = () => {
   const voiceBotTextRef = useRef("");
   const [qaPairs, setQAPairs] = useState([]);
   const [sequence, setSequence] = useState([]);
+  const [questionsCount, setQuestionsCount] = useState(0); // State to track the number of questions
+
+  useEffect(() => {
+    // Update the count of questions whenever qaPairs changes
+    setQuestionsCount(qaPairs.length);
+  }, [qaPairs]);
 
   const shouldBlockAnswer = () => {
     const blockedValues = [
       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
       25, 26, 28, 29,
     ];
-    console.log(voiceBotState.audioFileIndex);
     return blockedValues.includes(voiceBotState.audioFileIndex);
   };
 
@@ -298,6 +303,18 @@ const InterviewPractice = () => {
     if (userSpeechRef.current) {
       userSpeechRef.current.value = ""; // Clear the user's speech input area
     }
+
+    if (qaPairs.length === 4) {
+      // Note: qaPairs.length is 4 here because it's updated after this check
+      showSubmitButton();
+    }
+  };
+
+  const showSubmitButton = () => {
+    const submitButton = document.querySelector(".submitFinal");
+    if (submitButton) {
+      submitButton.style.display = "block"; // Show the submit button
+    }
   };
 
   const handleLowerSubmit = () => {};
@@ -360,27 +377,32 @@ const InterviewPractice = () => {
             onClick={handleSubmit}
             disabled={shouldBlockAnswer()}
           >
-            Submit Answer
+            Add Answer
           </button>
         </div>
       </div>
       <button className="clearButton" onClick={clearTextArea}>
         Clear
       </button>
-      <div>
-        {qaPairs.map((pair, index) => (
-          <div key={index} className="qaPair">
-            <p className="VoiceBotText">{pair.question}</p>
-            {pair.answers.map((answer, answerIndex) => (
-              <div key={answerIndex}>
-                <p className="userSpeech">{answer}</p>
-              </div>
-            ))}
-          </div>
-        ))}
+      {questionsCount > 0 && (
+        <div className="Interview-Answer-Box">
+          {qaPairs.map((pair, index) => (
+            <div key={index} className="qaPair">
+              <h3 className="Idialog">{pair.question}</h3>
+              {pair.answers.map((answer, answerIndex) => (
+                <div key={answerIndex}>
+                  <h4 className="Udialog">{answer}</h4>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
 
-        <button onClick={handleLowerSubmit}>Submit</button>
-      </div>
+      {/* Submit button - Initially hidden, shown after 5th question */}
+      <button className="submitFinal" onClick={handleLowerSubmit} style={{ display: 'none' }}>
+        Submit
+      </button>
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
         <button className="resetter" onClick={resetInterview}>

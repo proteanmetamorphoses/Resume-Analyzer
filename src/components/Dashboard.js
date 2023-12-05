@@ -607,7 +607,7 @@ function Dashboard() {
           
       )}
         <div>
-          {!isAnalyzing && !showResults && showVoiceBot && (
+          {!isAnalyzing && showFinalResults && showVoiceBot && (
             <h2 id="voiceBotTextElement" className="VoiceBotText">{voiceBotText}</h2>
           )}
         </div>
