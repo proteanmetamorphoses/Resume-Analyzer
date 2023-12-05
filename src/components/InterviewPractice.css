@@ -31,6 +31,10 @@
   border-radius: 4px;
 }
 
+.userSpeech::placeholder {
+  white-space: pre-line;
+}
+
 .userSpeech {
   color: white;
   background-color: black; /* Set the background color to black */
@@ -39,11 +43,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 400px;
+  width: 100%;
   text-align: center; /* Center align the text */
   border: 5px solid #2281df58;
   border-radius: 4px;
 }
+
 .SpeechRecButtons {
   display: flex;
   flex-direction: row;

@@ -11,13 +11,13 @@ function DocumentModal({ coverLetter, resume, onClose, onRework, onDelete }) {
 
   return (
     <div className="document-modal">
-      <div className="document-content">
-        <div className="documents-container">
-          <div className="document-section">
+      <div className="document-modal-content">
+        <div className="documents-modal-container">
+          <div className="document-modal-section">
             <h3>Cover Letter</h3>
             <p>{coverLetter}</p>
           </div>
-          <div className="document-section">
+          <div className="document-modal-section">
             <h3>Resume</h3>
             <p>{resume}</p>
           </div>

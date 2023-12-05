@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect, useState } from "react";
+import React, { useRef, useContext, useEffect, useState, useMemo } from "react";
 import LogoutLink from "./LogoutLink";
 import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
@@ -10,14 +10,25 @@ import { VoiceBotStateContext } from "./VoiceBotStateContext";
 const InterviewPractice = () => {
   const { voiceBotState, setVoiceBotState } = useContext(VoiceBotStateContext);
   const userSpeechRef = useRef(null);
-  const speechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new speechRecognition();
+  const recognition = useMemo(() => {
+    const speechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    return new speechRecognition();
+  }, []);
   const navigate = useNavigate();
   const isListeningRef = useRef(false);
   const voiceBotTextRef = useRef("");
   const [qaPairs, setQAPairs] = useState([]);
   const [sequence, setSequence] = useState([]);
+
+  const shouldBlockAnswer = () => {
+    const blockedValues = [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
+      25, 26, 28, 29,
+    ];
+    console.log(voiceBotState.audioFileIndex);
+    return blockedValues.includes(voiceBotState.audioFileIndex);
+  };
 
   const parseCSV = () => {
     return new Promise((resolve, reject) => {
@@ -55,9 +66,15 @@ const InterviewPractice = () => {
     }
 
     init();
-  }, [setVoiceBotState, sequence.length]);
 
-  
+    return () => {
+      recognition.stop();
+      recognition.onresult = null;
+      recognition.onerror = null;
+      // ... any other cleanup for speech recognition ...
+    };
+  }, [setVoiceBotState, sequence.length, recognition]);
+
   function createNumericalSequence() {
     // This function generates a random number between min and max (inclusive)
     const getRandomNumber = (min, max) =>
@@ -112,13 +129,13 @@ const InterviewPractice = () => {
         : voiceBotState.audioFileIndex - 1;
     const newVoiceBotText =
       voiceBotState.sentences[sequence[newAudioFileIndex]];
-  
+
     setVoiceBotState((prevState) => ({
       ...prevState,
       audioFileIndex: newAudioFileIndex,
       voiceBotText: newVoiceBotText,
     }));
-  
+
     updateVoiceBotText(newVoiceBotText);
     var iframeWindow = document.getElementById("theBot").contentWindow;
     iframeWindow.postMessage(
@@ -126,7 +143,7 @@ const InterviewPractice = () => {
       "https://www.ispeakwell.ca/"
     );
   }
-  
+
   function handleVBNextButtonClick() {
     const newAudioFileIndex =
       voiceBotState.audioFileIndex + 1 > sequence.length - 1
@@ -134,13 +151,13 @@ const InterviewPractice = () => {
         : voiceBotState.audioFileIndex + 1;
     const newVoiceBotText =
       voiceBotState.sentences[sequence[newAudioFileIndex]];
-  
+
     setVoiceBotState((prevState) => ({
       ...prevState,
       audioFileIndex: newAudioFileIndex,
       voiceBotText: newVoiceBotText,
     }));
-  
+
     updateVoiceBotText(newVoiceBotText);
     var iframeWindow = document.getElementById("theBot").contentWindow;
     iframeWindow.postMessage(
@@ -171,6 +188,10 @@ const InterviewPractice = () => {
   };
 
   const startListening = () => {
+    if (shouldBlockAnswer()) {
+      alert("A response is not yet required.");
+      return;
+    }
     if (isListeningRef.current) {
       console.log("Already listening");
       return;
@@ -195,9 +216,10 @@ const InterviewPractice = () => {
       const current = event.resultIndex;
       const transcript = event.results[current][0].transcript;
 
-      // Update the textarea using the ref
+      // Correctly update the textarea's value
       if (userSpeechRef.current) {
-        userSpeechRef.current.value = transcript;
+        userSpeechRef.current.value +=
+          (userSpeechRef.current.value ? " " : "") + transcript;
       }
     };
 
@@ -209,7 +231,13 @@ const InterviewPractice = () => {
 
   // Handler for user typing in the textarea
   const handleUserTyping = (e) => {
-    userSpeechRef.current = e.target.value; // Update your userSpeech variable if needed
+    userSpeechRef.current = e.target; // Update the reference to point to the DOM element
+  };
+
+  const clearTextArea = () => {
+    if (userSpeechRef.current) {
+      userSpeechRef.current.value = "";
+    }
   };
 
   const stopListening = () => {
@@ -235,18 +263,24 @@ const InterviewPractice = () => {
   };
 
   const handleSubmit = () => {
-    const userSpeech = userSpeechRef.current ? userSpeechRef.current.value.trim() : "";
-  
+    if (shouldBlockAnswer()) {
+      alert("A response is not yet required.");
+      return;
+    }
+    const userSpeech = userSpeechRef.current?.value.trim() ?? "";
+
     if (userSpeech === "") {
       alert("Please enter a response before submitting.");
       return;
     }
-  
-    stopListening(); 
-  
+
+    stopListening();
+
     const currentQuestion = voiceBotState.voiceBotText;
-    const existingQAPairIndex = qaPairs.findIndex(pair => pair.question === currentQuestion);
-  
+    const existingQAPairIndex = qaPairs.findIndex(
+      (pair) => pair.question === currentQuestion
+    );
+
     if (existingQAPairIndex >= 0) {
       // Append additional answer to existing question
       const updatedQAPairs = [...qaPairs];
@@ -260,13 +294,11 @@ const InterviewPractice = () => {
       };
       setQAPairs([...qaPairs, newQAPair]);
     }
-  
+
     if (userSpeechRef.current) {
       userSpeechRef.current.value = ""; // Clear the user's speech input area
     }
   };
-  
-  
 
   const handleLowerSubmit = () => {};
   return (
@@ -302,8 +334,12 @@ const InterviewPractice = () => {
           id="speech"
           className="userSpeech"
           onChange={handleUserTyping}
-          placeholder="Type here or click the `Start Listening` button, below, to use speech recognition..."
-        />
+          placeholder="Position your microphone close to your mouth but away from your speech stream.
+
+          Type here or click the `Start Listening` button, below, to use speech recognition when you receive a question to answer."
+          disabled={shouldBlockAnswer()}
+        ></textarea>
+
         <div className="SpeechRecButtons">
           <button
             className="StartListeningButton"
@@ -319,24 +355,30 @@ const InterviewPractice = () => {
           >
             Stop
           </button>
-          <button className="submitAnswer" onClick={handleSubmit}>
+          <button
+            className="submitAnswer"
+            onClick={handleSubmit}
+            disabled={shouldBlockAnswer()}
+          >
             Submit Answer
           </button>
         </div>
       </div>
+      <button className="clearButton" onClick={clearTextArea}>
+        Clear
+      </button>
       <div>
         {qaPairs.map((pair, index) => (
           <div key={index} className="qaPair">
-            <h3>Question:</h3>
-            <p>{pair.question}</p>
+            <p className="VoiceBotText">{pair.question}</p>
             {pair.answers.map((answer, answerIndex) => (
               <div key={answerIndex}>
-                <h4>Answer {answerIndex + 1}:</h4>
-                <p>{answer}</p>
+                <p className="userSpeech">{answer}</p>
               </div>
             ))}
           </div>
         ))}
+
         <button onClick={handleLowerSubmit}>Submit</button>
       </div>
       <nav className="logout-nav">

@@ -5,31 +5,38 @@
   justify-content: center;
   width: 100%;
   padding: 10px;
-  background-color: #2280df; /* Set the background color to blue */
+  background-color: #0d5ee1a5; /* Set the background color to blue */
   text-align: center;
   box-sizing: border-box;
   margin: 10px 0 10px;
 }
 
 .document-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 0 1 calc(10% - 20px);
-  border: 1px solid #ccc;
+  border: 2px solid #03030386;
   border-radius: 4px;
+  box-shadow: 3px 5px #3e397e61;
   padding: 10px;
-  background-color: #074d93;
+  background-color: #6b8ebdbe;
   text-align: center;
   height: 120px;
-  min-width: 100px;
+  width: 30px;
   margin: 10px;
   overflow: hidden;
+}
+.documentTitle {
+  color: black;
+  text-shadow: 1px 1px 2px rgba(225, 255, 0, 0.37),
+    0 0 1em rgba(0, 0, 255, 0.317), 0 0 0.2em rgba(0, 0, 255, 0.426);
 }
 
 .document-container h3 {
   flex-grow: 1;
-  font-size: 16px;
+  font-size: 12px;
   height: 65px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -42,10 +49,23 @@
   font-size: 14px;
   text-align: center;
   margin-top: auto;
-  color: white;
+  color: rgba(225, 255, 0, 0.37);
 }
-
+.docCover{
+  object-fit: cover;
+}
 .noDocs {
   color: #f8f9fa;
   font-size: 22px;
+}
+
+.tab {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent; 
+  border-left: 10px solid #a7d2ff9b; 
+  z-index: 10; /* Place the tab above the card content */
 }

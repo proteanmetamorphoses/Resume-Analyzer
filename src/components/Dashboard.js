@@ -95,22 +95,10 @@ function Dashboard() {
   console.log(sentences);
 
   useEffect(() => {
-    if (deletionCount > 0) {
+    if (deletionCount > 0 || overwriteCount > 0 || saveCount > 0) {
       fetchUserData();
     }
-  }, [deletionCount]);
-
-  useEffect(() => {
-    if (overwriteCount > 0) {
-      fetchUserData();
-    }
-  }, [overwriteCount]);
-
-  useEffect(() => {
-    if (saveCount > 0) {
-      fetchUserData();
-    }
-  }, [saveCount]);
+  }, [deletionCount, overwriteCount, saveCount]);
 
   const fetchUserData = async () => {
     const auth = getAuth();

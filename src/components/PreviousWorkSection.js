@@ -47,8 +47,9 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
               className="document-container"
               onClick={() => handleDocumentClick(doc)}
             >
+              <div className="tab"></div> {/* Add the tab here */}
               <div className="document-info">
-                <h3>{doc.title}</h3>
+                <h3 className="documentTitle">{doc.title}</h3>
                 <p className="eScore">Fit: {doc.newEmployabilityScore}%</p>
               </div>
             </div>
@@ -62,6 +63,7 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
       )}
     </div>
   );
+  
 }
 
 export default PreviousWorkSection;
