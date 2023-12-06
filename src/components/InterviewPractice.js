@@ -21,6 +21,7 @@ const InterviewPractice = () => {
   const [qaPairs, setQAPairs] = useState([]);
   const [sequence, setSequence] = useState([]);
   const [questionsCount, setQuestionsCount] = useState(0); // State to track the number of questions
+  const [showSubmitButton, setShowSubmitButton] = useState(false); // State to track the visibility of the Submit button
 
   useEffect(() => {
     // Update the count of questions whenever qaPairs changes
@@ -147,6 +148,7 @@ const InterviewPractice = () => {
       sequence[newAudioFileIndex],
       "https://www.ispeakwell.ca/"
     );
+    clearTextArea();
   }
 
   function handleVBNextButtonClick() {
@@ -169,6 +171,7 @@ const InterviewPractice = () => {
       sequence[newAudioFileIndex],
       "https://www.ispeakwell.ca/"
     );
+    clearTextArea();
   }
 
   function updateVoiceBotText(text) {
@@ -183,9 +186,15 @@ const InterviewPractice = () => {
     setVoiceBotState((prevState) => ({
       ...prevState,
       audioFileIndex: 0,
+      voiceBotText: "", // Reset voiceBotText to an empty string
       combinedText: "",
       prevCombinedText: "",
     }));
+    setQAPairs([]); // Reset the question-answer pairs
+    setQuestionsCount(0); // Reset the questions count
+    clearTextArea(); // Clear the text area if needed
+    setShowSubmitButton(false);
+    window.scrollTo(0, 0); // Scroll to the top of the window
   };
 
   const Dashboard = () => {
@@ -194,11 +203,20 @@ const InterviewPractice = () => {
 
   const startListening = () => {
     if (shouldBlockAnswer()) {
-      alert("A response is not yet required.");
+      const button = document.querySelector(".StartListeningButton");
+      if (button) {
+        button.style.backgroundColor = 'rgb(219, 45, 45)'; // Change color to red
+        button.textContent = "Not Yet...";
+        // Set a timeout to revert the color back after 250ms
+        setTimeout(() => {
+          button.style.backgroundColor = ""; // Revert to the initial color
+          button.textContent = "Start Listening.";
+        }, 1500);
+      }
+
       return;
     }
     if (isListeningRef.current) {
-      console.log("Already listening");
       return;
     }
     recognition.onstart = () => {
@@ -269,7 +287,6 @@ const InterviewPractice = () => {
 
   const handleSubmit = () => {
     if (shouldBlockAnswer()) {
-      alert("A response is not yet required.");
       return;
     }
     const userSpeech = userSpeechRef.current?.value.trim() ?? "";
@@ -306,14 +323,7 @@ const InterviewPractice = () => {
 
     if (qaPairs.length === 4) {
       // Note: qaPairs.length is 4 here because it's updated after this check
-      showSubmitButton();
-    }
-  };
-
-  const showSubmitButton = () => {
-    const submitButton = document.querySelector(".submitFinal");
-    if (submitButton) {
-      submitButton.style.display = "block"; // Show the submit button
+      setShowSubmitButton(true);
     }
   };
 
@@ -399,10 +409,11 @@ const InterviewPractice = () => {
         </div>
       )}
 
-      {/* Submit button - Initially hidden, shown after 5th question */}
-      <button className="submitFinal" onClick={handleLowerSubmit} style={{ display: 'none' }}>
-        Submit
-      </button>
+      {showSubmitButton && (
+        <button className="submitFinal" onClick={handleLowerSubmit}>
+          Submit
+        </button>
+      )}
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
         <button className="resetter" onClick={resetInterview}>
