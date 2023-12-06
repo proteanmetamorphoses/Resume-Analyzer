@@ -426,7 +426,7 @@ function Dashboard() {
     }
     updateVoiceBotText(sentences[AudioFile]);
     var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(AudioFile, 'https://www.ispeakwell.ca/');
+    iframeWindow.postMessage(AudioFile, 'https://voicebot.ispeakwell.ca/');
   }
 
   function handleVBNextButtonClick() {
@@ -436,7 +436,7 @@ function Dashboard() {
     }
     updateVoiceBotText(sentences[AudioFile]);
     var iframeWindow = document.getElementById('theBot').contentWindow;
-    iframeWindow.postMessage(AudioFile, 'https://www.ispeakwell.ca/');
+    iframeWindow.postMessage(AudioFile, 'https://voicebot.ispeakwell.ca/');
   }
   
   function updateVoiceBotText(text) {

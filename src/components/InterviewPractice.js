@@ -146,7 +146,7 @@ const InterviewPractice = () => {
     var iframeWindow = document.getElementById("theBot").contentWindow;
     iframeWindow.postMessage(
       sequence[newAudioFileIndex],
-      "https://www.ispeakwell.ca/"
+      'https://voicebot.ispeakwell.ca/'
     );
     clearTextArea();
   }
@@ -169,7 +169,7 @@ const InterviewPractice = () => {
     var iframeWindow = document.getElementById("theBot").contentWindow;
     iframeWindow.postMessage(
       sequence[newAudioFileIndex],
-      "https://www.ispeakwell.ca/"
+      'https://voicebot.ispeakwell.ca/'
     );
     clearTextArea();
   }
