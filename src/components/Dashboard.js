@@ -60,20 +60,7 @@ function Dashboard() {
   let AudioFile = -1; 
   let sentences = [];
 
-  async function init() {
-    try {
-      sentences = await parseCSV();
-      // At this point, sentences is populated
-      console.log(sentences);
-    } catch (error) {
-      console.error("Error parsing CSV: ", error);
-    }
-  }
-  
-  init();
-  console.log(sentences);
-
-  useEffect(() => {
+    useEffect(() => {
     if (deletionCount > 0 || overwriteCount > 0 || saveCount > 0) {
       fetchUserData();
     }
@@ -95,6 +82,19 @@ function Dashboard() {
       });
     });
   };
+
+  async function init() {
+    try {
+      sentences = await parseCSV();
+      // At this point, sentences is populated
+      console.log(sentences);
+    } catch (error) {
+      console.error("Error parsing CSV: ", error);
+    }
+  }
+  
+  init();
+  console.log(sentences);
   
   const updateReplacementJobDescription = (companyName, location, via, description) => {
     const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;

@@ -8,6 +8,7 @@ import PasswordReset from "./components/PasswordReset";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./components/NotFound";
 import InterviewPractice from "./components/InterviewPractice";
+import Admin from "./components/Admin";
 import { VoiceBotStateProvider } from './components/VoiceBotStateContext';
 import axios from "axios";
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
@@ -34,6 +35,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <InterviewPractice />
+              </ProtectedRoute>
+            }
+          />
+          <Route 
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Admin />
               </ProtectedRoute>
             }
           />
