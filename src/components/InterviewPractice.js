@@ -338,6 +338,10 @@ const InterviewPractice = () => {
     navigate("/Dashboard");
   };
 
+  const admin = () => {
+    navigate("/admin");
+  };
+
   const startListening = () => {
     if (shouldBlockAnswer()) {
       const button = document.querySelector(".StartListeningButton");
@@ -438,7 +442,7 @@ const InterviewPractice = () => {
         Connect your microphone for speech practice.
       </h4>
       <h3 className="instruct1">
-        Wait for questions to reply.
+        Wait for questions to input a reply.
       </h3>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
@@ -528,6 +532,7 @@ const InterviewPractice = () => {
       )}
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
+        <button onClick={admin}>Admin</button>
         <button className="resetter" onClick={resetInterview}>
           Reset
         </button>

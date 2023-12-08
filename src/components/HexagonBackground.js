@@ -41,7 +41,7 @@ const HexagonBackground = () => {
     let currentStrokeWeight = minStrokeWeight; // Initialize stroke weight
 
     p.setup = () => {
-      const canvasWidth = 1660; // Fixed width
+      const canvasWidth = 1690; // Fixed width
       const canvasHeight = 1080; // Fixed height
       p.createCanvas(canvasWidth, canvasHeight);
       createBlobs();

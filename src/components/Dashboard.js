@@ -487,6 +487,10 @@ function Dashboard() {
     navigate('/interview-practice');
   };
 
+  const admin = () => {
+    navigate("/admin");
+  };
+
   return (
     <div className="dashboard">
       <div className="background-container">
@@ -626,6 +630,7 @@ function Dashboard() {
       <nav className="logout-nav">
         <button className="interView" onClick={InterViewPractice}>Interview Practice</button>
         <button className="resetter" onClick={resetDashboard}>Reset</button>
+        <button onClick={admin}>Admin</button>
         <LogoutLink />
       </nav>
 
