@@ -6,6 +6,13 @@ import "./InterviewPractice.css";
 import { useNavigate } from "react-router-dom";
 import Papa from "papaparse";
 import { VoiceBotStateContext } from "./VoiceBotStateContext";
+import Spinner from "./Spinner";
+import { getAuth } from "firebase/auth";
+import { db } from "../utils/firebase";
+import {
+  collection,
+  addDoc,
+} from "firebase/firestore";
 
 const InterviewPractice = () => {
   const { voiceBotState, setVoiceBotState } = useContext(VoiceBotStateContext);
@@ -22,37 +29,15 @@ const InterviewPractice = () => {
   const [sequence, setSequence] = useState([]);
   const [questionsCount, setQuestionsCount] = useState(0); // State to track the number of questions
   const [showSubmitButton, setShowSubmitButton] = useState(false); // State to track the visibility of the Submit button
-
+  const [openAIResponse, setOpenAIResponse] = useState("");
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  
   useEffect(() => {
     // Update the count of questions whenever qaPairs changes
     setQuestionsCount(qaPairs.length);
   }, [qaPairs]);
-
-  const shouldBlockAnswer = () => {
-    const blockedValues = [
-      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
-      25, 26, 28, 29,
-    ];
-    return blockedValues.includes(voiceBotState.audioFileIndex);
-  };
-
-  const parseCSV = () => {
-    return new Promise((resolve, reject) => {
-      Papa.parse("/data/AudioFiles.csv", {
-        download: true,
-        header: false,
-        complete: (results) => {
-          const arrayOfSentences = results.data
-            .map((row) => row[0])
-            .filter((sentence) => sentence.trim() !== "");
-          resolve(arrayOfSentences);
-        },
-        error: (error) => {
-          reject(error);
-        },
-      });
-    });
-  };
+  
 
   useEffect(() => {
     if (sequence.length === 0) {
@@ -80,6 +65,76 @@ const InterviewPractice = () => {
       // ... any other cleanup for speech recognition ...
     };
   }, [setVoiceBotState, sequence.length, recognition]);
+
+  const shouldBlockAnswer = () => {
+    const blockedValues = [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
+      25, 26, 28, 29,
+    ];
+    return blockedValues.includes(voiceBotState.audioFileIndex);
+  };
+
+  const parseCSV = () => {
+    return new Promise((resolve, reject) => {
+      Papa.parse("/data/AudioFiles.csv", {
+        download: true,
+        header: false,
+        complete: (results) => {
+          const arrayOfSentences = results.data
+            .map((row) => row[0])
+            .filter((sentence) => sentence.trim() !== "");
+          resolve(arrayOfSentences);
+        },
+        error: (error) => {
+          reject(error);
+        },
+      });
+    });
+  };
+
+  const parseAndSaveResponses = async (openAIAnalysis) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("No user logged in");
+      return;
+    }
+  
+    // Splitting the entire response into individual questions
+    const questionSections = openAIAnalysis.split(/Question \d+:/).slice(1);
+  
+    for (const section of questionSections) {
+      // Using regex to find different parts of each question section
+      const questionTextMatch = section.match(/(?<=\n).*(?=\nUser Response:)/s);
+      const userResponseMatch = section.match(/(?<=User Response:\n).*(?=\nResponse Analysis:)/s);
+      const responseAnalysisMatch = section.match(/(?<=Response Analysis:\n).*(?=\nScore:)/s);
+      const scoreMatch = section.match(/(?<=Score:\n)\d+/);
+  
+      const questionText = questionTextMatch ? questionTextMatch[0].trim() : "";
+      const userResponse = userResponseMatch ? userResponseMatch[0].trim() : "";
+      const responseAnalysis = responseAnalysisMatch ? responseAnalysisMatch[0].trim() : "";
+      const score = scoreMatch ? scoreMatch[0].trim() : "";
+      const date = new Date().toISOString();
+  
+      try {
+        await addDoc(collection(db, "users", user.uid, "userResponses"), {
+          questionText,
+          userResponse,
+          responseAnalysis,
+          score,
+          date,
+        });
+  
+        console.log("Document successfully written for question:", questionText);
+      } catch (error) {
+        console.error("Error writing document for question:", questionText, error);
+      }
+    }
+  };
+  
+  
+  
+  
 
   function createNumericalSequence() {
     // This function generates a random number between min and max (inclusive)
@@ -150,6 +205,77 @@ const InterviewPractice = () => {
     );
     clearTextArea();
   }
+  const handleSubmitOpenAI = async () => {
+    console.log("sent qaPairs to OpenAI: ", qaPairs);
+    setIsAnalyzing(true);
+    setShowSubmitButton(false);
+  
+    let data; // Declare data at a higher scope
+    try {
+      const response = await fetch('http://localhost:3001/api/interview-assessment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ qaPairs }),
+      });
+  
+      data = await response.json(); // Assign data here
+      setOpenAIResponse(data.message); // Assuming 'message' contains the response from OpenAI
+      console.log("OpenAI interview analysis: ", data.message);
+    } catch (error) {
+      console.error("Error submitting to API:", error);
+    } finally {
+      setIsAnalyzing(false);
+      setShowResults(true);
+    }
+  
+    if (data) {
+      await parseAndSaveResponses(data.message);
+    }
+  }
+  
+  const handleSubmit = () => {
+    if (shouldBlockAnswer()) {
+      return;
+    }
+    const userSpeech = userSpeechRef.current?.value.trim() ?? "";
+
+    if (userSpeech === "") {
+      alert("Please enter a response before submitting.");
+      return;
+    }
+
+    stopListening();
+
+    const currentQuestion = voiceBotState.voiceBotText;
+    const existingQAPairIndex = qaPairs.findIndex(
+      (pair) => pair.question === currentQuestion
+    );
+
+    if (existingQAPairIndex >= 0) {
+      // Append additional answer to existing question
+      const updatedQAPairs = [...qaPairs];
+      updatedQAPairs[existingQAPairIndex].answers.push(userSpeech);
+      setQAPairs(updatedQAPairs);
+    } else {
+      // Add new question-answer pair
+      const newQAPair = {
+        question: currentQuestion,
+        answers: [userSpeech],
+      };
+      setQAPairs([...qaPairs, newQAPair]);
+    }
+
+    if (userSpeechRef.current) {
+      userSpeechRef.current.value = ""; // Clear the user's speech input area
+    }
+
+    if (qaPairs.length === 4) {
+      // Note: qaPairs.length is 4 here because it's updated after this check
+      setShowSubmitButton(true);
+    }
+  };
 
   function handleVBNextButtonClick() {
     const newAudioFileIndex =
@@ -195,6 +321,8 @@ const InterviewPractice = () => {
     clearTextArea(); // Clear the text area if needed
     setShowSubmitButton(false);
     window.scrollTo(0, 0); // Scroll to the top of the window
+    setIsAnalyzing(false);
+    setShowResults(false);
   };
 
   const Dashboard = () => {
@@ -285,49 +413,6 @@ const InterviewPractice = () => {
     }
   };
 
-  const handleSubmit = () => {
-    if (shouldBlockAnswer()) {
-      return;
-    }
-    const userSpeech = userSpeechRef.current?.value.trim() ?? "";
-
-    if (userSpeech === "") {
-      alert("Please enter a response before submitting.");
-      return;
-    }
-
-    stopListening();
-
-    const currentQuestion = voiceBotState.voiceBotText;
-    const existingQAPairIndex = qaPairs.findIndex(
-      (pair) => pair.question === currentQuestion
-    );
-
-    if (existingQAPairIndex >= 0) {
-      // Append additional answer to existing question
-      const updatedQAPairs = [...qaPairs];
-      updatedQAPairs[existingQAPairIndex].answers.push(userSpeech);
-      setQAPairs(updatedQAPairs);
-    } else {
-      // Add new question-answer pair
-      const newQAPair = {
-        question: currentQuestion,
-        answers: [userSpeech],
-      };
-      setQAPairs([...qaPairs, newQAPair]);
-    }
-
-    if (userSpeechRef.current) {
-      userSpeechRef.current.value = ""; // Clear the user's speech input area
-    }
-
-    if (qaPairs.length === 4) {
-      // Note: qaPairs.length is 4 here because it's updated after this check
-      setShowSubmitButton(true);
-    }
-  };
-
-  const handleLowerSubmit = () => {};
   return (
     <div className="InterviewPractice">
       <div className="background-container">
@@ -409,10 +494,25 @@ const InterviewPractice = () => {
         </div>
       )}
 
-      {showSubmitButton && (
-        <button className="submitFinal" onClick={handleLowerSubmit}>
+      {showSubmitButton && !showResults && (
+        <button className="submitFinal" onClick={handleSubmitOpenAI}>
           Submit
         </button>
+      )}
+      {isAnalyzing && (
+        <div style={{ textAlign: "center" }}>
+          <Spinner />
+        </div>
+      )}
+      {!isAnalyzing && showResults && (
+      <div className="openAIResponseBox">
+          {openAIResponse && (
+              <div>
+                  <h3 className="openAIResponseBoxTitle">OpenAI Response:</h3>
+                  <p className="openAIResponseBoxText">{openAIResponse}</p>
+              </div>
+          )}
+      </div>
       )}
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>

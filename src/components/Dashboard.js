@@ -8,7 +8,6 @@ import LogoutLink from "./LogoutLink";
 import "./Dashboard.css";
 import axios from "axios";
 import { db } from "../utils/firebase";
-import Spinner from "./Spinner";
 import {
   collection,
   addDoc,
@@ -27,7 +26,7 @@ import HexagonBackground from "./HexagonBackground";
 import JobSearch from "./JobSearch";
 import { useNavigate } from 'react-router-dom';
 import Papa from 'papaparse';
-
+import Spinner from "./Spinner";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -59,12 +58,28 @@ function Dashboard() {
   const [ReplacementJobDescription, setReplacementJobDescription] = useState("");
   let voiceBotText = "";
   let AudioFile = -1; 
-
-  const updateReplacementJobDescription = (companyName, location, via, description) => {
-    const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
-    setReplacementJobDescription(newJobDetails);
-  };
   let sentences = [];
+
+  async function init() {
+    try {
+      sentences = await parseCSV();
+      // At this point, sentences is populated
+      console.log(sentences);
+    } catch (error) {
+      console.error("Error parsing CSV: ", error);
+    }
+  }
+  
+  init();
+  console.log(sentences);
+
+  useEffect(() => {
+    if (deletionCount > 0 || overwriteCount > 0 || saveCount > 0) {
+      fetchUserData();
+    }
+  }, [deletionCount, overwriteCount, saveCount]);
+
+
   const parseCSV = () => {
     return new Promise((resolve, reject) => {
       Papa.parse("/data/AudioFiles.csv", {
@@ -81,24 +96,10 @@ function Dashboard() {
     });
   };
   
-  async function init() {
-    try {
-      sentences = await parseCSV();
-      // At this point, sentences is populated
-      console.log(sentences);
-    } catch (error) {
-      console.error("Error parsing CSV: ", error);
-    }
-  }
-
-  init();
-  console.log(sentences);
-
-  useEffect(() => {
-    if (deletionCount > 0 || overwriteCount > 0 || saveCount > 0) {
-      fetchUserData();
-    }
-  }, [deletionCount, overwriteCount, saveCount]);
+  const updateReplacementJobDescription = (companyName, location, via, description) => {
+    const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
+    setReplacementJobDescription(newJobDetails);
+  };
 
   const fetchUserData = async () => {
     const auth = getAuth();

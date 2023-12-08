@@ -109,12 +109,12 @@ function FinalResultsSection({
     return () => unsubscribe();
   }, []);
 
-const handleOverWrite = async () =>{
-  console.log("Attempting to overwrite.");
-  console.log(userUid);
-  onSave(title, finalResume, coverLetter, newEmployabilityScore);
-  setShowErrorModal(false);
-}
+  const handleOverWrite = async () => {
+    console.log("Attempting to overwrite.");
+    console.log(userUid);
+    onSave(title, finalResume, coverLetter, newEmployabilityScore);
+    setShowErrorModal(false);
+  };
 
   const handleSave = async () => {
     if (title) {
@@ -123,10 +123,11 @@ const handleOverWrite = async () =>{
 
       if (documentsExist) {
         setShowErrorModal(true);
-        console.log("A document with the same title already exists.  OverWrite?");
+        console.log(
+          "A document with the same title already exists.  OverWrite?"
+        );
       } else {
         onSave(title, finalResume, coverLetter, newEmployabilityScore);
-        
       }
     } else {
       console.log("Please enter a title for the document.");
@@ -176,7 +177,7 @@ const handleOverWrite = async () =>{
       <Modal open={showErrorModal}>
         <div className="modal-content">
           <h3 className="modalH3">Just a moment...</h3>
-          <p>A document with the same title already exists.  OverWrite?</p>
+          <p>A document with the same title already exists. OverWrite?</p>
           <button onClick={handleOverWrite}>Overwrite</button>
           <button onClick={() => setShowErrorModal(false)}>Abort Save</button>
         </div>
