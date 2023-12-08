@@ -242,7 +242,16 @@ const InterviewPractice = () => {
     const userSpeech = userSpeechRef.current?.value.trim() ?? "";
 
     if (userSpeech === "") {
-      alert("Please enter a response before submitting.");
+        const button = document.querySelector(".submitAnswer");
+        if (button) {
+          button.style.backgroundColor = 'rgb(219, 45, 45)'; // Change color to red
+          button.textContent = "No Answer!";
+          // Set a timeout to revert the color back after 250ms
+          setTimeout(() => {
+            button.style.backgroundColor = ""; // Revert to the initial color
+            button.textContent = "Add Answer";
+          }, 1500);
+        }
       return;
     }
 
@@ -428,6 +437,9 @@ const InterviewPractice = () => {
       <h4 className="instruct1">
         Connect your microphone for speech practice.
       </h4>
+      <h3 className="instruct1">
+        Wait for questions to reply.
+      </h3>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
         <div className="VBButtons">
@@ -496,7 +508,7 @@ const InterviewPractice = () => {
 
       {showSubmitButton && !showResults && (
         <button className="submitFinal" onClick={handleSubmitOpenAI}>
-          Submit
+          Submit to OpenAI
         </button>
       )}
       {isAnalyzing && (
