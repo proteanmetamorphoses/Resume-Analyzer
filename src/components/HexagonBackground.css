@@ -2,7 +2,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 1660px;
-    height: 1080px;
+    width: 1690px;
+    height: 1200px;
     z-index: -1; /* Place it behind other content */
   }

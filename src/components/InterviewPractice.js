@@ -132,10 +132,6 @@ const InterviewPractice = () => {
     }
   };
   
-  
-  
-  
-
   function createNumericalSequence() {
     // This function generates a random number between min and max (inclusive)
     const getRandomNumber = (min, max) =>

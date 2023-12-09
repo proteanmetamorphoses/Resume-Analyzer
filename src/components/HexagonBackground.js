@@ -42,7 +42,7 @@ const HexagonBackground = () => {
 
     p.setup = () => {
       const canvasWidth = 1690; // Fixed width
-      const canvasHeight = 1080; // Fixed height
+      const canvasHeight = 1200; // Fixed height
       p.createCanvas(canvasWidth, canvasHeight);
       createBlobs();
     };

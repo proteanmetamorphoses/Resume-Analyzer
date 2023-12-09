@@ -29,6 +29,7 @@ function Login() {
       const userRole = await fetchUserRole(userCredential.user.uid);
       // Use the hook to set the user role
       setUserRole(userRole);
+      sessionStorage.setItem('userRole', userRole);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error logging in:", error);
