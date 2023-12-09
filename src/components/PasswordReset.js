@@ -2,12 +2,12 @@ import { useState } from "react";
 import { auth, sendPasswordResetEmail } from "../utils/firebase";
 import "./PasswordReset.css";
 import HexagonBackground from "./HexagonBackground";
+import { Link } from "react-router-dom";
 
 function PasswordReset() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-
   const handlePasswordReset = async (event) => {
     event.preventDefault();
     try {
@@ -43,6 +43,9 @@ function PasswordReset() {
           Submit
         </button>
       </form>
+      <p className="link-text">
+        Changed your mind? No problem...Back to <Link className="LogLink" to="/login">Login</Link>
+      </p>
       {message && <p className="message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
     </div>
