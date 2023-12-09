@@ -4,6 +4,8 @@ import { auth, createUserWithEmailAndPassword } from "../utils/firebase";
 import { Link } from "react-router-dom";
 import "./Signup.css";
 import HexagonBackground from "./HexagonBackground";
+import { doc, setDoc } from "firebase/firestore"; 
+import { db } from "../utils/firebase"; // Import your Firestore instance
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -32,7 +34,12 @@ function Signup() {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Add a new document in collection "users" with the user's UID
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        email: email,
+        role: "user" // Assigning a default role, you can customize this part
+      });
       navigate("/dashboard");
     } catch (error) {
       console.error("Error signing up:", error);

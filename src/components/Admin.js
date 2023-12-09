@@ -20,12 +20,14 @@ import zoomPlugin from "chartjs-plugin-zoom";
 import HexagonBackground from "./HexagonBackground";
 import { useNavigate } from "react-router-dom";
 import LogoutLink from "./LogoutLink";
+import { useAuth } from './AuthContext';
 
 function Admin() {
   const [questions, setQuestions] = useState([]);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const [selectedQuestion, setSelectedQuestion] = useState("");
+  const { userRole } = useAuth();
   const [chartData, setChartData] = useState({
     labels: [], // for dates
     datasets: [
@@ -144,9 +146,11 @@ function Admin() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-
+    if (userRole !== "admin"){
+      navigate("/Dashboard");
+    }
     return unsubscribe; // Cleanup subscription on unmount
-  }, []);
+  }, [navigate, userRole]);
 
   useEffect(() => {
     async function fetchData() {

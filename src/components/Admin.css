@@ -33,7 +33,9 @@
 .SelectQuestion,
 .SelectQuestionDevice {
   flex-grow: 0;
-  width: 90%;
+  width: 50%;
+  height: 30px;
+  font-size: 20px;
 }
 
 .Main-Header, SelectQuestion {
