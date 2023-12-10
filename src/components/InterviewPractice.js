@@ -430,19 +430,16 @@ const InterviewPractice = () => {
       </div>
       <h1 className="Main-Header">Advanced Resume</h1>
       <h2 className="Main-Header">Interview Practice</h2>
-      <h3 className="instruct1">Click the Interviewer to start.</h3>
-      <h4 className="instruct1">Double-click to hear each statement.</h4>
-      <h3 className="instruct1">
-        Click the buttons to navigate the interview dialogue.
-      </h3>
       <h4 className="instruct1">
         Connect your microphone for speech practice.
       </h4>
       <div className="interviewTipsCard">
         <InterviewTips />
       </div>
+      <h3 className="instruct1">Click the Interviewer to start.</h3>
+      <h4 className="instruct1">Double-click to hear each statement.</h4>
       <h3 className="instruct1">
-        Wait for questions to input a reply.
+        Click the buttons to navigate the interview dialogue.
       </h3>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
@@ -467,6 +464,9 @@ const InterviewPractice = () => {
           Type here or click the `Start Listening` button, below, to use speech recognition when you receive a question to answer."
           disabled={shouldBlockAnswer()}
         ></textarea>
+        <h4 className="instruct1">
+        Wait for questions to input a reply.
+      </h4>
 
         <div className="SpeechRecButtons">
           <button

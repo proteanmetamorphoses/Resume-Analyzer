@@ -49,14 +49,15 @@ const InterviewTips = () => {
 
   return (
     <div className="interviewTips">
+      <h3 className = "Instruct1">Interview Tips</h3>
       {tips.length > 0 && (
         <div className="interviewTipBox">
           {renderTip(tips[currentTipIndex])}
         </div>
       )}
       <div className="interviewTipButtons">
-        <button onClick={prevTip}>Last Tip</button>
-        <button onClick={nextTip}>Next Tip</button>
+        <button onClick={prevTip}>←</button>
+        <button onClick={nextTip}>→</button>
       </div>
     </div>
   );
