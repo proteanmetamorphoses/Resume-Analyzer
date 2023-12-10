@@ -16,6 +16,7 @@
 .tagline {
   font-size: 1.5rem;
   margin-bottom: 2rem;
+  text-shadow: 0 0 3px #ff0000, 0 0 5px #0000ff;
 }
 
 .cta-button {

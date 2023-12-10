@@ -13,6 +13,7 @@ import {
   collection,
   addDoc,
 } from "firebase/firestore";
+import InterviewTips from "./InterviewTips";
 
 const InterviewPractice = () => {
   const { voiceBotState, setVoiceBotState } = useContext(VoiceBotStateContext);
@@ -437,6 +438,9 @@ const InterviewPractice = () => {
       <h4 className="instruct1">
         Connect your microphone for speech practice.
       </h4>
+      <div className="interviewTipsCard">
+        <InterviewTips />
+      </div>
       <h3 className="instruct1">
         Wait for questions to input a reply.
       </h3>
