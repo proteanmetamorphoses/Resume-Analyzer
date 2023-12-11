@@ -50,6 +50,7 @@
   border-radius: 4px;
   margin: 0 auto;
   padding: 20px; 
+  word-wrap: break-word;
 }
 
 .SpeechRecButtons {
@@ -110,6 +111,8 @@
   margin: 5px;
   text-align: left;
   padding: 0 10px 0 10px;
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 .openAIResponseBox{
