@@ -29,8 +29,8 @@ const InterviewPractice = () => {
       answers: [],
       timeTaken: null,
       submissionCount: 0,
-      typedChars: 0,
-      spokenChars: 0,
+      typedChars: null,
+      spokenChars: null,
       charRatio: null,
     },
   ];
@@ -45,10 +45,10 @@ const InterviewPractice = () => {
   const [typedChars, setTypedChars] = useState(0);
   const [spokenChars, setSpokenChars] = useState(0);
   const [prevLength, setPrevLength] = useState(0);
-  
+
   useEffect(() => {
     // Update the count of questions whenever qaPairs changes
-    setQuestionsCount(qaPairs.length);
+    setQuestionsCount(qaPairs.length-1);
   }, [qaPairs]);
 
   useEffect(() => {
@@ -79,7 +79,9 @@ const InterviewPractice = () => {
   }, [setVoiceBotState, sequence.length, recognition]);
 
   const startTimer = () => {
-    setStartTime(new Date());
+    if (startTime === null) {
+      setStartTime(new Date());
+    }
   };
 
   // When submitting an answer
@@ -88,6 +90,7 @@ const InterviewPractice = () => {
     const timeTaken = currentEndTime - startTime; // Calculate time taken
     // If you need to update the state or use this value in your component, do it here
     console.log("Time taken:", formatTime(timeTaken > 0 ? timeTaken : 0));
+    setStartTime(null);
     return timeTaken > 0 ? timeTaken : 0; // Ensure non-negative value
   };
 
@@ -130,17 +133,31 @@ const InterviewPractice = () => {
 
     for (const section of questionSections) {
       // Using regex to find different parts of each question section
-      const questionTextMatch = section.match(/(?<=\n).*(?=\nUser Response:)/s);
+      const questionTextMatch = section.match(
+        /(?<=\n).*(?=\nUser Response to question:)/s
+      );
       const userResponseMatch = section.match(
-        /(?<=User Response:\n).*(?=\nResponse Analysis:)/s
+        /(?<=User Response to question:\n).*(?=\nSubmissions:)/s
+      );
+      const submissionsMatch = section.match(
+        /(?<=Submissions:\n).*(?=\nResponse Time:)/s
+      );
+      const responseTimeMatch = section.match(
+        /(?<=Response Time:\n).*(?=\ncharRatio:)/s
+      );
+      const charRatioMatch = section.match(
+        /(?<=charRatio:\n).*(?=\nResponse Analysis:)/s
       );
       const responseAnalysisMatch = section.match(
         /(?<=Response Analysis:\n).*(?=\nScore:)/s
       );
-      const scoreMatch = section.match(/(?<=Score:\n)\d+/);
+      const scoreMatch = section.match(/(?<=Score:\n).+/s);
 
       const questionText = questionTextMatch ? questionTextMatch[0].trim() : "";
       const userResponse = userResponseMatch ? userResponseMatch[0].trim() : "";
+      const submissions = submissionsMatch ? submissionsMatch[0].trim() : "";
+      const responseTime = responseTimeMatch ? responseTimeMatch[0].trim() : "";
+      const charRatio = charRatioMatch ? charRatioMatch[0].trim() : "";
       const responseAnalysis = responseAnalysisMatch
         ? responseAnalysisMatch[0].trim()
         : "";
@@ -151,6 +168,9 @@ const InterviewPractice = () => {
         await addDoc(collection(db, "users", user.uid, "userResponses"), {
           questionText,
           userResponse,
+          submissions,
+          responseTime,
+          charRatio,
           responseAnalysis,
           score,
           date,
@@ -171,11 +191,33 @@ const InterviewPractice = () => {
   };
 
   function createNumericalSequence() {
-    // This function generates a random number between min and max (inclusive)
-    const getRandomNumber = (min, max) =>
-      Math.floor(Math.random() * (max - min + 1)) + min;
+    // This function shuffles an array
+    const shuffleArray = (array) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    };
 
-    // Initialize the array with the fixed part of the sequence
+    // Generate shuffled arrays for random number ranges
+    const randomNumbers1 = shuffleArray(
+      Array.from({ length: 10 }, (_, i) => i + 46)
+    );
+    const randomNumbers2 = shuffleArray(
+      Array.from({ length: 10 }, (_, i) => i + 57)
+    );
+    const randomNumbers3 = shuffleArray(
+      Array.from({ length: 9 }, (_, i) => i + 68)
+    );
+    const randomNumbers4 = shuffleArray(
+      Array.from({ length: 10 }, (_, i) => i + 78)
+    );
+    const randomNumbers5 = shuffleArray(
+      Array.from({ length: 11 }, (_, i) => i + 89)
+    );
+
+    // Initialize the sequence with fixed and random parts
     const sequence = [
       27,
       28,
@@ -192,24 +234,19 @@ const InterviewPractice = () => {
       39,
       40,
       45,
-      // Random number between 46 and 55
-      getRandomNumber(46, 55),
+      randomNumbers1[0],
       41,
       56,
-      // Random number between 57 and 66
-      getRandomNumber(57, 66),
+      randomNumbers2[0],
       42,
       67,
-      // Random number between 68 and 76
-      getRandomNumber(68, 76),
+      randomNumbers3[0],
       43,
       77,
-      // Random number between 78 and 87
-      getRandomNumber(78, 87),
+      randomNumbers4[0],
       44,
       88,
-      // Random number between 89 and 99
-      getRandomNumber(89, 99),
+      randomNumbers5[0],
       100,
       101,
     ];
@@ -221,15 +258,15 @@ const InterviewPractice = () => {
     let seconds = Math.floor(milliseconds / 1000);
     let minutes = Math.floor(seconds / 60);
     let hours = Math.floor(minutes / 60);
-  
+
     seconds = seconds % 60;
     minutes = minutes % 60;
-  
+
     // Formatting to ensure two digits
-    const formattedHours = hours.toString().padStart(2, '0');
-    const formattedMinutes = minutes.toString().padStart(2, '0');
-    const formattedSeconds = seconds.toString().padStart(2, '0');
-  
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+
     if (hours > 0) {
       return `${formattedHours}h ${formattedMinutes}m ${formattedSeconds}s`;
     } else if (minutes > 0) {
@@ -238,7 +275,6 @@ const InterviewPractice = () => {
       return `${formattedSeconds}s`;
     }
   };
-  
 
   function handleVBLastButtonClick() {
     const newAudioFileIndex =
@@ -261,12 +297,17 @@ const InterviewPractice = () => {
       "https://voicebot.ispeakwell.ca/"
     );
     clearTextArea();
+    setTypedChars(0);
+    setSpokenChars(0);
   }
+
   const handleSubmitOpenAI = async () => {
     console.log("sent qaPairs to OpenAI: ", qaPairs);
     setIsAnalyzing(true);
     setShowSubmitButton(false);
-
+    const filteredQAPairs = qaPairs.filter((pair) => pair.question !== null);
+    const dataToSend = JSON.stringify({ qaPairs: filteredQAPairs });
+    console.log("Data Sent to OpenAI from Browser:", dataToSend);
     let data; // Declare data at a higher scope
     try {
       const response = await fetch(
@@ -276,7 +317,7 @@ const InterviewPractice = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ qaPairs }),
+          body: dataToSend,
         }
       );
 
@@ -296,9 +337,11 @@ const InterviewPractice = () => {
   };
 
   const handleSubmit = () => {
+    console.log("qaPairs on Add to Submit: ", qaPairs);
     if (shouldBlockAnswer()) {
       return;
     }
+
     const userSpeech = userSpeechRef.current?.value.trim() ?? "";
 
     if (userSpeech === "") {
@@ -317,53 +360,59 @@ const InterviewPractice = () => {
 
     stopListening();
     const answerTime = stopTimer();
-
-    const charRatio =
-      typedChars === 0 && spokenChars === 0
-        ? 0
-        : typedChars / (spokenChars || 1);
-    console.log("typedChars: ", typedChars, " spokenChars", spokenChars);
-    console.log("Ratio of Typed to Spoken Characters: ", charRatio);
-
     const currentQuestion = voiceBotState.voiceBotText;
-    const existingQAPairIndex = qaPairs.findIndex(
-      (pair) => pair.question === currentQuestion
-    );
 
     setQAPairs((prevQAPairs) => {
       const updatedQAPairs = [...prevQAPairs];
-      if (existingQAPairIndex >= 0) {
-        // Increment submission count for this specific question
-        if (!updatedQAPairs[existingQAPairIndex].answers.includes(userSpeech)) {
-          updatedQAPairs[existingQAPairIndex].answers.push(userSpeech);
-          updatedQAPairs[existingQAPairIndex].submissionCount += 1;
+      const qaIndex = updatedQAPairs.findIndex(
+        (pair) => pair.question === currentQuestion
+      );
+
+      if (qaIndex >= 0) {
+        // Update existing QA pair
+        if (!updatedQAPairs[qaIndex].answers.includes(userSpeech)) {
+          updatedQAPairs[qaIndex].answers.push(userSpeech);
+          updatedQAPairs[qaIndex].submissionCount += 1;
         }
-        updatedQAPairs[existingQAPairIndex].timeTaken += answerTime;
-        updatedQAPairs[existingQAPairIndex].typedChars += typedChars;
-        updatedQAPairs[existingQAPairIndex].spokenChars += spokenChars;
-        updatedQAPairs[existingQAPairIndex].charRatio = charRatio;
+        updatedQAPairs[qaIndex].timeTaken += answerTime;
+        updatedQAPairs[qaIndex].typedChars += typedChars;
+        updatedQAPairs[qaIndex].spokenChars += spokenChars;
+        updatedQAPairs[qaIndex].charRatio =
+          updatedQAPairs[qaIndex].typedChars /
+          (updatedQAPairs[qaIndex].typedChars +
+            updatedQAPairs[qaIndex].spokenChars);
       } else {
+        // Add new QA pair
         updatedQAPairs.push({
           question: currentQuestion,
           answers: [userSpeech],
           timeTaken: answerTime,
-          submissionCount: 1, // First submission for this question
-          typedChars: 0,
-          spokenChars: 0,
-          charRatio: charRatio,
+          submissionCount: 1,
+          typedChars: typedChars,
+          spokenChars: spokenChars,
+          charRatio: calculateCharRatio(typedChars, spokenChars),
         });
       }
+
       return updatedQAPairs;
     });
 
+    // Reset for next input
+    setTypedChars(0);
+    setSpokenChars(0);
     if (userSpeechRef.current) {
-      userSpeechRef.current.value = ""; // Clear the user's speech input area
+      userSpeechRef.current.value = "";
     }
     if (qaPairs.length >= 5 && qaPairs[4].submissionCount > 0) {
       setShowSubmitButton(true);
     } else {
       setShowSubmitButton(false);
     }
+  };
+
+  const calculateCharRatio = (typedChars, spokenChars) => {
+    const totalChars = typedChars + spokenChars;
+    return totalChars > 0 ? typedChars / totalChars : 0;
   };
 
   const handleVBNextButtonClick = () => {
@@ -462,9 +511,10 @@ const InterviewPractice = () => {
     recognition.onresult = (event) => {
       const current = event.resultIndex;
       const transcript = event.results[current][0].transcript;
-      setSpokenChars((prevChars) => prevChars + transcript.length);
+      const transcriptLength = transcript.trim().length;
 
-      // Correctly update the textarea's value
+      setSpokenChars((prevChars) => prevChars + transcriptLength);
+
       if (userSpeechRef.current) {
         userSpeechRef.current.value +=
           (userSpeechRef.current.value ? " " : "") + transcript;
@@ -479,13 +529,22 @@ const InterviewPractice = () => {
 
   // Handler for user typing in the textarea
   const handleUserTyping = (e) => {
+    startTimer();
     const typedLength = e.target.value.length;
     const newTypedChars = typedLength - prevLength;
-    if (newTypedChars > 0) { // Only update for typing, not deletion
+    if (newTypedChars > 0) {
+      // Only update for typing, not deletion
       setTypedChars((prevTypedChars) => prevTypedChars + newTypedChars);
     }
     setPrevLength(typedLength); // Update prevLength for the next change
-    console.log("typedLength: ", typedLength, " newTypedChars: ", newTypedChars, " total typedChars: ", typedChars + newTypedChars);
+    console.log(
+      "typedLength: ",
+      typedLength,
+      " newTypedChars: ",
+      newTypedChars,
+      " total typedChars: ",
+      typedChars + newTypedChars
+    );
   };
 
   const clearTextArea = () => {
@@ -529,11 +588,12 @@ const InterviewPractice = () => {
       <div className="interviewTipsCard">
         <InterviewTips />
       </div>
-      <h3 className="instruct1">Click the Interviewer to start.</h3>
+      <h3 className="instruct1">Click the Interviewer below to start.</h3>
       <h4 className="instruct1">Double-click to hear each statement.</h4>
       <h3 className="instruct1">
-        Click the buttons to navigate the interview dialogue.
+        Click the buttons below the interviewer to navigate the interview dialogue.
       </h3>
+      <h4 className="instruct1">Move forwards and backwards in the dialogue to add more submissions to questions asked.</h4>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
         <div className="VBButtons">
@@ -599,10 +659,12 @@ const InterviewPractice = () => {
               {pair.submissionCount > 0 && (
                 <p>Submissions: {pair.submissionCount}</p>
               )}
-              {pair.timeTaken != null && <p>Time Taken: {formatTime(pair.timeTaken)}</p>}
+              {pair.timeTaken != null && (
+                <p>Response Time: {formatTime(pair.timeTaken)}</p>
+              )}
               {pair.charRatio != null && (
                 <p>
-                  Typed to Spoken Character Ratio: {pair.charRatio.toFixed(2)}
+                  Typed-to-Spoken-Character Ratio: {pair.charRatio.toFixed(2)}
                 </p>
               )}
             </div>
