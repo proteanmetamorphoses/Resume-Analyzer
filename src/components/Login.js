@@ -96,7 +96,7 @@ function Login() {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="header-title">Advanced Resume</h1>
+      <h1 className="header-title">Advanced Career</h1>
       <form onSubmit={handleLogin}>
         <input
           type="email"

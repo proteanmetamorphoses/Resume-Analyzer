@@ -48,7 +48,7 @@ const InterviewPractice = () => {
 
   useEffect(() => {
     // Update the count of questions whenever qaPairs changes
-    setQuestionsCount(qaPairs.length-1);
+    setQuestionsCount(qaPairs.length - 1);
   }, [qaPairs]);
 
   useEffect(() => {
@@ -575,13 +575,86 @@ const InterviewPractice = () => {
     }
   };
 
+  const testResponses = () => {
+    const newQAPairs = [
+      {
+        question: "Where do you see yourself in 5 years?",
+        answers: [
+          "in 5 years I see myself as a valued member of your company in the same role or maybe even in a higher level but still providing the same level of leadership and training to your team members and helping to make things work better",
+          "I also see myself taking on more and varied roles with clients around the world.",
+        ],
+        timeTaken: 113590,
+        submissionCount: 2,
+        typedChars: 389,
+        spokenChars: 687,
+        charRatio: 0.34934497816593885,
+      },
+      {
+        question:
+          "Describe a time you disagreed with a decision from your manager?",
+        answers: [
+          "My manager wanted to terminate the employment of two colleagues who were not performing as well as it was thoguht they should.   I asked him for some time to observe the situation and see if I can improve it and what I did was develop a Microsoft Excel dashboard that helped the team members to be able to see that their productivity was low",
+          "when they were able to see that then they could see that if they make small changes to their work their productivity got better additionally they also learned that they actually had to command their muscles to work faster in order to meet the target deadlines",
+          "it was also an opportunity for the company to reevaluate whether or not they were actually asking too much too little or just enough of their workers",
+        ],
+        timeTaken: 59196,
+        submissionCount: 3,
+        typedChars: 1157,
+        spokenChars: 1448,
+        charRatio: 1,
+      },
+      {
+        question:
+          "How do you educate yourself on our industry and its challenges?",
+        answers: [
+          "I do a lot of reading on the internet a lot of Googling and I've recently started using chat GPT to help me to be able to solve some technical challenges now what that does is it and it allows me to be able to connect with already made situations that I might have to Google through say 30 pages so it's a real Time Saver",
+          "it's also really personable so I like to be able to work with that but aside from that I also go to conferences whether they're virtual or whether they are live  I'm currently taking a web programming class to be able to develop React web applications",
+        ],
+        timeTaken: 60382,
+        submissionCount: 2,
+        typedChars: 823,
+        spokenChars: 1607,
+        charRatio: 0.39035769828926903,
+      },
+      {
+        question: "What do you think are the biggest challenges in this role?",
+        answers: [
+          "the biggest challenges are going to be the things that you have never faced before so for example you're going to be working with people who are from a different culture with a different religion and while you may be familiar with that there will be some stumbling blocks some things that you don't expect so for example you may run into the idea that family and what family means to an individual is far different or slightly different than you know in certain ways so for example if your mother calls you you might be able to say to your mom yes I'll get there in a couple hours whereas for another culture if Mom calls you've got to be there right away right in the particular example you're going to run into certain things dealing with the religion to some degree and some things that are you know adjacent to it so for example the idea of Insha'Allah which is it means some essentially at its very basic hopefully or yes or I think so right so rather than actually say yes I commit myself to this that or the other thing you'll frequently hear the term inshallah which means yes but it also means things could get in the way out of my control and I won't be able to do anything about that and that is in Stark difference to a culture like Canada where if it's within your contract you have to be able to provide you know the things that you're being paid to provide family and friends and other kinds of obligations are always put on the back burner because this is how you earn your money this is kind of part of the western ethos",
+          "and if I say some more things then I should see 14 seconds",
+          "And",
+          "and here's something else I wanted to add about that which is that culture can be tricky",
+        ],
+        timeTaken: 87797,
+        submissionCount: 4,
+        typedChars: 1835,
+        spokenChars: 11241,
+        charRatio: 0.05247465712581992,
+      },
+      {
+        question: "How would your colleagues describe you?",
+        answers: [
+          "my colleagues would say I'm a friendly person ready to help and pitch in at any time I pull my weight for example at the last Christmas party I did a lot of the organization the maneuvering of things the receiving of dishes the laying out of foods on the table at and a lot of the cleanup at the end as well",
+        ],
+        timeTaken: 24996,
+        submissionCount: 1,
+        typedChars: 307,
+        spokenChars: 306,
+        charRatio: 1.0032679738562091,
+      },
+    ];
+    setQAPairs(newQAPairs);
+    setQuestionsCount(5);
+    clearTextArea();
+    setShowSubmitButton(true);
+  };
+
   return (
     <div className="InterviewPractice">
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="Main-Header">Advanced Resume</h1>
-      <h2 className="Main-Header">Interview Practice</h2>
+      <h1 className="Main-Header">Advanced Interview</h1>
+      <h2 className="Main-Header">Practice Interviewing with AI</h2>
       <h4 className="instruct1">
         Connect your microphone for speech practice.
       </h4>
@@ -591,9 +664,13 @@ const InterviewPractice = () => {
       <h3 className="instruct1">Click the Interviewer below to start.</h3>
       <h4 className="instruct1">Double-click to hear each statement.</h4>
       <h3 className="instruct1">
-        Click the buttons below the interviewer to navigate the interview dialogue.
+        Click the buttons below the interviewer to navigate the interview
+        dialogue.
       </h3>
-      <h4 className="instruct1">Move forwards and backwards in the dialogue to add more submissions to questions asked.</h4>
+      <h4 className="instruct1">
+        Move forwards and backwards in the dialogue to add more submissions to
+        questions asked.
+      </h4>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
         <div className="VBButtons">
@@ -694,10 +771,13 @@ const InterviewPractice = () => {
       )}
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
-        <button onClick={admin}>Admin</button>
+        <button className="resetter" onClick={testResponses}>
+          Test
+        </button>
         <button className="resetter" onClick={resetInterview}>
           Reset
         </button>
+        <button onClick={admin}>Admin</button>
         <LogoutLink />
       </nav>
     </div>

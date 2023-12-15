@@ -52,7 +52,7 @@ function Signup() {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="supheader-title">Advanced Resume</h1>
+      <h1 className="supheader-title">Advanced Career</h1>
       <form onSubmit={handleSignup}>
         <input
           type="email"

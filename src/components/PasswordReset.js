@@ -27,7 +27,7 @@ function PasswordReset() {
         <HexagonBackground />
       </div>
       <div className="header-container">
-        <h1 className="header-title">Advanced Resume</h1>
+        <h1 className="header-title">Advanced Career</h1>
         <p className="header-subtitle">Password Reset</p>
       </div>
 

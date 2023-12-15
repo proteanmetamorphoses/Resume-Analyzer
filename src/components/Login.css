@@ -22,9 +22,11 @@ form {
 
 input[type="email"],
 input[type="password"] {
-  border: 1px solid #ccc;
+  width: 25%;
   margin-bottom: 10px;
-  width: 350px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 input[type="email"],
@@ -80,9 +82,7 @@ input[type="password"] {
   margin-top: 0;
 }
 
-.noAccount, .forgotPWD {
-  color: rgb(200, 91, 91); /* or your preferred color for text */
-}
+
 
 .signup-link, .pwReset-link{
   color: #f7e14f; /* Bright color for visibility */

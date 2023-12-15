@@ -1,3 +1,3 @@
-a, .logoutLink{
-    text-shadow: 0 0 3px #ff0000, 0 0 5px #0000ff;
+.logoutLink{
+  font-size: 10px;
 }

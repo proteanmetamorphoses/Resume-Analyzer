@@ -1,7 +1,11 @@
 .search-input {
     width: 100%; /* Adjust as needed */
     font-size: 1.2em; /* Adjust as needed */
-    
+    width: 90%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .job-modal {

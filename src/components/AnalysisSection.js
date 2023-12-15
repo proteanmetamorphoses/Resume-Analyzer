@@ -25,6 +25,7 @@ function AnalysisSection({
   }, [resumeText]); // Dependency array includes resumeText
 
   const handleAnalyzeClick = () => {
+    console.log("resume: ",resumeText, " job description: ", jobDescriptionText);
     onSubmit(resumeText, jobDescriptionText);
   };
 
