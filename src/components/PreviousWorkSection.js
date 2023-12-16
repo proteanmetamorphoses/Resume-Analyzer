@@ -38,7 +38,7 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
     return <div>Loading...</div>;
   }
   return (
-    <div>
+    <div className="Previous-Resume-Work">
       {documents.length > 0 ? (
         <div className="documents-container">
           {documents.map((doc) => (
@@ -47,7 +47,7 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
               className="document-container"
               onClick={() => handleDocumentClick(doc)}
             >
-              <div className="tab"></div> {/* Add the tab here */}
+              <div className="tab"></div>
               <div className="document-info">
                 <h3 className="documentTitle">{doc.title}</h3>
                 <p className="eScore">Fit: {doc.newEmployabilityScore}%</p>

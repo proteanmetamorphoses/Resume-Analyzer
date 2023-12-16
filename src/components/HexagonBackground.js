@@ -1,13 +1,142 @@
-import './HexagonBackground.css';
-import { ReactP5Wrapper } from 'react-p5-wrapper';
-import React, { useEffect } from 'react';
+/* eslint-disable no-unused-vars */
+import "./HexagonBackground.css";
+import { ReactP5Wrapper } from "react-p5-wrapper";
+import React, { useState, useEffect, useMemo } from "react";
+import { useColorMode } from "../ColorModeContext";
+import { db } from "../utils/firebase"; // Adjust the path as per your project structure
+import { doc, onSnapshot } from "firebase/firestore";
+import { useAuth } from "./AuthContext"; // Import useAuth to get the current user
 
 const HexagonBackground = () => {
+  const { colorMode } = useColorMode();
+  const { currentUser } = useAuth();
+  const [localColorMode, setLocalColorMode] = useState(colorMode);
   let R = 50;
   let blobs = [];
+  const defaultColorMode = 0;
+  
+  
 
-  // Define an array of possible colors
-  const colors = ['#FF5733', '#FF33A1', '#33FF7A', '#3380FF', '#FFD133', '#33FFD1'];
+  const allColors = useMemo(() => {
+    const colors0 = [
+      "#192416",
+      "#B7C79D",
+      "#739A78",
+      "#2F808E",
+      "#FF9100",
+      "#FF5E00",
+    ];
+    const colors1 = [
+      "#FF5733",
+      "#FF33A1",
+      "#33FF7A",
+      "#3380FF",
+      "#FFD133",
+      "#33FFD1",
+    ];
+    const colors2 = [
+      "#FAFBBB",
+      "#FBEA75",
+      "#F9BD52",
+      "#EDCC93",
+      "#FF6B6B",
+      "#FF3737",
+    ];
+    const colors3 = [
+      "#3C0506",
+      "#A62020",
+      "#7F7975",
+      "#40576B",
+      "#FFA500",
+      "#FFD700",
+    ];
+    const colors4 = [
+      "#26435D",
+      "#DDB90B",
+      "#6C92B6",
+      "#8AA7B8",
+      "#FF69B4",
+      "#FF1493",
+    ];
+    const colors5 = [
+      "#04112D",
+      "#043375",
+      "#045AB7",
+      "#046494",
+      "#32CD32",
+      "#008000",
+    ];
+    const colors6 = [
+      "#C3BEE1",
+      "#2B0B71",
+      "#8572C0",
+      "#947BC6",
+      "#9932CC",
+      "#8A2BE2",
+    ];
+    const colors7 = [
+      "#3571AC",
+      "#0D1C24",
+      "#78C4F8",
+      "#B1E3F3",
+      "#054C23",
+      "#33BE5C",
+    ];
+    const colors8 = [
+      "#054C23",
+      "#33BE5C",
+      "#679243",
+      "#1C9B54",
+      "#3571AC",
+      "#0D1C24",
+    ];
+
+    return [
+      colors0,
+      colors1,
+      colors2,
+      colors3,
+      colors4,
+      colors5,
+      colors6,
+      colors7,
+      colors8,
+    ];
+  }, []);
+
+  
+  
+  // Update localColorMode when colorMode changes
+  useEffect(() => {
+    setLocalColorMode(colorMode);
+  }, [colorMode]);
+
+  // Fallback to database if colorMode from context is not available
+  useEffect(() => {
+    if (localColorMode === undefined && currentUser && currentUser.uid) {
+      const colorModeRef = doc(db, "users", currentUser.uid, "userColorMode", "colorDocument");
+      const unsubscribe = onSnapshot(colorModeRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+          const data = docSnapshot.data();
+          setLocalColorMode(data.colorMode || 0);
+        } else {
+          setLocalColorMode(0);
+        }
+      });
+
+      return () => unsubscribe();
+    }
+  }, [currentUser, localColorMode]);
+
+  // Update colors based on localColorMode
+  const [colors, setColors] = useState(allColors[0]);
+  useEffect(() => {
+    const mode = localColorMode >= 0 && localColorMode < allColors.length ? localColorMode : 0;
+    setColors(allColors[mode]);
+  }, [localColorMode, allColors]);
+  
+console.log("defaultColorMode: ", defaultColorMode,"localColorMode: ", localColorMode,);
+  
 
   const hexagon = (p, x, y, r) => {
     p.beginShape(p.LINES);
@@ -19,6 +148,7 @@ const HexagonBackground = () => {
     }
     p.endShape();
   };
+
   useEffect(() => {
     const preventZoom = (event) => {
       if (event.ctrlKey) {
@@ -26,10 +156,10 @@ const HexagonBackground = () => {
       }
     };
 
-    window.addEventListener('wheel', preventZoom, { passive: false });
+    window.addEventListener("wheel", preventZoom, { passive: false });
 
     return () => {
-      window.removeEventListener('wheel', preventZoom);
+      window.removeEventListener("wheel", preventZoom);
     };
   }, []);
 
@@ -63,9 +193,10 @@ const HexagonBackground = () => {
         shouldRunAnimation = true;
       }
       if (!shouldRunAnimation) return; // Stop animation
-      p.background(25);
+      p.background(colors[0]);
+      console.log("color: ",colors[0]);
       p.frameRate(6);
-        // Update stroke weight based on a time-dependent pattern
+      // Update stroke weight based on a time-dependent pattern
       if (increasing) {
         currentStrokeWeight += 0.1; // Adjust the rate of increase as needed
         if (currentStrokeWeight >= maxStrokeWeight) {
@@ -109,7 +240,12 @@ const HexagonBackground = () => {
             const maxDist = blob.radius + R * 2.0; // Adjust the factor as needed
             const opacity = p.map(d, 0, maxDist, 50, 0); // Adjust values as needed
             // Set the stroke opacity for the hexagon
-            p.stroke(p.red(blob.color), p.green(blob.color), p.blue(blob.color), opacity);
+            p.stroke(
+              p.red(blob.color),
+              p.green(blob.color),
+              p.blue(blob.color),
+              opacity
+            );
             hexagon(p, x, y, R);
             hexagon(p, x + x_offset, y + y_offset, R);
           }

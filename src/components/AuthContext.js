@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 // Create a context
 const AuthContext = createContext();
@@ -9,6 +10,7 @@ export function AuthProvider({ children }) {
   const [userRole, setUserRole] = useState(() => {
     return sessionStorage.getItem('userRole') || null;
   });
+  const [currentUser, setCurrentUser] = useState(null);
 
   // Whenever userRole changes, update it in local storage
   useEffect(() => {
@@ -19,10 +21,19 @@ export function AuthProvider({ children }) {
     }
   }, [userRole]);
 
-  // The value that will be given to the context
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      setCurrentUser(user);
+    });
+
+    return unsubscribe; // Unsubscribe on unmount
+  }, []);
+
   const authContextValue = {
     userRole,
     setUserRole,
+    currentUser,
   };
 
   return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;

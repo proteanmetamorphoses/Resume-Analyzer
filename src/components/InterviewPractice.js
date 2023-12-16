@@ -482,7 +482,7 @@ const InterviewPractice = () => {
         // Set a timeout to revert the color back after 250ms
         setTimeout(() => {
           button.style.backgroundColor = ""; // Revert to the initial color
-          button.textContent = "Start Listening.";
+          button.textContent = "Start Listening";
         }, 1500);
       }
 
@@ -655,22 +655,9 @@ const InterviewPractice = () => {
       </div>
       <h1 className="Main-Header">Advanced Interview</h1>
       <h2 className="Main-Header">Practice Interviewing with AI</h2>
-      <h4 className="instruct1">
-        Connect your microphone for speech practice.
-      </h4>
       <div className="interviewTipsCard">
         <InterviewTips />
       </div>
-      <h3 className="instruct1">Click the Interviewer below to start.</h3>
-      <h4 className="instruct1">Double-click to hear each statement.</h4>
-      <h3 className="instruct1">
-        Click the buttons below the interviewer to navigate the interview
-        dialogue.
-      </h3>
-      <h4 className="instruct1">
-        Move forwards and backwards in the dialogue to add more submissions to
-        questions asked.
-      </h4>
       <div className="VoiceBot-container">
         <VoiceBotIframe />
         <div className="VBButtons">

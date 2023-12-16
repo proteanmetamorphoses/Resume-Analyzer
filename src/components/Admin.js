@@ -5,7 +5,17 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto"; // Import Chart.js
 import { db } from "../utils/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDoc,
+  setDoc,
+  getDocs,
+} from "firebase/firestore";
+import { useColorMode } from "../ColorModeContext";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,11 +30,12 @@ import zoomPlugin from "chartjs-plugin-zoom";
 import HexagonBackground from "./HexagonBackground";
 import { useNavigate } from "react-router-dom";
 import LogoutLink from "./LogoutLink";
-import { useAuth } from './AuthContext';
+import { useAuth } from "./AuthContext";
 
 function Admin() {
   const [questions, setQuestions] = useState([]);
   const [user, setUser] = useState(null);
+  const { colorMode, changeColorMode } = useColorMode();
   const navigate = useNavigate();
   const [selectedQuestion, setSelectedQuestion] = useState("");
   const { userRole } = useAuth();
@@ -69,14 +80,14 @@ function Admin() {
     scales: {
       y: {
         grid: {
-          color: 'rgba(0, 255, 0, 0.3)',
-          borderColor: 'green',
+          color: "rgba(0, 255, 0, 0.3)",
+          borderColor: "green",
           borderDash: [5, 5],
           lineWidth: 2,
           drawBorder: true,
           drawOnChartArea: true,
           drawTicks: true,
-          tickColor: 'green',
+          tickColor: "green",
           tickLength: 10,
         },
         ticks: {
@@ -90,14 +101,14 @@ function Admin() {
       },
       x: {
         grid: {
-          color: 'rgba(255, 0, 0, 0.3)',
-          borderColor: 'red',
+          color: "rgba(255, 0, 0, 0.3)",
+          borderColor: "red",
           borderDash: [3, 3],
           lineWidth: 1,
           drawBorder: true,
           drawOnChartArea: true,
           drawTicks: true,
-          tickColor: 'red',
+          tickColor: "red",
           tickLength: 8,
         },
         ticks: {
@@ -146,7 +157,7 @@ function Admin() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    if (userRole !== "admin"){
+    if (userRole !== "admin") {
       navigate("/Dashboard");
     }
     return unsubscribe; // Cleanup subscription on unmount
@@ -234,32 +245,77 @@ function Admin() {
 
   const InterViewPractice = () => {
     // Navigate to the InterviewPractice page
-    navigate('/interview-practice');
+    navigate("/interview-practice");
+  };
+
+  const changeColor = async () => {
+    if (!user || !user.uid) {
+      console.error('user or user.uid is undefined');
+      return;
+    }
+
+    const newColorMode = colorMode >= 8 ? 0 : colorMode + 1;
+    console.log(newColorMode);
+    // Reference to the user's color mode document
+    const colorModeRef = doc(db, "users", user.uid, "userColorMode", "colorDocument");
+    // Try to get the document
+    const docSnap = await getDoc(colorModeRef);
+    // Check if the document exists
+    if (!docSnap.exists()) {
+      // If it doesn't exist, create it with the initial color mode
+      await setDoc(colorModeRef, { colorMode: newColorMode });
+    } else {
+      // If it exists, update the color mode
+      await updateDoc(colorModeRef, { colorMode: newColorMode });
+    }
+  
+    changeColorMode(newColorMode);
   };
 
   return (
     <div className="admin-section">
-      <div className="background-container">
-        <HexagonBackground />
-      </div>
-      <h1 className="Main-Header">Advanced Resume</h1>
-      <h3 className="Main-Header">
-        Select an interview question for practice statistics.
-      </h3>
-      <h3 className="SelectQuestion">Interview Question:</h3>
-      <select className="SelectQuestionDevice" onChange={handleQuestionChange}>
-        {questions.map((question, index) => (
-          <option key={index} value={question} className="question">
-            {question}
-          </option>
-        ))}
-      </select>
-      <div className="QuestionData" style={{ height: "300px", width: "80%" }}>
-        <Line data={chartData} options={options} />
+      <div>
+        <h1 className="Main-Header">Advanced Career</h1>
+        <h3 className="Main-Header">Admin</h3>
+        <div className="AdminTools">
+          <div className="AdminTools-Question-Chart">
+            <h3 className="SelectQuestion">Interview Question:</h3>
+            <select
+              className="SelectQuestionDevice"
+              onChange={handleQuestionChange}
+            >
+              {questions.map((question, index) => (
+                <option key={index} value={question} className="question">
+                  {question}
+                </option>
+              ))}
+            </select>
+            <div
+              className="QuestionData"
+              style={{ height: "300px", width: "50%" }}
+            >
+              <Line data={chartData} options={options} />
+            </div>
+          </div>
+          <div className="Tools-Holder">
+            <div className="ColorChanger">
+              <h4 className="ColorChanger-Title">Color Theme</h4>
+              <button className="ColorChanger-Button" onClick={changeColor}>
+                Change Color Theme {colorMode}
+              </button>
+            </div>
+            <div className="Empty-Drawer"></div>
+          </div>
+        </div>
+        <div className="background-container">
+          <HexagonBackground />
+        </div>
       </div>
       <nav className="logout-nav">
         <button onClick={Dashboard}>Dashboard</button>
-        <button className="interView" onClick={InterViewPractice}>Interview Practice</button>
+        <button className="interView" onClick={InterViewPractice}>
+          Interview Practice
+        </button>
         <LogoutLink />
       </nav>
     </div>
