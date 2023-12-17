@@ -135,9 +135,6 @@ const HexagonBackground = () => {
     setColors(allColors[mode]);
   }, [localColorMode, allColors]);
   
-console.log("defaultColorMode: ", defaultColorMode,"localColorMode: ", localColorMode,);
-  
-
   const hexagon = (p, x, y, r) => {
     p.beginShape(p.LINES);
     let angle = (2 * p.PI) / 6 / 2;
@@ -194,7 +191,6 @@ console.log("defaultColorMode: ", defaultColorMode,"localColorMode: ", localColo
       }
       if (!shouldRunAnimation) return; // Stop animation
       p.background(colors[0]);
-      console.log("color: ",colors[0]);
       p.frameRate(6);
       // Update stroke weight based on a time-dependent pattern
       if (increasing) {

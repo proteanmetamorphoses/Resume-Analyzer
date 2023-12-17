@@ -157,9 +157,9 @@ function Admin() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    if (userRole !== "admin") {
+    /*if (userRole !== "admin") {
       navigate("/Dashboard");
-    }
+    }*/
     return unsubscribe; // Cleanup subscription on unmount
   }, [navigate, userRole]);
 
@@ -255,7 +255,6 @@ function Admin() {
     }
 
     const newColorMode = colorMode >= 8 ? 0 : colorMode + 1;
-    console.log(newColorMode);
     // Reference to the user's color mode document
     const colorModeRef = doc(db, "users", user.uid, "userColorMode", "colorDocument");
     // Try to get the document
@@ -292,14 +291,14 @@ function Admin() {
             </select>
             <div
               className="QuestionData"
-              style={{ height: "300px", width: "50%" }}
+              style={{ height: "300px", width: "70%" }}
             >
               <Line data={chartData} options={options} />
             </div>
           </div>
           <div className="Tools-Holder">
             <div className="ColorChanger">
-              <h4 className="ColorChanger-Title">Color Theme</h4>
+              <h3 className="ColorChanger-Title">Color Theme</h3>
               <button className="ColorChanger-Button" onClick={changeColor}>
                 Change Color Theme {colorMode}
               </button>
