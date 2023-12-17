@@ -97,7 +97,7 @@ function Login() {
         <HexagonBackground />
       </div>
       <h1 className="header-title">Advanced Career</h1>
-      <form onSubmit={handleLogin}>
+      <form className="Login-Input" onSubmit={handleLogin}>
         <input
           type="email"
           placeholder="Email"

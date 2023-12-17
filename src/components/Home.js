@@ -18,10 +18,10 @@ const LandingPage = () => {
       <h1 className="header-title">Advanced Career</h1>
       <p className="tagline">Targeted, relevant content shows your quality.</p>
       <p className="tagline">
-        Make your resume glow with powerful AI content enhancements.
+        Shape your resume with powerful AI content enhancements.
       </p>
       <p className="tagline">
-        Make your interview stand out with professional language suggestions.
+        Professionalize your interview with engaging AI language suggestions.
       </p>
       <button onClick={goToLogin} className="cta-button">
         Get Started

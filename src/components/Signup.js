@@ -53,7 +53,7 @@ function Signup() {
         <HexagonBackground />
       </div>
       <h1 className="supheader-title">Advanced Career</h1>
-      <form onSubmit={handleSignup}>
+      <form className="SignUp-Input" onSubmit={handleSignup}>
         <input
           type="email"
           placeholder="Email"

@@ -49,7 +49,7 @@ const InterviewPractice = () => {
   useEffect(() => {
     // Update the count of questions whenever qaPairs changes
     setQuestionsCount(qaPairs.length - 1);
-  }, [qaPairs]);
+  }, [qaPairs, questionsCount]);
 
   useEffect(() => {
     if (sequence.length === 0) {
@@ -339,6 +339,7 @@ const InterviewPractice = () => {
   const handleSubmit = () => {
     console.log("qaPairs on Add to Submit: ", qaPairs);
     if (shouldBlockAnswer()) {
+      console.log("Submit blocked.");
       return;
     }
 
@@ -393,10 +394,11 @@ const InterviewPractice = () => {
           charRatio: calculateCharRatio(typedChars, spokenChars),
         });
       }
-
+      console.log("Answer received and submitted.", updatedQAPairs);
       return updatedQAPairs;
     });
-
+    console.log(qaPairs);
+    console.log("questionsCount: ", questionsCount);
     // Reset for next input
     setTypedChars(0);
     setSpokenChars(0);
@@ -451,13 +453,18 @@ const InterviewPractice = () => {
   const resetInterview = () => {
     setVoiceBotState((prevState) => ({
       ...prevState,
-      audioFileIndex: 0,
+      audioFileIndex: -1,
       voiceBotText: "", // Reset voiceBotText to an empty string
       combinedText: "",
       prevCombinedText: "",
     }));
-    setQAPairs([]); // Reset the question-answer pairs
-    setQuestionsCount(0); // Reset the questions count
+    var iframeWindow = document.getElementById("theBot").contentWindow;
+    iframeWindow.postMessage(
+      sequence[0],
+      "https://voicebot.ispeakwell.ca/"
+    );
+    
+    setQAPairs(initialQAPairs); // Reset the question-answer pairs
     clearTextArea(); // Clear the text area if needed
     setShowSubmitButton(false);
     window.scrollTo(0, 0); // Scroll to the top of the window

@@ -35,7 +35,7 @@
 
   .ColorChanger{
     display: flex;
-    width: 50%;
+    width: 55%;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;

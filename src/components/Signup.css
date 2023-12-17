@@ -68,3 +68,7 @@ subutton:hover {
   outline: none; /* Removing default outline, optional */
   cursor: pointer; /* Change cursor to indicate clickable item */
 }
+
+.SignUp-Input{
+  width: 50%;
+}
