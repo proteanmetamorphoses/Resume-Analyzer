@@ -39,6 +39,8 @@ function Admin() {
   const navigate = useNavigate();
   const [selectedQuestion, setSelectedQuestion] = useState("");
   const { userRole } = useAuth();
+  const [userIds, setUserIds] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState("");
   const [chartData, setChartData] = useState({
     labels: [], // for dates
     datasets: [
@@ -164,12 +166,33 @@ function Admin() {
   }, [navigate, userRole]);
 
   useEffect(() => {
+    async function fetchUserIds() {
+      if (userRole === 'admin') {
+        const usersCollection = collection(db, "users");
+        const userDocs = await getDocs(usersCollection);
+        const userIds = userDocs.docs.map((doc) => doc.id);
+        setUserIds(userIds);
+      }
+    }
+  
+    fetchUserIds();
+  }, [userRole]); // Add userRole as a dependency
+  
+
+  useEffect(() => {
     async function fetchData() {
-      if (selectedQuestion && user) {
+      let userIdToFetch = user && user.uid;
+
+      if (userRole === 'admin' && selectedUserId) {
+        userIdToFetch = selectedUserId;
+      }
+      console.log("userIdToFetch: ", userIdToFetch);
+
+      if (selectedQuestion && userIdToFetch) {
         const scoresByDate = {};
 
         const q = query(
-          collection(db, "users", user.uid, "userResponses"),
+          collection(db, "users", userIdToFetch, "userResponses"),
           where("questionText", "==", selectedQuestion)
         );
         const querySnapshot = await getDocs(q);
@@ -207,9 +230,13 @@ function Admin() {
         }));
       }
     }
+    if (user){
+      fetchData();
+    }
+    console.log("selectedQuestion: ", selectedQuestion, " selectedUserId: ", selectedUserId, " userRole: ", userRole, " user: ", user);
+  }, [selectedQuestion, selectedUserId, userRole, user]);
 
-    fetchData();
-  }, [selectedQuestion, user]);
+
 
   useEffect(() => {
     if (user) {
@@ -250,13 +277,19 @@ function Admin() {
 
   const changeColor = async () => {
     if (!user || !user.uid) {
-      console.error('user or user.uid is undefined');
+      console.error("user or user.uid is undefined");
       return;
     }
 
     const newColorMode = colorMode >= 8 ? 0 : colorMode + 1;
     // Reference to the user's color mode document
-    const colorModeRef = doc(db, "users", user.uid, "userColorMode", "colorDocument");
+    const colorModeRef = doc(
+      db,
+      "users",
+      user.uid,
+      "userColorMode",
+      "colorDocument"
+    );
     // Try to get the document
     const docSnap = await getDoc(colorModeRef);
     // Check if the document exists
@@ -267,7 +300,7 @@ function Admin() {
       // If it exists, update the color mode
       await updateDoc(colorModeRef, { colorMode: newColorMode });
     }
-  
+
     changeColorMode(newColorMode);
   };
 
@@ -278,7 +311,23 @@ function Admin() {
         <h3 className="Main-Header">Admin</h3>
         <div className="AdminTools">
           <div className="AdminTools-Question-Chart">
-            <h3 className="SelectQuestion">Interview Question:</h3>
+            {userRole === "admin" && (
+              <div className="AdminTools-SelectUserID">
+                <h3 className="SelectUserID">UserID:</h3>
+                <select
+                  className="Select-Device-UserID"
+                  value={selectedUserId}
+                  onChange={(e) => setSelectedUserId(e.target.value)}
+                >
+                  {userIds.map((id) => (
+                    <option key={id} value={id} className="selectUserID">
+                      {id}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+            <h3 className="SelectQuestion">Interview Question</h3>
             <select
               className="SelectQuestionDevice"
               onChange={handleQuestionChange}
@@ -291,7 +340,7 @@ function Admin() {
             </select>
             <div
               className="QuestionData"
-              style={{ height: "300px", width: "70%" }}
+              style={{ height: "300px", width: "99%" }}
             >
               <Line data={chartData} options={options} />
             </div>
@@ -300,7 +349,7 @@ function Admin() {
             <div className="ColorChanger">
               <h3 className="ColorChanger-Title">Color Theme</h3>
               <button className="ColorChanger-Button" onClick={changeColor}>
-                Change Color Theme {colorMode}
+                Change Color Theme {colorMode + 1}
               </button>
             </div>
             <div className="Empty-Drawer"></div>

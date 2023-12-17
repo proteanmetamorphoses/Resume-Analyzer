@@ -445,7 +445,6 @@ function Dashboard() {
     const textElement = document.getElementById("voiceBotTextElement");
     if (textElement) {
       textElement.textContent = text;
-      console.log("VoiceBot says: ", text);
     }
   }
 
@@ -641,11 +640,11 @@ function Dashboard() {
           />
           <div>
           <h4 className="instruct1">Click a document to view</h4>
-          <button onClick={hideResumes}>Hide Resumes</button>
+          <button onClick={hideResumes}>Hide Files</button>
           </div>
         </div>
       ) : (
-        <button onClick={showResumes}>Show Resumes</button>
+        <button onClick={showResumes}>Show</button>
       )}
       <div className="jobOps">
         <h3 className="Main-Header">Search Job Opportunities</h3>
