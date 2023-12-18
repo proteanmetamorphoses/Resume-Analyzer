@@ -5,7 +5,6 @@
   gap: 10px;
   width: 100%;
   padding: 10px;
-  background-color: #98989818;
   text-align: center;
   box-sizing: border-box;
   margin: 10px auto;
@@ -21,9 +20,10 @@
   border-radius: 4px;
   box-shadow: 3px 5px #3e397e61;
   padding: 5px;
-  background-color: #ebebeb;
+  background-color: #949494;
   text-align: center;
-  min-height: 100px;
+  max-width: 80px;
+  min-height: 120px;
   margin: 5px;
   overflow: hidden;
 }
@@ -47,7 +47,7 @@
 }
 
 .document-container .eScore {
-  font-size: 1.2rem; /* Adjust font size */
+  font-size: 0.9rem; /* Adjust font size */
 }
 
 @media (max-width: 1024px) {
@@ -65,6 +65,7 @@
 @media (max-width: 480px) {
   .document-container {
     flex: 0 1 calc(30% - 20px); /* Full width for very small screens */
+    
   }
 }
 
@@ -84,7 +85,7 @@
   width: 0;
   height: 0;
   border-top: 10px solid transparent; 
-  border-left: 10px solid #a7d2ff9b; 
+  border-left: 10px solid #4152649b; 
   z-index: 10; /* Place the tab above the card content */
 }
 
