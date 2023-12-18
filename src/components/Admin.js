@@ -405,7 +405,7 @@ function Admin() {
                 >
                   {userIds.map((id) => (
                     <option key={id} value={id} className="selectUserID">
-                      {id === user.uid ? ` * ${id}` : id}
+                      {id === user.uid ? ` * ${id}` : `~${id}`}
                     </option>
                   ))}
                 </select>
