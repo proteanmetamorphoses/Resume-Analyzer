@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./AnalysisSection.css";
+import { db } from "../utils/firebase"; // Assuming you have a firebase.js file for configuration
+import { doc, getDoc, setDoc } from "firebase/firestore"; // Import Firestore functions
+import { getAuth } from "firebase/auth"; // Import Firebase Auth
 
 function AnalysisSection({
   onSubmit,
@@ -14,6 +17,7 @@ function AnalysisSection({
   const [jobDescriptionTextCount, setJobDescriptionTextCount] = useState(0);
   const resumeTextAreaRef = useRef(null);
   const jobDescriptionTextAreaRef = useRef(null);
+  const auth = getAuth(); // Initialize Firebase Auth;
 
   useEffect(() => {
     if (resumeTextAreaRef.current) {
@@ -23,6 +27,53 @@ function AnalysisSection({
 
     setResumeTextCount(resumeText.length); // Update character count
   }, [resumeText]); // Dependency array includes resumeText
+
+  // Function to retrieve master resume from Firestore
+  const pullMasterResume = async () => {
+    console.log("Pulling Master Resume if available, blank otherwise.");
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("No user logged in");
+      return;
+    }
+    try {
+      const docRef = doc(db, "users", user.uid, "masterResumes", "resume");
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setResumeText(docSnap.data().resume);
+      } else {
+        console.log("No master resume found");
+      }
+    } catch (error) {
+      console.error("Error fetching master resume:", error);
+    }
+  };
+
+  // Function to save master resume to Firestore
+  const setMasterResume = async () => {
+    console.log("Setting Master Resume.");
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("No user logged in");
+      return;
+    }
+
+    if (!resumeText.trim()) {
+      console.log("Resume text is empty. Not saving.");
+      return;
+    }
+
+    try {
+      // Path: 'users/{userId}/masterResumes/resume'
+      // This creates/updates a document with ID 'resume' under the 'masterResumes' subcollection for each user.
+      const docRef = doc(db, "users", user.uid, "masterResumes", "resume");
+      await setDoc(docRef, { resume: resumeText });
+      console.log("Master resume saved/updated");
+    } catch (error) {
+      console.error("Error saving master resume:", error);
+    }
+  };
 
   const handleAnalyzeClick = () => {
     onSubmit(resumeText, jobDescriptionText);
@@ -126,7 +177,7 @@ function AnalysisSection({
           • Experience--What experience do you have satisfying the Job Description?
           • Skills--What skills do you possess to meet or exceed the Job description?
           • Certifications--Do you possess the necessary certifications and licensing?"
-            style={{ whiteSpace: "pre-line" }}
+          style={{ whiteSpace: "pre-line" }}
         />
         <p className="char-count">
           {getCharacterMessage(resumeTextCount, 15000)}
@@ -134,6 +185,18 @@ function AnalysisSection({
         <p className="char-count-left">
           {resumeTextCount} {resumeTextCount === 1 ? "character" : "characters"}
         </p>
+      </div>
+      <div className="MasterResume">
+        <div className="pullFromMaster">
+          <button className="pullMaster" onClick={pullMasterResume}>
+            Get Master Resume
+          </button>
+        </div>
+        <div className="AddtoMaster">
+          <button className="setMaster" onClick={setMasterResume}>
+            Set Master Resume
+          </button>
+        </div>
       </div>
       <div className="textarea-container">
         <h3>2. Job Description</h3>
