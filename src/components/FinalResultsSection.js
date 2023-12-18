@@ -141,7 +141,7 @@ function FinalResultsSection({
   return (
     <div className="final-results-section">
       <div>
-        <h3>Revised Resume</h3>
+        <h3 className="Revised-resume-header">Revised Resume</h3>
         <div className="revised-resume">
           {finalResume.split("\n").map((line, index) => (
             <React.Fragment key={index}>
@@ -151,8 +151,10 @@ function FinalResultsSection({
           ))}
         </div>
       </div>
-      <h3 className="ats-score-header">Revised Fit</h3>
-      <h3 className="revised-ats-score">{newEmployabilityScore}</h3>
+      <div>
+        <h3 className="ats-score-header">Revised Fit</h3>
+        <h3 className="revised-ats-score">{newEmployabilityScore}</h3>
+      </div>
       <div>
         <h3 className="cover-letter-header">Cover Letter</h3>
         <div className="cover-letter">
@@ -164,7 +166,7 @@ function FinalResultsSection({
           ))}
         </div>
       </div>
-      <input
+      <input className="Document-Title"
         type="text"
         placeholder="Enter title to save docx."
         value={title}
@@ -174,6 +176,7 @@ function FinalResultsSection({
         <button onClick={handleSave}>Save</button>
         <button onClick={handleDownload}>Download</button>
       </div>
+      <div className="ModalDiv">
       <Modal open={showErrorModal}>
         <div className="modal-content">
           <h3 className="modalH3">Just a moment...</h3>
@@ -182,6 +185,7 @@ function FinalResultsSection({
           <button onClick={() => setShowErrorModal(false)}>Abort Save</button>
         </div>
       </Modal>
+      </div>
     </div>
   );
 }

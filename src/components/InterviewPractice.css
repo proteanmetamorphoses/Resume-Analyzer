@@ -1,11 +1,10 @@
 .InterviewPractice {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 90vh;
-  padding-top: 5vh;
+  padding: 5vh 0;
   background-color: rgba(13, 13, 13, 0.172);
 }
 
@@ -37,20 +36,24 @@
 
 .userSpeech {
   color: white;
-  background-color: black; /* Set the background color to black */
+  background-color: black;
   border: 5px solid #2281df58;
   border-radius: 4px;
+  width: 100%; /* Adjust width as necessary */
+  height: 200px;
+  margin: 0 auto; /* Centralize the textarea */
+  padding: 20px;
+  word-wrap: break-word;
+  display: block; /* Ensure it's a block-level element */
+  box-sizing: border-box; /* Include padding and border in the width */
+}
+
+.UserControls{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 50%;
-  text-align: center; /* Center align the text */
-  border: 5px solid #2281df58;
-  border-radius: 4px;
-  margin: 0 auto;
   padding: 20px; 
-  word-wrap: break-word;
 }
 
 .SpeechRecButtons {
@@ -69,8 +72,9 @@
 }
 
 .StartListeningButton{
-  width:130px;
+  width:110px;
 }
+
 
 .submitAnswer{
   background-color: rgb(219, 138, 45);
@@ -105,18 +109,15 @@
 }
 
 .Idialog {
-  width: 95%;
-  margin: 5px;
+  width: 90%;
   padding: 0 0 10px;
+  font-size: 2.2vh;
 }
 
 .Udialog {
-  width: 95%;
-  margin: 5px;
+  width: 100%;
   text-align: left;
-  padding: 0 10px 0 10px;
   overflow-wrap: break-word;
-  word-break: break-all;
 }
 
 .openAIResponseBox{
@@ -143,7 +144,7 @@
 }
 
 .openAIResponseBoxTitle{
-  color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
   margin: 5px;
   text-align: left;
   padding: 0 10px 0 10px;
@@ -152,4 +153,27 @@
 .VoiceBot-container {
   border: 1px solid rgb(86, 180, 239);
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05) inset, 0px 0px 8px rgba(82, 168, 236, 0.6);
+}
+
+@media (max-width: 768px) {
+  .Interview-Answer-Box, .openAIResponseBox {
+    width: 80%; /* Adjust width for smaller screens */
+  }
+
+.SpeechRecButtons {
+    flex-direction: row; 
+  }
+  .StartListeningButton, .StpBttn, .submitAnswer, .clearButton{
+    font-size: 1.2vh;
+  }
+
+  .Udialog, .Idialog {
+    width: 100%; /* Adjust width for smaller screens */
+  }
+  .Idialog{
+    font-size: 2.2vh;
+  }
+  .Udialog{
+    font-size: 1.7vh;
+  }
 }

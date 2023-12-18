@@ -679,7 +679,7 @@ function Dashboard() {
       </div>
       <h1 className="Main-Header">Advanced Resume</h1>
       <h2 className="Main-Header">Revise Your Career Opportunities with AI</h2>
-      <h3 className="Main-Header">Previous Resumes</h3>
+      <h3 className="Main-Header">Saved Resumes</h3>
       {showPreviousWork ? (
         <div className="previous-work-section">
           <PreviousWorkSection
@@ -690,7 +690,7 @@ function Dashboard() {
           />
           <div className="HideButton">
             {documents.length === 0 ? (
-              <button  onClick={hideResumes}>Hide</button>
+              <button onClick={hideResumes}>Hide</button>
             ) : (
               <div className="HideButton">
                 <h4 className="instruct1">Click a document to view</h4>
@@ -797,29 +797,30 @@ function Dashboard() {
           />
         </div>
       )}
-
-      {!isAnalyzing &&
-        showFinalResults &&
-        (showVoiceBot ? (
-          <div className="VoiceBot-container">
-            <VoiceBotIframe />
-            <div className="VBButtons">
-              <button onClick={handleVBLastButtonClick}>Last</button>
-              <button onClick={handleVBNextButtonClick}>Next</button>
+      <div className="analysis-section">
+        {!isAnalyzing &&
+          showFinalResults &&
+          (showVoiceBot ? (
+            <div className="VoiceBot-container">
+              <VoiceBotIframe />
+              <div className="VBButtons">
+                <button onClick={handleVBLastButtonClick}>Last</button>
+                <button onClick={handleVBNextButtonClick}>Next</button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <button onClick={handleButtonClick}>Activate Resume Coach</button>
-        ))}
-      <div>
-        {!isAnalyzing && showFinalResults && showVoiceBot && (
-          <h2 id="voiceBotTextElement" className="VoiceBotText">
-            {voiceBotText}
-          </h2>
-        )}
+          ) : (
+            <button onClick={handleButtonClick}>Activate Resume Coach</button>
+          ))}
+        <div>
+          {!isAnalyzing && showFinalResults && showVoiceBot && (
+            <h2 id="voiceBotTextElement" className="VoiceBotText">
+              {voiceBotText}
+            </h2>
+          )}
+        </div>
       </div>
       {!isAnalyzing && showFinalResults && (
-        <div className="analysis-section">
+        <div className="finalResults-section">
           <FinalResultsSection
             finalResume={finalResume}
             coverLetter={coverLetter}

@@ -15,20 +15,20 @@ function DocumentModal({ coverLetter, resume, onClose, onRework, onDelete }) {
         <div className="documents-modal-container">
           <div className="document-modal-section">
             <h3>Cover Letter</h3>
-            <p>{coverLetter}</p>
+            <p className = "Cover-Letter">{coverLetter}</p>
           </div>
           <div className="document-modal-section">
             <h3>Resume</h3>
-            <p>{resume}</p>
+            <p className="Resume">{resume}</p>
           </div>
         </div>
         <div className="buttons-container">
-          <button className="DocModal" onClick={onRework}>Use Resume</button>
-          <button className="DocModal" onClick={handleDownload}>Download</button>
-          <button className="DocModal" onClick={onDelete} disabled={isDeleteDisabled}>
+          <button id = "Rework" className="DocModal" onClick={onRework}>Use Resume</button>
+          <button id = "Download" className="DocModal" onClick={handleDownload}>Download</button>
+          <button id = "Delete" className="DocModal" onClick={onDelete} disabled={isDeleteDisabled}>
             Delete
           </button>
-          <button className="DocModal" onClick={onClose}>Close</button>
+          <button id = "Close" className="DocModal" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>

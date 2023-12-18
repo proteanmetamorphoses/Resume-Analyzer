@@ -7,19 +7,24 @@
   width: 100%;
 }
 
-.missing-keywords,
-.revision-input {
-  width: 90%;
-  margin-bottom: 20px;
-  text-align: center;
+.missing-details{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
-.missing-keywords {
-  width: 50vw;
+.missing-keywords,
+.revision-input,
+.revision-textarea {
+  width: 90%; /* Adapt width to parent container */
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
   background-color: #f8f9fa;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .revision-section .missing-keywords ul {
@@ -29,16 +34,9 @@
 }
 
 .revision-textarea {
-  width: min-height;
   min-height: 300px;
-  margin-bottom: 20px;
-  padding: 10px;
-  padding-bottom: 50px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   resize: none;
   overflow-y: hidden; /* Hide scrollbar */
-  box-sizing: border-box;
 }
 
 .revision-section button {
@@ -57,16 +55,29 @@
   background-color: #0056b3;
 }
 
-h4,
-.Revision-Item {
+Revision-Headers, .Revision-Item {
   text-align: left;
 }
 
-.GifSpin2{
-  width: 20%;
+.GifSpin2 {
+  width: 50%; /* Adjust for responsiveness */
   margin-bottom: 30px;
+  max-width: 200px; /* Set a maximum width */
 }
 
 .Revision-Headers {
-  color: black;
+  color: rgb(255, 255, 255);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .GifSpin2 {
+    width: 70%; /* Larger on smaller screens */
+  }
+
+  .revision-textarea,
+  .missing-keywords,
+  .revision-input {
+    width: 100%; /* Full width on smaller screens */
+  }
 }

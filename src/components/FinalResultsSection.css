@@ -7,22 +7,26 @@
   text-align: center;
 }
 
-.final-results-section > div {
+.final-results-section > div,
+.ats-score-header,
+.cover-letter-header,
+.Revised-resume-header {
   margin-bottom: 20px;
   text-align: center;
 }
 
-h3 {
-  margin-top: 30px;
+.ats-score-header,
+.cover-letter-header,
+.Revised-resume-header {
+  font-size: 1.5rem;
 }
 
 .revised-resume,
 .cover-letter {
   box-sizing: border-box;
   display: block;
-  width: 50vw;
-  margin: auto;
-  margin-top: 30px;
+  width: 90%; /* Adjusted for better responsiveness */
+  margin: 30px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -32,7 +36,7 @@ h3 {
 
 .actions button {
   padding: 10px 20px;
-  margin: 10px 10px;
+  margin: 10px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -49,19 +53,25 @@ h3 {
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f8f9fa;
-  padding: 10px 10px 10px 10px;
+  padding: 10px;
   width: auto;
   margin: 0 auto;
   display: inline-block;
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
-.ats-score-header,
-.cover-letter-header {
-  margin-top: 80px;
+.ModalDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background-color: lemonchiffon;
   color: rgb(31, 30, 30);
   display: flex;
@@ -70,10 +80,37 @@ h3 {
   justify-content: center;
   text-align: center;
   padding: 20px;
-  width: 100%;
+  width: 80%; /* Adjusted for responsiveness */
+  max-width: 600px; /* Maximum width */
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.582);
 }
-.modalH3{
-  color: black;
+
+.modalH3 {
+  color: rgb(255, 255, 255);
 }
+
+.Document-Title {
+  width: 25%; /* Full width for smaller screens */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .revised-resume,
+  .cover-letter {
+    width: 100%; /* Full width on smaller screens */
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+  
+  .Document-Title {
+    width: 75%; /* Full width for smaller screens */
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+
+}
+

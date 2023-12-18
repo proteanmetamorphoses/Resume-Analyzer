@@ -82,6 +82,47 @@ button {
   cursor: pointer;
 }
 
+
 button:hover {
   background: #1565c0;
+}
+
+/* Responsive layout for larger screens */
+@media (min-width: 768px) {
+  .documents-modal-container {
+    flex-direction: row;
+  }
+  .document-modal-section {
+    flex: 1 1 45%; /* Adjust the flex basis to 45% */
+  }
+}
+
+/* Responsive layout for smaller screens */
+@media (min-width: 768px) {
+  .DocModal {
+    max-width: 200px; /* Set a maximum width for the buttons */
+    margin: 10px auto; /* Center the buttons with automatic margin */
+  }
+}
+@media (max-width: 767px) {
+  .documents-modal-container {
+    flex-direction: column;
+  }
+ 
+  .document-modal-section {
+    /* Add margin to separate the sections */
+    margin-bottom: 20px; 
+  }
+}
+
+/* Button container adjustments */
+.buttons-container {
+  padding: 0 20px; /* Add padding to prevent buttons from touching the edges */
+  flex-wrap: wrap; /* Wrap buttons if needed */
+}
+
+/* Button styling */
+.DocModal {
+  margin: 10px; /* Add margin to provide spacing between buttons */
+  flex: 1 0 auto; /* Allow buttons to grow and shrink as needed */
 }

@@ -728,7 +728,7 @@ const InterviewPractice = () => {
           {voiceBotState.voiceBotText}
         </h2>
       </div>
-      <div>
+      <div className="UserControls">
         <textarea
           ref={userSpeechRef}
           id="speech"
@@ -747,7 +747,7 @@ const InterviewPractice = () => {
             onClick={startListening}
             disabled={voiceBotState.isListening}
           >
-            Start Listening
+            Speak
           </button>
           <button
             className="StpBttn"
@@ -761,13 +761,14 @@ const InterviewPractice = () => {
             onClick={handleSubmit}
             disabled={shouldBlockAnswer()}
           >
-            Add Answer
+            Add
           </button>
-        </div>
-      </div>
-      <button className="clearButton" onClick={clearTextArea}>
+          <button className="clearButton" onClick={clearTextArea}>
         Clear
       </button>
+        </div>
+      </div>
+      
       {questionsCount > 0 && (
         <div className="Interview-Answer-Box">
           {qaPairs.map((pair, index) => (

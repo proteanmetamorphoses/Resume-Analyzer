@@ -4,7 +4,7 @@ import "./KeywordsList.css";
 
 const KeywordsList = ({ keywords, type }) => {
   return (
-    <div>
+    <div className="ResJDKeywords">
       <h3 className="keyTitles">
         {type === "resume" ? "Resume Keywords" : "Job Description Keywords"}
       </h3>

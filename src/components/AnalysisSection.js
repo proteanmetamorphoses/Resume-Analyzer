@@ -131,7 +131,6 @@ function AnalysisSection({
         <p className="char-count">
           {getCharacterMessage(resumeTextCount, 15000)}
         </p>{" "}
-        {/* Updated maxCount to 15000 */}
         <p className="char-count-left">
           {resumeTextCount} {resumeTextCount === 1 ? "character" : "characters"}
         </p>
@@ -149,7 +148,6 @@ function AnalysisSection({
         <p className="char-count">
           {getCharacterMessage(jobDescriptionTextCount, 5000)}
         </p>{" "}
-        {/* Updated maxCount to 5000 */}
         <p className="char-count-left">
           {jobDescriptionTextCount}{" "}
           {jobDescriptionTextCount === 1 ? "character" : "characters"}

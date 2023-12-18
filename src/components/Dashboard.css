@@ -2,7 +2,7 @@
   .VoiceBot-container {
     max-width: 90%; /* Adjust width for smaller screens */
   }
-  
+
   .previous-work-section {
     display: flex;
     flex-direction: column;
@@ -17,7 +17,7 @@
     box-sizing: border-box;
   }
 
-  .Previous-Resume-Work{
+  .Previous-Resume-Work {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -31,7 +31,8 @@
     box-sizing: border-box;
   }
 
-  .VBButtons, .previous-work-section {
+  .VBButtons,
+  .previous-work-section {
     flex-direction: column; /* Stack elements vertically on smaller screens */
   }
 }
@@ -50,7 +51,12 @@
 
 .custom-drawer .MuiDrawer-paper {
   color: white;
-  background-color: rgba(13, 13, 13, 0.172); /* Replace with your desired color */
+  background-color: rgba(
+    13,
+    13,
+    13,
+    0.172
+  ); /* Replace with your desired color */
 }
 
 .custom-menu-icon {
@@ -63,8 +69,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
   min-height: 100vh;
   padding-top: 5vh;
+  /* If needed, reset any default margins and paddings */
+  margin: 0;
+  padding: 0;
+}
+
+.finalResults-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 5vh;
+  /* If needed, reset any default margins and paddings */
+  margin: 0;
+  padding: 0;
 }
 
 .background-container {
@@ -82,7 +106,6 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 490px;
   height: auto;
   margin: auto;
   margin-bottom: 2.5%;
@@ -116,12 +139,13 @@
   margin-top: 5%;
 }
 
-h1, h2, h3, h4{
+h1,
+h2,
+h3,
+h4 {
   font-weight: bold; /* Adjust the font weight as needed */
   color: #fff; /* Text color */
-  text-shadow:
-    0 0 5px #000000, 
-    0 0 2px #ffffff;
+  text-shadow: 0 0 5px #000000, 0 0 2px #ffffff;
 }
 
 .logout-nav {
@@ -135,9 +159,8 @@ h1, h2, h3, h4{
   color: white;
 }
 
-
-
-.instruct1, .statMess {
+.instruct1,
+.statMess {
   text-align: center;
   color: white;
 }
@@ -195,4 +218,10 @@ h1, h2, h3, h4{
 /* Handle the hover state of the thumb */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@media (min-width: 768px) {
+  .VoiceBot-container {
+    max-width: 490px;
+  }
 }

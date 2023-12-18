@@ -49,7 +49,7 @@ const InterviewTips = () => {
 
   return (
     <div className="interviewTips">
-      <h3 className = "Instruct1">Interview Tips</h3>
+      <h3 className="Instruct1">Interview Tips</h3>
       {tips.length > 0 && (
         <div className="interviewTipBox">
           {renderTip(tips[currentTipIndex])}
