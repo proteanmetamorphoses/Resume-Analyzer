@@ -16,13 +16,13 @@ const LandingPage = () => {
         <HexagonBackground />
       </div>
       <h1 className="header-title">Advanced Career</h1>
-      <p className="tagline">Targeted, relevant content shows your quality.</p>
-      <p className="tagline">
+      <h3 className="tagline">Targeted, relevant content shows your quality.</h3>
+      <h3 className="tagline">
         Shape your resume with powerful AI content enhancements.
-      </p>
-      <p className="tagline">
+      </h3>
+      <h3 className="tagline">
         Professionalize your interview with engaging AI language suggestions.
-      </p>
+      </h3>
       <button onClick={goToLogin} className="cta-button">
         Get Started
       </button>

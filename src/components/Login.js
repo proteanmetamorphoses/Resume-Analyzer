@@ -121,12 +121,12 @@ function Login() {
         <img src={googleLogo} alt="Google sign-in" />
         Sign in with Google
       </button>
-      <p className = ".noAccount">
+      <h3 className = "noAccount">
         Don't have an account? <Link to="/signup" className="signup-link">Sign up</Link>
-      </p>
-      <p className = ".forgotPWD">
+      </h3>
+      <h3 className = "forgotPWD">
         Forgot your password? <Link to="/password-reset" className="pwReset-link">Reset it here</Link>
-      </p>
+      </h3>
     </div>
   );
 }

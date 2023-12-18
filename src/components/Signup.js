@@ -75,9 +75,9 @@ function Signup() {
         <button type="submit">Sign Up</button>
       </form>
       {error && <p className="error-message">{error}</p>}
-      <p className="link-text">
+      <h3 className="link-text">
         Already have an account? <Link className="LogLink" to="/login">Login</Link>
-      </p>
+      </h3>
     </div>
   );
 }

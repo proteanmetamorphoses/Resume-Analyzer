@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
+import {
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import PreviousWorkSection from "./PreviousWorkSection";
 import AnalysisSection from "./AnalysisSection";
 import ResultsSection from "./ResultsSection";
 import RevisionSection from "./RevisionSection";
 import FinalResultsSection from "./FinalResultsSection";
-import LogoutLink from "./LogoutLink";
+import { logout } from "../utils/firebase";
 import "./Dashboard.css";
 import axios from "axios";
 import { db } from "../utils/firebase";
@@ -106,6 +114,43 @@ function Dashboard() {
     const newJobDetails = `Company Name: ${companyName}\nLocation: ${location}\nVia: ${via}\nDescription: ${description}`;
     setReplacementJobDescription(newJobDetails);
   };
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setIsOpen(open);
+  };
+
+  const list = () => (
+    <div
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItemButton onClick={InterViewPractice}>
+          <ListItemText primary="Interview Practice" />
+        </ListItemButton>
+        <ListItemButton onClick={testResponses}>
+          <ListItemText primary="Test" />
+        </ListItemButton>
+        <ListItemButton onClick={resetDashboard}>
+          <ListItemText primary="Reset" />
+        </ListItemButton>
+        <ListItemButton onClick={admin}>
+          <ListItemText primary="Admin" />
+        </ListItemButton>
+        <ListItemButton onClick={Logout}>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </List>
+    </div>
+  );
 
   const fetchUserData = async () => {
     const auth = getAuth();
@@ -461,7 +506,9 @@ function Dashboard() {
     setAssessment("");
     setEmployabilityScore(0);
     setBestPossibleJob("");
-    setResumeText("Steven Kurowski 10205 100 Avenue NW Edmonton, Alberta, T5J 4B5 587-785-8413 Work Experience: Job Coach Technology North, Edmonton, AB Nov 2018 – Jul 2023 Additional duties as required: Trainer, Process Development, Software Prototype Development, Project Coordinator, Software Tester, Marketing Materials Development, Performer in “Cliff20”, Operations, OHS Program Implementation, HR Duties, Commercialization Associate Developed a highly efficient team of skilled autistic business document digitizers completing caches of documents totaling 1,500+ archive boxes worth nearly $1M+ with no page loss. Ensured the first and last moments of contact with all autistic employees were positive, improving the likelihood of returning to work and persisting during tough work periods, maintaining 100% employee retention. Trained three job coaches to manage autistic document digitizers and handle work quality issues while minimizing team member breakdowns during challenging moments. Developed document digitization tasks and procedures to maximize productivity, quality, and ease of archive box movement between clients and the digitization centre. Managed client accounts and account change process management, providing client training to sustain the efficient movement of their documents through the evolving TN-client processes. Produced marketing materials and copy to attract clients to document digitization and autism employment, realizing $1M in document digitization revenue. Produced and performed in numerous corporate video materials marketing autism employment and digitization service (https://www.technologynorth.net/press) and a documentary, “Cliff 20: A Future on the Spectrum” (YouTube: Zi3Bd4bC_k4). Wrote and co-wrote numerous winning requests for proposal (RFP; >=$1M total) including a winning proposal for the Youth Employment Skills Strategy (YESS) grant, earning the principal applicant $8M to produce the Autism Can Tech! (ACT!) program at NorQuest College. Utilized Microsoft Excel VBA to create the working prototype of the TN RoboCoach platform called the Technology North Digital Services (TNDS) module, enabling autistic employees to perform and manage high quality document digitization productively and with superb quality. Initiated the implementation of the TN Occupational Health and Safety program, leading to the entire TN team developing awareness of their rights and duties to maintain a safe workspace, their own health and safety, and that of others at work. Daily scrum project coordinator managing the in-situ development of RoboCoach, TNDS module, and QA Testing module software through requirement generation and testing, assisting the transition of software prototypes from Microsoft Excel versions to functional web versions with the software development team. Trained an overseas company in the use of RoboCoach software, particularly the TNDS module, to perform document digitization, via Zoom. Set up physical server spaces and assisted the resolution of client server issues. Onboarded and trained a new client team in the use of TN’s ActiveCare software platform. Scheduled and managed numerous in-office corporate meetings, events, and interviews, leading to the effective development of TNDS and QA Testing modules, positive interviewing, efficient training, and impressed clients and visitors. Revised TN ActiveCare software documentation per each update period. General office management. Parking Patroller Impark, Edmonton, AB Feb 2017 – Nov 2018 Encouraged parkers to purchase monthly parking passes or daily parking tickets. Discouraged 24,000 scofflaw parkers from parking without paying through targeted ticketing, reducing scofflaw parking by more than 80% on downtown Edmonton lots in all weather at all temperatures without fail. Assisted parkers to understand how parking machines functioned and what the parking rules were to prevent unwanted scofflaw activity. Handled angry scofflaw issues with 95% success. Instructor (Online) Verbling (Online) Edmonton, AB Sep 2016 – Nov 2018 Met learners one-on-one in online language training sessions leveraging the power of multiple web technologies on and adjacent to the Verbling platform. Developed curricula and training materials that led 65 consistently returning web-based learners to attain significant IELTS, TOEFL, and TOEIC exam outcome improvements for college, employment, or immigration. Instructor, A’Sharqiyah University, Oman Sep 2012 – Sep 2016 Additional positions or duties as required: Department Coordinator (Advanced Learner Level, Exams and Testing, Scheduling), Quality Assurance Chair Developed engaging course materials to immerse Arabic-speaking learners of English to college-level preparedness for program entry: grammar, speaking, reading, writing, listening, and technical writing. Wrote, proctored, edited, and assessed 400 learners’ examinations across seven ESL courses as Examination Coordinator each semester. Advanced-level Coordinator for English department, managing the challenges teachers and learners face interacting with one another, the texts, the curriculum, and the intercultural exchanges, ensuring fair play, accountability, and credibility amongst colleagues and learners. Exam and Testing Coordinator: oversaw the creation of semester quiz and examination materials development, developing or participating in the development of 1,344 quizzes and examinations across 4 levels from task inception to final grade submission. Generated teaching schedules for 1,200 learners and 35 teachers for four semesters, developing a quiz and examination bank from which future exam developers can effectively and efficiently build new testing materials. Created a prototype Excel dashboard to capture learner grades from each teacher through their respective coordinator to maintain final grade sheet consistency and correctness saving the department and instructors days of vacation delay at the end of each semester. Developed a Quality Assurance module within the Grades dashboard to capture departmental KPIs for each course across numerous levels from beginner to advanced (pre-college) and college level courses, saving the department weeks per semester in preparation time. Quality Assurance Chair for the pre-college English department, establishing the department’s participation in and assisting the University’s handling and management of Quality Assurance for accreditation in Oman. Completed 3 internal mixed-methods (quantitative & qualitative etc.) research projects, increasing team knowledge retention by 500%, improving department health by identifying pain points and reducing burnout by 50% utilizing questionnaires and interviews as principal materials, and deploying semester project management in the General Foundation English program to increase learner results by 35% per semester, approximately one-half point on the IELTS exam. Increased the English fluency and general linguistic proficiency by 85% through direct language instruction and assessment of over 2,000 students at all levels from beginning through college. Developed multiple draft department budgets and reports, academic papers, memos, agendas, and other important documentation highlighting the remarkable challenges overcome and the improvements realized over four years. Provided IELTS and other English training services to community members. Instructor Various contracts: TELUS, Taleo, SPVQ, Quebec, QC Oct 2011 – Sep 2012 Developed and delivered engaging course materials to immerse adult French-speaking learners of English into work readiness to manage discourses and larger events in English. Coached 24 corporate executives to develop greater confidence in their capabilities to listen to, comprehend, and to speak English and to understand intuitively when their interlocutor has lost their meaning. 6 participants attained favorable job performance reviews based on English training reviews and later practice leading to promotion. Customer Service Lee Valley Tools, Vancouver, BC Nov 2010 – Apr 2011 Customer account and product assistant, establishing a warm atmosphere for successful product purchase. Signed up new customers for client accounts and assisted clients to understand how Lee Valley Tools ordering works, maintaining a 99% sales rate with new and returning clients. Received new stock and placed new stock into the proper bin location with zero error. Ensured the cleanliness and safety of the stock room. Maintained the general cleanliness and organization of the tool showroom. Instructor Korea Polytechnic University, Seoul, Korea Aug 2009 – Aug 2010 Developed and delivered engaging course materials to immerse adult Korean university students of English to work-level preparedness. Presented a popular standing-room-only cultural awareness seminar twice per year. Developed curricula for and taught a drama-based English summer course to focus on fluency techniques in real time outside of typical English course training. Provided learners with speaking workshops and “cafes” to enhance their English-speaking fluency. Instructor YBM, Seoul, Korea May 2009 – July 2009 Developed and delivered engaging course materials to immerse adult Korean-speaking learners of English to prepare for work-level English speaking opportunities. Materials Developer Topia Education, Seoul, Korea Apr 2008– Apr 2009 Wrote and published a master-level English writing textbook aimed at enhancing learners’ understanding of the structural and functional elements of writing at a high level. Edited vocabulary, grammar, and reading textbooks. Assisted in the development of institute curriculum. Created multiple choice question-answer sets to match Discovery Channel English video series. Instructor Chungdahm English Academy, Seoul, Korea Aug 2007 – Mar 2008 Developed and delivered engaging course materials to immerse young Korean-speaking learners of English to be prepared for high school entrance exams. Television Instructor Education Broadcasting System Sep 2007 – Apr 2008 Performed as the “Director” of the “English Factory”, a fictitious business where English fluency is the product, and the viewers are the receivers of the “Factory” products. Edited scripts and proposed changes to handle linguistic and intercultural discrepancies with clarity and dignity. Instructor Pagoda Foreign Language Academy, Seoul, Korea Jul 2005 – Jul 2007 Developed and delivered engaging course materials to immerse adult Korean-speaking learners of English to prepare for work-level English speaking, reading, and writing opportunities. Created a popular weekend class focusing on using drama techniques to increase learners’ confidence to speak English by 200%. Improved the Advanced-level Pagoda courses by creating an Advanced textbook filled with learner-centric activities at L1-English level to provide greater challenge to learners, expanding Advanced learner retainment by 800% with the addition of 8 more Advanced-level classes. Maintained a 95% satisfaction rate with learners. Barista Starbucks, Abbotsford, BC Oct 2004 – Jul 2005 Delivered exceptional products to clients in a high-paced location with unparalleled rapidity and with 99% accuracy. Learned the full Starbucks Coffee menu in terms of both the drink recipe menu and the coffee type, grind, and origin offerings. Provided exceptional service to customers with 100% satisfaction. Ensured a clean lobby and restrooms for optimal customer comfort. Tutor University of the Fraser Valley, Abbotsford, BC Sep 2004 – Apr 2005 Assisted novice learners to adapt to challenging remedial and college course requirements. Provided learners with understanding of how to operate PCs and navigate the world wide web. Edited learner writing assignments and helped 55 students improve their grades on written work by more than 20% through simple writing techniques. Landscaper Para Space Landscaping, Vancouver, BC Jun 2001 – Sep 2004 Managed the lawn care of multiple large multi-unit strata locations around the Greater Vancouver Regional District. Trained new landscapers to handle the workload efficiently to keep pace with weekly maintenance schedules. Scheduled and handled the removal of refuse plant materials from client sites to GVRD dumping locations. Ensured motorized tools were consistently in excellent condition and ready to run immediately upon arrival. Consistently completed landscaping tasks with time to spare for additional tasks. Maintained lawn mowing efficiency 40% higher than average crew members. Education: ComIT React Front End Web Development, Remote, 2023, Apply principles of HTML, CSS, and JavaScript to create React components and websites focusing on authentication, backend data management.  University of Exeter, UK Master of Education 2016 University of Birmingham, UK Master of Applied Linguistics 2011 University of the Fraser Valley, BC Bachelor of English Literature 2005 University of the Fraser Valley, BC Associate of Arts, Theatre 2000 Sardis Senior Secondary School, BC Certificate of Graduation 1993 Skills: Scheduling, Instruction and testing, Requests for Proposal writing, Microsoft Excel, Word, PowerPoint A/V capture and editing, Research and development, Training curricula development, Document handling and digitization, Programming Languages: VBA, JavaScript, HTML5, CSS3, Python, Java, C++, React framework Volunteer Experience: Project Adult Literacy Society Instructor for English Language Learners Oct 2022 – Apr 2023 Wheels Across Canada Cycle Tour Fundraiser for Cancer Research Apr 2011 – Oct 2011");
+    setResumeText(
+      "Steven Kurowski 10205 100 Avenue NW Edmonton, Alberta, T5J 4B5 587-785-8413 Work Experience: Job Coach Technology North, Edmonton, AB Nov 2018 – Jul 2023 Additional duties as required: Trainer, Process Development, Software Prototype Development, Project Coordinator, Software Tester, Marketing Materials Development, Performer in “Cliff20”, Operations, OHS Program Implementation, HR Duties, Commercialization Associate Developed a highly efficient team of skilled autistic business document digitizers completing caches of documents totaling 1,500+ archive boxes worth nearly $1M+ with no page loss. Ensured the first and last moments of contact with all autistic employees were positive, improving the likelihood of returning to work and persisting during tough work periods, maintaining 100% employee retention. Trained three job coaches to manage autistic document digitizers and handle work quality issues while minimizing team member breakdowns during challenging moments. Developed document digitization tasks and procedures to maximize productivity, quality, and ease of archive box movement between clients and the digitization centre. Managed client accounts and account change process management, providing client training to sustain the efficient movement of their documents through the evolving TN-client processes. Produced marketing materials and copy to attract clients to document digitization and autism employment, realizing $1M in document digitization revenue. Produced and performed in numerous corporate video materials marketing autism employment and digitization service (https://www.technologynorth.net/press) and a documentary, “Cliff 20: A Future on the Spectrum” (YouTube: Zi3Bd4bC_k4). Wrote and co-wrote numerous winning requests for proposal (RFP; >=$1M total) including a winning proposal for the Youth Employment Skills Strategy (YESS) grant, earning the principal applicant $8M to produce the Autism Can Tech! (ACT!) program at NorQuest College. Utilized Microsoft Excel VBA to create the working prototype of the TN RoboCoach platform called the Technology North Digital Services (TNDS) module, enabling autistic employees to perform and manage high quality document digitization productively and with superb quality. Initiated the implementation of the TN Occupational Health and Safety program, leading to the entire TN team developing awareness of their rights and duties to maintain a safe workspace, their own health and safety, and that of others at work. Daily scrum project coordinator managing the in-situ development of RoboCoach, TNDS module, and QA Testing module software through requirement generation and testing, assisting the transition of software prototypes from Microsoft Excel versions to functional web versions with the software development team. Trained an overseas company in the use of RoboCoach software, particularly the TNDS module, to perform document digitization, via Zoom. Set up physical server spaces and assisted the resolution of client server issues. Onboarded and trained a new client team in the use of TN’s ActiveCare software platform. Scheduled and managed numerous in-office corporate meetings, events, and interviews, leading to the effective development of TNDS and QA Testing modules, positive interviewing, efficient training, and impressed clients and visitors. Revised TN ActiveCare software documentation per each update period. General office management. Parking Patroller Impark, Edmonton, AB Feb 2017 – Nov 2018 Encouraged parkers to purchase monthly parking passes or daily parking tickets. Discouraged 24,000 scofflaw parkers from parking without paying through targeted ticketing, reducing scofflaw parking by more than 80% on downtown Edmonton lots in all weather at all temperatures without fail. Assisted parkers to understand how parking machines functioned and what the parking rules were to prevent unwanted scofflaw activity. Handled angry scofflaw issues with 95% success. Instructor (Online) Verbling (Online) Edmonton, AB Sep 2016 – Nov 2018 Met learners one-on-one in online language training sessions leveraging the power of multiple web technologies on and adjacent to the Verbling platform. Developed curricula and training materials that led 65 consistently returning web-based learners to attain significant IELTS, TOEFL, and TOEIC exam outcome improvements for college, employment, or immigration. Instructor, A’Sharqiyah University, Oman Sep 2012 – Sep 2016 Additional positions or duties as required: Department Coordinator (Advanced Learner Level, Exams and Testing, Scheduling), Quality Assurance Chair Developed engaging course materials to immerse Arabic-speaking learners of English to college-level preparedness for program entry: grammar, speaking, reading, writing, listening, and technical writing. Wrote, proctored, edited, and assessed 400 learners’ examinations across seven ESL courses as Examination Coordinator each semester. Advanced-level Coordinator for English department, managing the challenges teachers and learners face interacting with one another, the texts, the curriculum, and the intercultural exchanges, ensuring fair play, accountability, and credibility amongst colleagues and learners. Exam and Testing Coordinator: oversaw the creation of semester quiz and examination materials development, developing or participating in the development of 1,344 quizzes and examinations across 4 levels from task inception to final grade submission. Generated teaching schedules for 1,200 learners and 35 teachers for four semesters, developing a quiz and examination bank from which future exam developers can effectively and efficiently build new testing materials. Created a prototype Excel dashboard to capture learner grades from each teacher through their respective coordinator to maintain final grade sheet consistency and correctness saving the department and instructors days of vacation delay at the end of each semester. Developed a Quality Assurance module within the Grades dashboard to capture departmental KPIs for each course across numerous levels from beginner to advanced (pre-college) and college level courses, saving the department weeks per semester in preparation time. Quality Assurance Chair for the pre-college English department, establishing the department’s participation in and assisting the University’s handling and management of Quality Assurance for accreditation in Oman. Completed 3 internal mixed-methods (quantitative & qualitative etc.) research projects, increasing team knowledge retention by 500%, improving department health by identifying pain points and reducing burnout by 50% utilizing questionnaires and interviews as principal materials, and deploying semester project management in the General Foundation English program to increase learner results by 35% per semester, approximately one-half point on the IELTS exam. Increased the English fluency and general linguistic proficiency by 85% through direct language instruction and assessment of over 2,000 students at all levels from beginning through college. Developed multiple draft department budgets and reports, academic papers, memos, agendas, and other important documentation highlighting the remarkable challenges overcome and the improvements realized over four years. Provided IELTS and other English training services to community members. Instructor Various contracts: TELUS, Taleo, SPVQ, Quebec, QC Oct 2011 – Sep 2012 Developed and delivered engaging course materials to immerse adult French-speaking learners of English into work readiness to manage discourses and larger events in English. Coached 24 corporate executives to develop greater confidence in their capabilities to listen to, comprehend, and to speak English and to understand intuitively when their interlocutor has lost their meaning. 6 participants attained favorable job performance reviews based on English training reviews and later practice leading to promotion. Customer Service Lee Valley Tools, Vancouver, BC Nov 2010 – Apr 2011 Customer account and product assistant, establishing a warm atmosphere for successful product purchase. Signed up new customers for client accounts and assisted clients to understand how Lee Valley Tools ordering works, maintaining a 99% sales rate with new and returning clients. Received new stock and placed new stock into the proper bin location with zero error. Ensured the cleanliness and safety of the stock room. Maintained the general cleanliness and organization of the tool showroom. Instructor Korea Polytechnic University, Seoul, Korea Aug 2009 – Aug 2010 Developed and delivered engaging course materials to immerse adult Korean university students of English to work-level preparedness. Presented a popular standing-room-only cultural awareness seminar twice per year. Developed curricula for and taught a drama-based English summer course to focus on fluency techniques in real time outside of typical English course training. Provided learners with speaking workshops and “cafes” to enhance their English-speaking fluency. Instructor YBM, Seoul, Korea May 2009 – July 2009 Developed and delivered engaging course materials to immerse adult Korean-speaking learners of English to prepare for work-level English speaking opportunities. Materials Developer Topia Education, Seoul, Korea Apr 2008– Apr 2009 Wrote and published a master-level English writing textbook aimed at enhancing learners’ understanding of the structural and functional elements of writing at a high level. Edited vocabulary, grammar, and reading textbooks. Assisted in the development of institute curriculum. Created multiple choice question-answer sets to match Discovery Channel English video series. Instructor Chungdahm English Academy, Seoul, Korea Aug 2007 – Mar 2008 Developed and delivered engaging course materials to immerse young Korean-speaking learners of English to be prepared for high school entrance exams. Television Instructor Education Broadcasting System Sep 2007 – Apr 2008 Performed as the “Director” of the “English Factory”, a fictitious business where English fluency is the product, and the viewers are the receivers of the “Factory” products. Edited scripts and proposed changes to handle linguistic and intercultural discrepancies with clarity and dignity. Instructor Pagoda Foreign Language Academy, Seoul, Korea Jul 2005 – Jul 2007 Developed and delivered engaging course materials to immerse adult Korean-speaking learners of English to prepare for work-level English speaking, reading, and writing opportunities. Created a popular weekend class focusing on using drama techniques to increase learners’ confidence to speak English by 200%. Improved the Advanced-level Pagoda courses by creating an Advanced textbook filled with learner-centric activities at L1-English level to provide greater challenge to learners, expanding Advanced learner retainment by 800% with the addition of 8 more Advanced-level classes. Maintained a 95% satisfaction rate with learners. Barista Starbucks, Abbotsford, BC Oct 2004 – Jul 2005 Delivered exceptional products to clients in a high-paced location with unparalleled rapidity and with 99% accuracy. Learned the full Starbucks Coffee menu in terms of both the drink recipe menu and the coffee type, grind, and origin offerings. Provided exceptional service to customers with 100% satisfaction. Ensured a clean lobby and restrooms for optimal customer comfort. Tutor University of the Fraser Valley, Abbotsford, BC Sep 2004 – Apr 2005 Assisted novice learners to adapt to challenging remedial and college course requirements. Provided learners with understanding of how to operate PCs and navigate the world wide web. Edited learner writing assignments and helped 55 students improve their grades on written work by more than 20% through simple writing techniques. Landscaper Para Space Landscaping, Vancouver, BC Jun 2001 – Sep 2004 Managed the lawn care of multiple large multi-unit strata locations around the Greater Vancouver Regional District. Trained new landscapers to handle the workload efficiently to keep pace with weekly maintenance schedules. Scheduled and handled the removal of refuse plant materials from client sites to GVRD dumping locations. Ensured motorized tools were consistently in excellent condition and ready to run immediately upon arrival. Consistently completed landscaping tasks with time to spare for additional tasks. Maintained lawn mowing efficiency 40% higher than average crew members. Education: ComIT React Front End Web Development, Remote, 2023, Apply principles of HTML, CSS, and JavaScript to create React components and websites focusing on authentication, backend data management.  University of Exeter, UK Master of Education 2016 University of Birmingham, UK Master of Applied Linguistics 2011 University of the Fraser Valley, BC Bachelor of English Literature 2005 University of the Fraser Valley, BC Associate of Arts, Theatre 2000 Sardis Senior Secondary School, BC Certificate of Graduation 1993 Skills: Scheduling, Instruction and testing, Requests for Proposal writing, Microsoft Excel, Word, PowerPoint A/V capture and editing, Research and development, Training curricula development, Document handling and digitization, Programming Languages: VBA, JavaScript, HTML5, CSS3, Python, Java, C++, React framework Volunteer Experience: Project Adult Literacy Society Instructor for English Language Learners Oct 2022 – Apr 2023 Wheels Across Canada Cycle Tour Fundraiser for Cancer Research Apr 2011 – Oct 2011"
+    );
     setJobDescriptionText("");
     setIsRevising(false);
     setRevisionCompleted(false);
@@ -492,12 +539,17 @@ function Dashboard() {
     setShowPreviousWork(true);
   };
 
-  const hideResumes = () =>{
+  const hideResumes = () => {
     setShowPreviousWork(false);
-  }
+  };
 
   const admin = () => {
     navigate("/admin");
+  };
+
+  const Logout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   const testResponses = () => {
@@ -626,9 +678,7 @@ function Dashboard() {
         <HexagonBackground />
       </div>
       <h1 className="Main-Header">Advanced Resume</h1>
-      <h2 className="Main-Header">
-        Revise Your Career Opportunities with AI
-      </h2>
+      <h2 className="Main-Header">Revise Your Career Opportunities with AI</h2>
       <h3 className="Main-Header">Previous Resumes</h3>
       {showPreviousWork ? (
         <div className="previous-work-section">
@@ -638,14 +688,21 @@ function Dashboard() {
             onDocumentClick={handleDivClick}
             onDeleteDocument={handleDeleteDocument}
           />
-          <div>
-          <h4 className="instruct1">Click a document to view</h4>
-          <button onClick={hideResumes}>Hide Files</button>
+          <div className="HideButton">
+            {documents.length === 0 ? (
+              <button  onClick={hideResumes}>Hide</button>
+            ) : (
+              <div className="HideButton">
+                <h4 className="instruct1">Click a document to view</h4>
+                <button onClick={hideResumes}>Hide</button>
+              </div>
+            )}
           </div>
         </div>
       ) : (
         <button onClick={showResumes}>Show</button>
       )}
+
       <div className="jobOps">
         <h3 className="Main-Header">Search Job Opportunities</h3>
         <JobSearch
@@ -773,17 +830,25 @@ function Dashboard() {
       )}
 
       <nav className="logout-nav">
-        <button className="interView" onClick={InterViewPractice}>
-          Interview Practice
-        </button>
-        <button className="resetter" onClick={testResponses}>
-          Test
-        </button>
-        <button className="resetter" onClick={resetDashboard}>
-          Reset
-        </button>
-        <button onClick={admin}>Admin</button>
-        <LogoutLink />
+        {/* Hamburger Menu Icon */}
+        <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
+          <MenuIcon
+            style={{
+              boxShadow: "0 0 5px #000000, 0 0 2px #ffffff",
+              // Add additional styles if needed
+            }}
+          />
+        </IconButton>
+
+        {/* Drawer for Mobile View */}
+        <Drawer
+          anchor="left"
+          open={isOpen}
+          onClose={toggleDrawer(false)}
+          className="custom-drawer"
+        >
+          {list()}
+        </Drawer>
       </nav>
 
       {isModalOpen && (

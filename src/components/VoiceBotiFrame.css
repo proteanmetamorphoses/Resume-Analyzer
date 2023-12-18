@@ -1,6 +1,6 @@
 #wrap {
     width:100%;
-    height: 527px;
+    height: 450px;
     padding: 0;
     overflow: hidden;
 
@@ -25,8 +25,32 @@
 }
 
   
-  @media screen and (-webkit-min-device-pixel-ratio:0) {
-    #scaled-frame {
-      zoom: 1;
-    }
+
+ 
+@media (max-width: 480px) {
+  #wrap {
+    width:100%;
+    height: 330px;
+    padding: 0;
+    overflow: hidden;
+
   }
+  
+  #theBot {
+    width:235%;
+    height: 920px;
+    border: none;
+  }
+  
+    #theBot {
+      zoom: 0.7;
+      -moz-transform: scale(0.7);
+      -o-transform: scale(0.7);
+      -webkit-transform: scale(0.7);
+      transform: scale(0.51); /* Standard property */
+      -moz-transform-origin: 0 0;
+      -o-transform-origin: 0 0;
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0; /* Standard property */
+  }
+}

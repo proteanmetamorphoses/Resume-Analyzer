@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Papa from "papaparse";
+import {
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import "./Admin.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Line } from "react-chartjs-2";
@@ -29,7 +36,7 @@ import {
 import zoomPlugin from "chartjs-plugin-zoom";
 import HexagonBackground from "./HexagonBackground";
 import { useNavigate } from "react-router-dom";
-import LogoutLink from "./LogoutLink";
+import { logout } from "../utils/firebase";
 import { useAuth } from "./AuthContext";
 
 function Admin() {
@@ -37,6 +44,7 @@ function Admin() {
   const [user, setUser] = useState(null);
   const { colorMode, changeColorMode } = useColorMode();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = React.useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState("");
   const { userRole } = useAuth();
   const [userIds, setUserIds] = useState([]);
@@ -167,27 +175,57 @@ function Admin() {
 
   useEffect(() => {
     async function fetchUserIds() {
-      if (userRole === 'admin') {
+      if (userRole === "admin") {
         const usersCollection = collection(db, "users");
         const userDocs = await getDocs(usersCollection);
         const userIds = userDocs.docs.map((doc) => doc.id);
         setUserIds(userIds);
       }
     }
-  
+
     fetchUserIds();
   }, [userRole]); // Add userRole as a dependency
-  
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      let userIdToFetch = user && user.uid;
+
+      // For admins, use the selected user's ID
+      if (userRole === "admin" && selectedUserId) {
+        userIdToFetch = selectedUserId;
+      }
+
+      if (userIdToFetch) {
+        // Fetching userResponses collection for the specified user
+        const responsesQuery = query(
+          collection(db, "users", userIdToFetch, "userResponses")
+        );
+        const querySnapshot = await getDocs(responsesQuery);
+
+        // Extracting unique questions from the responses
+        const uniqueQuestions = new Set();
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          uniqueQuestions.add(data.questionText);
+        });
+
+        setQuestions(Array.from(uniqueQuestions));
+      }
+    }
+
+    if (user) {
+      fetchQuestions();
+    }
+  }, [user, selectedUserId, userRole]); // Dependencies updated
 
   useEffect(() => {
     async function fetchData() {
       let userIdToFetch = user && user.uid;
 
-      if (userRole === 'admin' && selectedUserId) {
+      if (userRole === "admin" && selectedUserId) {
         userIdToFetch = selectedUserId;
       }
-      console.log("userIdToFetch: ", userIdToFetch);
-
+      
       if (selectedQuestion && userIdToFetch) {
         const scoresByDate = {};
 
@@ -220,47 +258,92 @@ function Admin() {
 
         setChartData((prevChartData) => ({
           ...prevChartData,
-          labels: labels, // Assuming 'labels' is calculated in this effect
+          labels: labels,
           datasets: [
             {
               ...prevChartData.datasets[0],
-              data: data, // Assuming 'data' is calculated in this effect
+              data: data,
             },
           ],
         }));
       }
     }
-    if (user){
+    if (user) {
       fetchData();
     }
-    console.log("selectedQuestion: ", selectedQuestion, " selectedUserId: ", selectedUserId, " userRole: ", userRole, " user: ", user);
   }, [selectedQuestion, selectedUserId, userRole, user]);
 
-
-
   useEffect(() => {
-    if (user) {
-      async function fetchQuestions() {
-        const response = await fetch("/data/questions.csv");
-        const reader = response.body.getReader();
-        const result = await reader.read(); // raw array
-        const decoder = new TextDecoder("utf-8");
-        const csv = decoder.decode(result.value); // the CSV text
-        Papa.parse(csv, {
-          complete: (result) => {
-            setQuestions(result.data.flat());
-          },
-          header: false,
-        });
+    async function fetchQuestions() {
+      let userIdToFetch = user && user.uid;
+
+      if (userRole === "admin" && selectedUserId) {
+        userIdToFetch = selectedUserId;
       }
 
+      if (userIdToFetch) {
+        const responsesQuery = query(
+          collection(db, "users", userIdToFetch, "userResponses")
+        );
+        const querySnapshot = await getDocs(responsesQuery);
+
+        const uniqueQuestions = new Set();
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          uniqueQuestions.add(data.questionText);
+        });
+
+        setQuestions(Array.from(uniqueQuestions));
+      }
+    }
+
+    if (user) {
       fetchQuestions();
     }
-  }, [user]);
+  }, [user, selectedUserId, userRole]);
 
   if (!user) {
     return <div>Loading or not authorized...</div>;
   }
+
+  
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setIsOpen(open);
+  };
+
+  const list = () => (
+    <div
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItemButton onClick={Dashboard}>
+          <ListItemText primary="Dashboard" />
+        </ListItemButton>
+        <ListItemButton onClick={InterViewPractice}>
+          <ListItemText primary="Interview Practice" />
+        </ListItemButton>
+        <ListItemButton onClick={Logout}>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </List>
+    </div>
+  );
+
+  const Logout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
+  
 
   const handleQuestionChange = (event) => {
     setSelectedQuestion(event.target.value);
@@ -306,14 +389,14 @@ function Admin() {
 
   return (
     <div className="admin-section">
-      <div>
-        <h1 className="Main-Header">Advanced Career</h1>
-        <h3 className="Main-Header">Admin</h3>
+      <div className="Base">
+        <h1 className="admin-Header">Advanced Career</h1>
+        <h3 className="admin-Header">Admin</h3>
         <div className="AdminTools">
           <div className="AdminTools-Question-Chart">
             {userRole === "admin" && (
               <div className="AdminTools-SelectUserID">
-                <h3 className="SelectUserID">UserID:</h3>
+                <h3 className="SelectUserID">UserID</h3>
                 <select
                   className="Select-Device-UserID"
                   value={selectedUserId}
@@ -331,12 +414,19 @@ function Admin() {
             <select
               className="SelectQuestionDevice"
               onChange={handleQuestionChange}
+              value={selectedQuestion}
             >
-              {questions.map((question, index) => (
-                <option key={index} value={question} className="question">
-                  {question}
+              {questions.length > 0 ? (
+                questions.map((question, index) => (
+                  <option key={index} value={question} className="question">
+                    {question}
+                  </option>
+                ))
+              ) : (
+                <option value="" disabled>
+                  No questions answered
                 </option>
-              ))}
+              )}
             </select>
             <div
               className="QuestionData"
@@ -360,11 +450,20 @@ function Admin() {
         </div>
       </div>
       <nav className="logout-nav">
-        <button onClick={Dashboard}>Dashboard</button>
-        <button className="interView" onClick={InterViewPractice}>
-          Interview Practice
-        </button>
-        <LogoutLink />
+        {/* Hamburger Menu Icon */}
+        <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
+        <MenuIcon
+            style={{
+              boxShadow: "0 0 5px #000000, 0 0 2px #ffffff",
+              // Add additional styles if needed
+            }}
+          />
+        </IconButton>
+
+        {/* Drawer for Mobile View */}
+        <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)} className="custom-drawer">
+          {list()}
+        </Drawer>
       </nav>
     </div>
   );

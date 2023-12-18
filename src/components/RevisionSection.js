@@ -35,7 +35,6 @@ function RevisionSection({
   };
 
   const handleSubmitRevisions = () => {
-    console.log("missing keywords: ", missingKeywords, " assessment: ", assessment, " best possible job: ", bestPossibleJob, " userRevisions: ", userRevisions);
     onSubmitRevisions(originalResume, originalJobDescription, userRevisions);
   };
   return (

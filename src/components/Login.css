@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-  padding-top: 25vh;
+  justify-content: center;
+  padding-top: 20vh;
   width: 100%;
   color: white;
 }
@@ -13,25 +12,22 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 80%; /* More responsive width */
+  max-width: 500px; /* Maximum width */
+  margin: 0 auto; /* Centering the form */
 }
 
 .button-container {
   text-align: center;
 }
 
-.Login-Input, input[type="email"],
+.Login-Input,
+input[type="email"],
 input[type="password"] {
-  width: 50%;
-  margin-bottom: 10px;
-  padding: 10px;
-  
+  width: 90%; /* Full width for smaller screens */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
   border-radius: 4px;
-}
-
-.Login-Input, input[type="email"],
-input[type="password"] {
-  padding: 10px;
 }
 
 form input {
@@ -42,18 +38,12 @@ input[type="email"] {
   margin-bottom: 1rem;
 }
 
-input[type="email"],
-input[type="password"] {
-  margin-bottom: 20px;
-  display: block;
+.login-button{
+  margin-bottom: 1rem; /* Consistent margin */
 }
 
-input[type="email"] {
-  margin-bottom: 20px;
-}
-
-input[type="password"] {
-  margin-bottom: 20px;
+.google-sign-in-button {
+  margin-bottom: 1rem; /* Consistent margin */
 }
 
 .login-button {
@@ -61,7 +51,9 @@ input[type="password"] {
 }
 
 .error-message {
-  color: red;
+  color: white;
+  background-color: rgb(243, 97, 97); /* Set the background color to black */
+  border: 2px solid white; /* Add a border, change color and width as needed */
 }
 
 .google-sign-in-button {
@@ -78,21 +70,58 @@ input[type="password"] {
 
 .header-title {
   text-align: center;
-  font-size: 5rem;
+  font-size: 4rem; /* Smaller font size for smaller screens */
   margin-top: 0;
 }
 
-
-
-.signup-link, .pwReset-link{
+.signup-link,
+.pwReset-link {
   color: #f7e14f; /* Bright color for visibility */
   text-decoration: underline; /* Underline to distinguish links */
   font-weight: bold; /* Bold font for links */
 }
 
-.signup-link:hover, .signup-link:focus, .pwReset-link:hover, .pwReset-link:focus {
+.signup-link:hover,
+.signup-link:focus,
+.pwReset-link:hover,
+.pwReset-link:focus {
   color: #f69d29; /* Lighter or different color on hover/focus */
   background-color: rgba(255, 255, 255, 0.1); /* Subtle background highlight */
   outline: none; /* Removing default outline, optional */
   cursor: pointer; /* Change cursor to indicate clickable item */
+}
+
+.noAccount{
+  padding-bottom: 3vh;
+  font-size: 2vh;
+}
+
+.forgotPWD{
+  font-size: 2vh;
+}
+
+/* Responsive Styles for Tablets */
+@media (min-width: 768px) {
+  .login-container {
+    padding-top: 15vh;
+  }
+
+  .header-title {
+    font-size: 3.5rem; /* Larger font for larger screens */
+  }
+}
+
+/* Responsive Styles for Desktops */
+@media (min-width: 1024px) {
+  .login-container {
+    padding-top: 20vh;
+  }
+
+  .header-title {
+    font-size: 4rem; /* Even larger font for desktops */
+  }
+
+  form {
+    width: 50%; /* Wider form for larger screens */
+  }
 }

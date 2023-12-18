@@ -1,8 +1,8 @@
 .HexagonBackground {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1690px;
-    height: 1200px;
-    z-index: -1; /* Place it behind other content */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  z-index: -1; /* Place it behind other content */
   }

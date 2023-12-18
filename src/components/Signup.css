@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  padding-top: 25vh;
+  padding-top: 20vh;
   width: 100%;
   color: white;
 }
@@ -48,11 +48,12 @@ subutton:hover {
 .link-text {
   margin-top: 20px;
   color: white;
+  font-size: 2vh;
 }
 
 .supheader-title {
   text-align: center;
-  font-size: 5rem;
+  font-size: 4rem;
   margin-top: 0;
 }
 
@@ -70,5 +71,5 @@ subutton:hover {
 }
 
 .SignUp-Input{
-  width: 50%;
+  width: 90%;
 }

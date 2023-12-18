@@ -27,7 +27,7 @@ const HexagonBackground = () => {
       "#FF5E00",
     ];
     const colors1 = [
-      "#FF5733",
+      "#a13720",
       "#FF33A1",
       "#33FF7A",
       "#3380FF",
@@ -35,7 +35,7 @@ const HexagonBackground = () => {
       "#33FFD1",
     ];
     const colors2 = [
-      "#FAFBBB",
+      "#bcbd8f",
       "#FBEA75",
       "#F9BD52",
       "#EDCC93",
@@ -67,7 +67,7 @@ const HexagonBackground = () => {
       "#008000",
     ];
     const colors6 = [
-      "#C3BEE1",
+      "#7f7c91",
       "#2B0B71",
       "#8572C0",
       "#947BC6",
@@ -168,8 +168,8 @@ const HexagonBackground = () => {
     let currentStrokeWeight = minStrokeWeight; // Initialize stroke weight
 
     p.setup = () => {
-      const canvasWidth = 1690; // Fixed width
-      const canvasHeight = 1200; // Fixed height
+      const canvasWidth = 1680; // Fixed width
+      const canvasHeight = 1680; // Fixed height
       p.createCanvas(canvasWidth, canvasHeight);
       createBlobs();
     };

@@ -1,5 +1,13 @@
 import React, { useRef, useContext, useEffect, useState, useMemo } from "react";
-import LogoutLink from "./LogoutLink";
+import {
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { logout } from "../utils/firebase";
 import VoiceBotIframe from "./VoiceBotiFrame";
 import HexagonBackground from "./HexagonBackground";
 import "./InterviewPractice.css";
@@ -188,6 +196,49 @@ const InterviewPractice = () => {
         );
       }
     }
+  };
+
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setIsOpen(open);
+  };
+
+  const list = () => (
+    <div
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItemButton onClick={Dashboard}>
+          <ListItemText primary="Dashboard" />
+        </ListItemButton>
+        <ListItemButton onClick={testResponses}>
+          <ListItemText primary="Test" />
+        </ListItemButton>
+        <ListItemButton onClick={resetInterview}>
+          <ListItemText primary="Reset" />
+        </ListItemButton>
+        <ListItemButton onClick={admin}>
+          <ListItemText primary="Admin" />
+        </ListItemButton>
+        <ListItemButton onClick={Logout}>
+          <ListItemText primary="Logout" />
+        </ListItemButton>
+      </List>
+    </div>
+  );
+
+  const Logout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   function createNumericalSequence() {
@@ -764,15 +815,20 @@ const InterviewPractice = () => {
         </div>
       )}
       <nav className="logout-nav">
-        <button onClick={Dashboard}>Dashboard</button>
-        <button className="resetter" onClick={testResponses}>
-          Test
-        </button>
-        <button className="resetter" onClick={resetInterview}>
-          Reset
-        </button>
-        <button onClick={admin}>Admin</button>
-        <LogoutLink />
+        {/* Hamburger Menu Icon */}
+        <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
+        <MenuIcon
+            style={{
+              boxShadow: "0 0 5px #000000, 0 0 2px #ffffff",
+              // Add additional styles if needed
+            }}
+          />
+        </IconButton>
+
+        {/* Drawer for Mobile View */}
+        <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)} className="custom-drawer">
+          {list()}
+        </Drawer>
       </nav>
     </div>
   );

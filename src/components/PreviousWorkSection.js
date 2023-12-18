@@ -50,15 +50,15 @@ function PreviousWorkSection({ documents, setDocuments, onDocumentClick }) {
               <div className="tab"></div>
               <div className="document-info">
                 <h3 className="documentTitle">{doc.title}</h3>
-                <p className="eScore">Fit: {doc.newEmployabilityScore}%</p>
+                <h3 className="eScore">Fit: {doc.newEmployabilityScore}%</h3>
               </div>
             </div>
           ))}
         </div>
       ) : (
         <div>
-          <p className="noDocs">No resumes found.</p>
-          <p className="noDocs">Start working below.</p>
+          <h3 className="noDocs">No resumes found.</h3>
+          <h3 className="noDocs">Start working below.</h3>
         </div>
       )}
     </div>

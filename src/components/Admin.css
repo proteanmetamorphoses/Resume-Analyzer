@@ -5,8 +5,18 @@
   justify-content: space-around; /* Distributes space evenly */
   align-items: center;
   height: 100vh; /* Full viewport height */
+  padding-top: 9vh;
 }
 
+
+.Base{
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  justify-content: space-around; /* Distributes space evenly */
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
 .background-container {
     position: fixed;
     top: 0;
@@ -14,14 +24,6 @@
     width: 100%;
     height: 100%;
     z-index: -1;
-  }
-
-  .AdminTools{
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
   }
 
   .AdminTools-Question-Chart{
@@ -51,7 +53,6 @@
 
 .Empty-Drawer{
   height: 270px;
-  width: 80%;
 }
   
 
@@ -87,12 +88,15 @@ selectUserID{
   font-size: 20px;
 }
 
+.SelectQuestionDevice{
+  margin-bottom: 2vh;
+}
+
 .SelectQuestion,
 .SelectQuestionDevice {
   flex-grow: 0;
   width: 70%;
   height: 30px;
-
 }
 
 .Main-Header, SelectQuestion {
@@ -100,10 +104,10 @@ selectUserID{
   }
 
   .AdminTools{
-    width: 100%;
+    width: 120%;
     display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: flex-start; /* Center vertically */
+    justify-content: center; 
+    align-items: flex-start;
     flex-grow: 1;
     flex-direction: row;
     margin-top: 10vh;

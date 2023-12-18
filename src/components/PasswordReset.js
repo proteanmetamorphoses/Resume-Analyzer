@@ -42,9 +42,9 @@ function PasswordReset() {
           Submit
         </button>
       </form>
-      <p className="link-text">
+      <h3 className="link-text">
         Changed your mind? No problem...Back to <Link className="LogLink" to="/login">Login</Link>
-      </p>
+      </h3>
       {message && <p className="message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
     </div>
