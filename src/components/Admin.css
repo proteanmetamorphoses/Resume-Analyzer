@@ -1,107 +1,76 @@
 .admin-section {
   display: flex;
-  width: 100%;
   flex-direction: column;
-  justify-content: space-around; /* Distributes space evenly */
   align-items: center;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
   padding-top: 9vh;
+  width: 100%;
 }
 
-
-.Base{
+.Base {
   display: flex;
-  width: 80%;
   flex-direction: column;
-  justify-content: space-around; /* Distributes space evenly */
   align-items: center;
-  height: 100vh; /* Full viewport height */
+  width: 100%;
+  max-width: 1200px; /* Set a max width for larger screens */
+  margin: 0 auto; /* Center the base container */
 }
 
-
-  .AdminTools-Question-Chart{
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    
-  }
-
-  .ColorChanger{
-    display: flex;
-    width: 55%;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-.Tools-Holder{
-  display: flex;
+.AdminTools {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 10vh;
+}
+
+.AdminTools-Question-Chart {
+  display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.Tools-Holder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.ColorChanger {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.Empty-Drawer{
-  height: 270px;
-}
-  
-
-.ColorChanger-Title{
-  text-align: center;
-}
-
-.question {
+.Select-Device-UserID, .SelectQuestionDevice {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.289);
-}
-
-.QuestionData {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  flex-grow: 1;
-  max-height: 25%; /* Maximum height to 1/3 of the parent */
-  background-color: rgba(66, 206, 231, 0.172);
-  border: 1px solid rgb(86, 180, 239);
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05) inset, 0px 0px 8px rgba(82, 168, 236, 0.6);
-}
-
-selectUserID{
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.289);
-}
-
-.Select-Device-UserID{
-  flex-grow: 0;
-  width: 370px;
+  max-width: 370px; /* Set a max width */
+  margin: 0 auto;
   height: 30px;
   font-size: 20px;
 }
 
-.SelectQuestionDevice{
-  margin-bottom: 2vh;
+.QuestionData {
+  width: 100%;
+  max-width: 600px; /* Set a max width */
+  margin: 0 auto;
 }
 
-.SelectQuestion,
-.SelectQuestionDevice {
-  flex-grow: 0;
-  width: 70%;
-  height: 30px;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .AdminTools {
+    flex-direction: column; /* Stack elements vertically on small screens */
+  }
+
+  .Select-Device-UserID, .SelectQuestionDevice {
+    width: 90%; /* Adjust width for smaller screens */
+  }
+
+  .QuestionData {
+    width: 90%; /* Adjust width for smaller screens */
+  }
 }
-
-.Main-Header, SelectQuestion {
-    color: white;
-  }
-
-  .AdminTools{
-    width: 120%;
-    display: flex;
-    justify-content: center; 
-    align-items: flex-start;
-    flex-grow: 1;
-    flex-direction: row;
-    margin-top: 10vh;
-  }

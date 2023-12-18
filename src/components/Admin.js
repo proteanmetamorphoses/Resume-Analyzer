@@ -318,6 +318,7 @@ function Admin() {
     setIsOpen(open);
   };
 
+  //dropdown menu (top left corner of scree)
   const list = () => (
     <div
       role="presentation"
@@ -404,7 +405,7 @@ function Admin() {
                 >
                   {userIds.map((id) => (
                     <option key={id} value={id} className="selectUserID">
-                      {id}
+                      {id === user.uid ? ` * ${id}` : id}
                     </option>
                   ))}
                 </select>

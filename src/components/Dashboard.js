@@ -835,7 +835,7 @@ function Dashboard() {
         <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
           <MenuIcon
             style={{
-              boxShadow: "0 0 5px #000000, 0 0 2px #ffffff",
+              boxShadow: "0 0 5px #ffffff, 0 0 2px #000000",
               // Add additional styles if needed
             }}
           />

@@ -46,6 +46,7 @@
   word-wrap: break-word;
   display: block; /* Ensure it's a block-level element */
   box-sizing: border-box; /* Include padding and border in the width */
+  text-align: center;
 }
 
 .UserControls{
