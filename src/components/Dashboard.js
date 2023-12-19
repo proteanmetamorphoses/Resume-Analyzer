@@ -727,7 +727,7 @@ function Dashboard() {
           ) : (
             <button onClick={handleButtonClick}>Activate Resume Coach</button>
           ))}
-        <div>
+        <div className="VoiceBotSays">
           {!isAnalyzing && !showResults && showVoiceBot && (
             <h2 id="voiceBotTextElement" className="VoiceBotText">
               {voiceBotText}
@@ -775,7 +775,7 @@ function Dashboard() {
         ) : (
           <button onClick={handleButtonClick}>Activate Resume Coach</button>
         ))}
-      <div>
+      <div className="VoiceBotSays">
         {!isAnalyzing &&
           (showResults || showRevisionSection) &&
           !showFinalResults &&
@@ -801,7 +801,7 @@ function Dashboard() {
           />
         </div>
       )}
-      <div className="analysis-section">
+      <div className="VoiceBotSays">
         {!isAnalyzing &&
           showFinalResults &&
           (showVoiceBot ? (
@@ -815,7 +815,7 @@ function Dashboard() {
           ) : (
             <button onClick={handleButtonClick}>Activate Resume Coach</button>
           ))}
-        <div>
+        <div className="VoiceBotSays">
           {!isAnalyzing && showFinalResults && showVoiceBot && (
             <h2 id="voiceBotTextElement" className="VoiceBotText">
               {voiceBotText}

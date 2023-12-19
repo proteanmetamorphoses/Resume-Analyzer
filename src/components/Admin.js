@@ -21,6 +21,7 @@ import {
   getDoc,
   setDoc,
   getDocs,
+  orderBy,
 } from "firebase/firestore";
 import { useColorMode } from "../ColorModeContext";
 import {
@@ -49,6 +50,7 @@ function Admin() {
   const { userRole } = useAuth();
   const [userIds, setUserIds] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState("");
+  const [questionResponses, setQuestionResponses] = useState([]);
   const [chartData, setChartData] = useState({
     labels: [], // for dates
     datasets: [
@@ -302,6 +304,44 @@ function Admin() {
     }
   }, [user, selectedUserId, userRole]);
 
+  useEffect(() => {
+    setSelectedQuestion("");
+  }, [selectedQuestion]);
+
+  useEffect(() => {
+    setQuestionResponses([]);
+
+    async function fetchResponses() {
+      if (user && selectedQuestion) {
+        const q = query(
+          collection(db, "users", user.uid, "userResponses"),
+          where("questionText", "==", selectedQuestion),
+          orderBy("date", "desc")
+        );
+        const querySnapshot = await getDocs(q);
+        const responses = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          responses.push({
+            id: doc.id,
+            date: data.date,
+            response: data.userResponse,
+            responseAnalysis: data.responseAnalysis,
+            responseTime: data.responseTime,
+            charRatio: data.charRatio,
+            score: data.score,
+            // Make sure this line correctly references the field in Firestore
+            // Add more fields here if needed
+          });
+        });
+        console.log("responses: ", responses);
+        setQuestionResponses(responses);
+      }
+    }
+
+    fetchResponses();
+  }, [selectedQuestion, user, selectedUserId]);
+
   if (!user) {
     return <div>Loading or not authorized...</div>;
   }
@@ -355,6 +395,16 @@ function Admin() {
     navigate("/interview-practice");
   };
 
+  function formatMillis(millis) {
+    const minutes = Math.floor(millis / 60000);
+    const seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+  }
+
+  function formatCharRatio(ratio) {
+    return parseFloat(ratio).toFixed(2);
+  }
+
   const changeColor = async () => {
     if (!user || !user.uid) {
       console.error("user or user.uid is undefined");
@@ -387,9 +437,9 @@ function Admin() {
   return (
     <div className="admin-section">
       <div className="Base">
-        <header>
-          <h1 className="admin-Header">Advanced Career</h1>
-          <h3 className="admin-Header">Admin</h3>
+        <header className="admin-Header">
+          <h1 >Advanced Career</h1>
+          <h3 >Admin</h3>
         </header>
         <div className="AdminTools">
           <div className="AdminTools-Question-Chart">
@@ -434,6 +484,24 @@ function Admin() {
               <Line data={chartData} options={options} />
             </div>
           </div>
+          <div className="spacer"></div>
+          <div className="QuestionResponsesByDate">
+          <h3 className="ColorChanger-Title">User Response(s)</h3>
+            {questionResponses.map((response) => (
+              <div key={response.id} className="response">
+                <p>ID: {response.id}</p>
+                <p>Date: {response.date}</p>
+                <p>Response Time: {formatMillis(response.responseTime)}</p>
+                <p>Response: {response.response}</p>
+                <p>Response Analysis: {response.responseAnalysis}</p>
+                <p>
+                  Typed-to-Spoken Character Ratio:{" "}
+                  {formatCharRatio(response.charRatio)}
+                </p>
+                <p>Score: {response.score}</p>
+              </div>
+            ))}
+          </div>
           <div className="Tools-Holder">
             <div className="ColorChanger">
               <h3 className="ColorChanger-Title">Color Theme</h3>
@@ -444,6 +512,7 @@ function Admin() {
             <div className="Empty-Drawer"></div>
           </div>
         </div>
+
         <div className="background-container">
           <HexagonBackground />
         </div>

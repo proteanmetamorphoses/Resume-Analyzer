@@ -6,6 +6,34 @@
   width: 100%;
 }
 
+.QuestionResponsesByDate{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  margin: 0 20px 0 20px;
+  color: white;
+}
+
+.Row-Headers {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.admin-Header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+}
+
+.spacer{
+  width: 20%;
+}
+
 .Base {
   display: flex;
   flex-direction: column;
@@ -21,7 +49,15 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  margin-top: 10vh;
+  margin-top: 2vh;
+}
+
+.AdminTools-SelectUserID{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .AdminTools-Question-Chart {
@@ -47,6 +83,9 @@
 
 .Select-Device-UserID, .SelectQuestionDevice {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   max-width: 370px; /* Set a max width */
   margin: 0 auto;
   height: 30px;

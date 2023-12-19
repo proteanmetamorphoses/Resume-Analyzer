@@ -3,9 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   padding: 5vh 0;
-  background-color: rgba(13, 13, 13, 0.172);
+
 }
 
 .Main-Header {
@@ -24,10 +23,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 95%;
   text-align: center; /* Center align the text */
   border: 5px solid #2281df58;
   border-radius: 4px;
+  padding: 5px;
+  margin: 5px;
 }
 
 .userSpeech::placeholder {
@@ -103,6 +104,7 @@
   text-align: center; /* Center align the text */
   border: 5px solid #2281df58;
   border-radius: 4px;
+  padding: 10px;
 }
 
 .interviewTipsCard{

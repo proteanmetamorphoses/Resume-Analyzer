@@ -104,9 +104,10 @@ const InterviewPractice = () => {
 
   const shouldBlockAnswer = () => {
     const blockedValues = [
-      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
+      -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
       25, 26, 28, 29,
     ];
+    console.log(voiceBotState.audioFileIndex, " Blocked? ",blockedValues.includes(voiceBotState.audioFileIndex))
     return blockedValues.includes(voiceBotState.audioFileIndex);
   };
 
@@ -537,7 +538,7 @@ const InterviewPractice = () => {
         // Set a timeout to revert the color back after 250ms
         setTimeout(() => {
           button.style.backgroundColor = ""; // Revert to the initial color
-          button.textContent = "Start Listening";
+          button.textContent = "Speak";
         }, 1500);
       }
 
@@ -623,7 +624,7 @@ const InterviewPractice = () => {
         button.textContent = "Listening...";
       } else {
         button.style.backgroundColor = "";
-        button.textContent = "Start Listening";
+        button.textContent = "Speak";
       }
     } else {
       console.error("Start Listening button not found");
@@ -722,7 +723,7 @@ const InterviewPractice = () => {
           <button onClick={handleVBNextButtonClick}>Next</button>
         </div>
       </div>
-      <div>
+      <div className="VoiceBotSays">
         <h2 id="voiceBotTextElement" className="VoiceBotText">
           {voiceBotState.voiceBotText}
         </h2>

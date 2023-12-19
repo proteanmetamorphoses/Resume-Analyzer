@@ -52,8 +52,10 @@
 .char-count-left { right: 15px; }
 
 char-count-total, h5 {
+  font-weight: bold;
+  text-shadow: 0 0 5px #000000, 0 0 2px #ffffff;
   text-align: center;
-  color: #2281dfe4;
+  color: #ffffffe4;
   margin: 5px;
 }
 

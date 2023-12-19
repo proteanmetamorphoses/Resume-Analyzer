@@ -218,7 +218,7 @@ function AnalysisSection({
       </div>
       {cappedRemainingCharacters > 0 && (
         <h4 className="char-count-total">
-          Analysis commencing in {formattedcappedRemainingCharacters}{" "}
+          Analyze button in {formattedcappedRemainingCharacters}{" "}
           characters.
         </h4>
       )}
