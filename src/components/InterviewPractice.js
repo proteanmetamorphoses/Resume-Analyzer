@@ -510,11 +510,8 @@ const InterviewPractice = () => {
       prevCombinedText: "",
     }));
     var iframeWindow = document.getElementById("theBot").contentWindow;
-    iframeWindow.postMessage(
-      sequence[0],
-      "https://voicebot.ispeakwell.ca/"
-    );
-    
+    iframeWindow.postMessage(sequence[0], "https://voicebot.ispeakwell.ca/");
+
     setQAPairs(initialQAPairs); // Reset the question-answer pairs
     clearTextArea(); // Clear the text area if needed
     setShowSubmitButton(false);
@@ -711,8 +708,10 @@ const InterviewPractice = () => {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="Main-Header">Advanced Interview</h1>
-      <h2 className="Main-Header">Practice Interviewing with AI</h2>
+      <header>
+        <h1 className="Main-Header">Advanced Interview</h1>
+        <h2 className="Main-Header">Practice Interviewing with AI</h2>
+      </header>
       <div className="interviewTipsCard">
         <InterviewTips />
       </div>
@@ -764,11 +763,11 @@ const InterviewPractice = () => {
             Add
           </button>
           <button className="clearButton" onClick={clearTextArea}>
-        Clear
-      </button>
+            Clear
+          </button>
         </div>
       </div>
-      
+
       {questionsCount > 0 && (
         <div className="Interview-Answer-Box">
           {qaPairs.map((pair, index) => (
@@ -818,16 +817,21 @@ const InterviewPractice = () => {
       <nav className="logout-nav">
         {/* Hamburger Menu Icon */}
         <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
-        <MenuIcon
+          <MenuIcon
             style={{
-              boxShadow: "0 0 5px #000000, 0 0 2px #ffffff",
+              boxShadow: "0 0 50px #000000, 0 0 20px #ffffff",
               // Add additional styles if needed
             }}
           />
         </IconButton>
 
         {/* Drawer for Mobile View */}
-        <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)} className="custom-drawer">
+        <Drawer
+          anchor="left"
+          open={isOpen}
+          onClose={toggleDrawer(false)}
+          className="custom-drawer"
+        >
           {list()}
         </Drawer>
       </nav>

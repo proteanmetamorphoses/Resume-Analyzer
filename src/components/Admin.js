@@ -225,7 +225,7 @@ function Admin() {
       if (userRole === "admin" && selectedUserId) {
         userIdToFetch = selectedUserId;
       }
-      
+
       if (selectedQuestion && userIdToFetch) {
         const scoresByDate = {};
 
@@ -306,8 +306,6 @@ function Admin() {
     return <div>Loading or not authorized...</div>;
   }
 
-  
-
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -343,8 +341,6 @@ function Admin() {
     await logout();
     navigate("/login");
   };
-
-  
 
   const handleQuestionChange = (event) => {
     setSelectedQuestion(event.target.value);
@@ -391,8 +387,10 @@ function Admin() {
   return (
     <div className="admin-section">
       <div className="Base">
-        <h1 className="admin-Header">Advanced Career</h1>
-        <h3 className="admin-Header">Admin</h3>
+        <header>
+          <h1 className="admin-Header">Advanced Career</h1>
+          <h3 className="admin-Header">Admin</h3>
+        </header>
         <div className="AdminTools">
           <div className="AdminTools-Question-Chart">
             {userRole === "admin" && (
@@ -453,16 +451,21 @@ function Admin() {
       <nav className="logout-nav">
         {/* Hamburger Menu Icon */}
         <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
-        <MenuIcon
+          <MenuIcon
             style={{
-              boxShadow: "0 0 5px #000000, 0 0 2px #ffffff",
+              boxShadow: "0 0 50px #000000, 0 0 20px #ffffff",
               // Add additional styles if needed
             }}
           />
         </IconButton>
 
         {/* Drawer for Mobile View */}
-        <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)} className="custom-drawer">
+        <Drawer
+          anchor="left"
+          open={isOpen}
+          onClose={toggleDrawer(false)}
+          className="custom-drawer"
+        >
           {list()}
         </Drawer>
       </nav>

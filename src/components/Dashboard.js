@@ -677,8 +677,12 @@ function Dashboard() {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="Main-Header">Advanced Resume</h1>
-      <h2 className="Main-Header">Revise Your Career Opportunities with AI</h2>
+      <header>
+        <h1 className="Main-Header">Advanced Resume</h1>
+        <h2 className="Main-Header">
+          Revise Your Career Opportunities with AI
+        </h2>
+      </header>
       <h3 className="Main-Header">Saved Resumes</h3>
       {showPreviousWork ? (
         <div className="previous-work-section">
@@ -835,7 +839,7 @@ function Dashboard() {
         <IconButton className="menu-icon" onClick={toggleDrawer(true)}>
           <MenuIcon
             style={{
-              boxShadow: "0 0 5px #ffffff, 0 0 2px #000000",
+              boxShadow: "0 0 50px #000000, 0 0 20px #ffffff",
               // Add additional styles if needed
             }}
           />
