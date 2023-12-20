@@ -194,10 +194,21 @@ function Admin() {
         setSelectedUserId(currentUser.uid);
       }
     });
-    return unsubscribe; // Cleanup subscription on unmount
+    return () => {
+      unsubscribe(); // This function is called when the component unmounts
+      // Clear user data here as well, to handle component unmounting
+      setQuestions([]);
+      setUserIds([]);
+      setQuestionResponses([]);
+      setDocumentIds([]);
+      setSelectedId("");
+      setDocumentData({}); // Reset to the initial state of your document data
+      // Add more state resets as needed
+    };
   }, [navigate, userRole]);
 
   useEffect(() => {
+    if (!user) return;
     // Fetching user IDs (for admin role)
     async function fetchUserIds() {
       if (userRole === "admin") {
@@ -216,9 +227,10 @@ function Admin() {
     if (userRole === "admin") {
       fetchUserIds();
     }
-  }, [selectedUserId, userRole]);
+  }, [selectedUserId, userRole, user]);
 
   const fetchQuestions = async () => {
+    if (!user) return;
     let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
   
     if (userIdToFetch) {
@@ -235,12 +247,11 @@ function Admin() {
     }
   };
   
-  useEffect(() => {
-    fetchQuestions();
-  }); // Update the list of questions when these dependencies change
+ 
   
 
   useEffect(() => {
+    if (!user) return;
     async function fetchData() {
       let userIdToFetch = user && user.uid;
 
@@ -296,9 +307,11 @@ function Admin() {
   }, [selectedQuestion, selectedUserId, userRole, user]);
 
   useEffect(() => {
+    if (!user) return;
     setQuestionResponses([]);
 
     async function fetchResponses() {
+      if (!user) return;
       if (user && selectedQuestion) {
         const q = query(
           collection(db, "users", user.uid, "userResponses"),
@@ -329,6 +342,7 @@ function Admin() {
   }, [selectedQuestion, user, selectedUserId]);
 
   const fetchDocumentIds = async () => {
+    if (!user) return;
     let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
   
     if (userIdToFetch) {
@@ -353,9 +367,9 @@ function Admin() {
   };
   
   useEffect(() => {
+    if (!user) return;
     fetchDocumentIds();
   }); // Fetch document IDs when these dependencies change
-  
 
   if (!user) {
     return <div>Loading or not authorized...</div>;
@@ -381,6 +395,7 @@ function Admin() {
   };
 
   const handleDelete = async () => {
+    if (!user) return;
     if (!selectedId) {
       console.error("No document selected");
       return;
@@ -425,6 +440,7 @@ function Admin() {
   // Function to fetch document IDs (similar to what's used in useEffect)
 
   const handleSave = async () => {
+    if (!user) return;
     if (!selectedId) {
       console.error("No document selected");
       // Handle the case where no document is selected
