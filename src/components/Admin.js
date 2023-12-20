@@ -61,8 +61,6 @@ function Admin() {
   const [userIds, setUserIds] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [questionResponses, setQuestionResponses] = useState([]);
-  const [changeUserQuestionResponse, setChangeUserQuestionResponse] =
-    useState(false);
   const [open, setOpen] = useState(false);
   const [documentIds, setDocumentIds] = useState([]);
   const [selectedId, setSelectedId] = useState("");
@@ -207,27 +205,24 @@ function Admin() {
         const userDocs = await getDocs(usersCollection);
         const userIds = userDocs.docs.map((doc) => doc.id);
         setUserIds(userIds);
-  
+
         // Optionally, set a default selectedUserId here, e.g., the first one
         if (userIds.length > 0 && !selectedUserId) {
           setSelectedUserId(userIds[0]);
         }
       }
     }
-  
+
     if (userRole === "admin") {
       fetchUserIds();
     }
   }, [selectedUserId, userRole]);
 
   const fetchQuestions = async () => {
-    let userIdToFetch = selectedUserId || (user && user.uid);
+    let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
   
     if (userIdToFetch) {
-      // Fetching userResponses collection for the specified user
-      const responsesQuery = query(
-        collection(db, "users", userIdToFetch, "userResponses")
-      );
+      const responsesQuery = query(collection(db, "users", userIdToFetch, "userResponses"));
       const querySnapshot = await getDocs(responsesQuery);
   
       const uniqueQuestions = new Set();
@@ -239,38 +234,11 @@ function Admin() {
       setQuestions(Array.from(uniqueQuestions));
     }
   };
-
+  
   useEffect(() => {
-    async function fetchQuestions() {
-      let userIdToFetch = user && user.uid;
-
-      // For admins, use the selected user's ID
-      if (userRole === "admin" && selectedUserId) {
-        userIdToFetch = selectedUserId;
-      }
-
-      if (userIdToFetch) {
-        // Fetching userResponses collection for the specified user
-        const responsesQuery = query(
-          collection(db, "users", userIdToFetch, "userResponses")
-        );
-        const querySnapshot = await getDocs(responsesQuery);
-
-        // Extracting unique questions from the responses
-        const uniqueQuestions = new Set();
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          uniqueQuestions.add(data.questionText);
-        });
-
-        setQuestions(Array.from(uniqueQuestions));
-      }
-    }
-
-    if (user) {
-      fetchQuestions();
-    }
-  }, [user, selectedUserId, userRole]); // Dependencies updated
+    fetchQuestions();
+  }); // Update the list of questions when these dependencies change
+  
 
   useEffect(() => {
     async function fetchData() {
@@ -327,7 +295,7 @@ function Admin() {
     }
   }, [selectedQuestion, selectedUserId, userRole, user]);
 
-   useEffect(() => {
+  useEffect(() => {
     setQuestionResponses([]);
 
     async function fetchResponses() {
@@ -353,7 +321,6 @@ function Admin() {
             // Add more fields here if needed
           });
         });
-        console.log("responses: ", responses);
         setQuestionResponses(responses);
       }
     }
@@ -362,11 +329,21 @@ function Admin() {
   }, [selectedQuestion, user, selectedUserId]);
 
   const fetchDocumentIds = async () => {
-    if (selectedUserId) {
+    let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
+  
+    if (userIdToFetch) {
       try {
-        const querySnapshot = await getDocs(
-          collection(db, "users", selectedUserId, "userResponses")
-        );
+        let q;
+        if (selectedQuestion) {
+          q = query(
+            collection(db, "users", userIdToFetch, "userResponses"),
+            where("questionText", "==", selectedQuestion)
+          );
+        } else {
+          q = query(collection(db, "users", userIdToFetch, "userResponses"));
+        }
+  
+        const querySnapshot = await getDocs(q);
         const ids = querySnapshot.docs.map((doc) => doc.id);
         setDocumentIds(ids);
       } catch (error) {
@@ -374,30 +351,10 @@ function Admin() {
       }
     }
   };
-
+  
   useEffect(() => {
-    const fetchDocumentIds = async () => {
-      let userIdToFetch = selectedUserId || (user && user.uid);
-  
-      if (userIdToFetch) {
-        try {
-          const querySnapshot = await getDocs(
-            collection(db, "users", userIdToFetch, "userResponses")
-          );
-          const ids = querySnapshot.docs.map((doc) => doc.id);
-          setDocumentIds(ids);
-        } catch (error) {
-          console.error("Error fetching document IDs:", error);
-        }
-      }
-    };
-  
-    if (user) {
-      fetchDocumentIds();
-    }
-  }, [selectedUserId, user, userRole]);
-
-
+    fetchDocumentIds();
+  }); // Fetch document IDs when these dependencies change
   
 
   if (!user) {
@@ -407,11 +364,11 @@ function Admin() {
   const handleIdChange = async (event) => {
     const id = event.target.value;
     setSelectedId(id);
-  
+
     try {
       const docRef = doc(db, "users", selectedUserId, "userResponses", id);
       const docSnap = await getDoc(docRef);
-  
+
       if (docSnap.exists()) {
         setDocumentData(docSnap.data());
       } else {
@@ -428,28 +385,35 @@ function Admin() {
       console.error("No document selected");
       return;
     }
-  
-    const confirmed = window.confirm("Are you sure you want to delete this document?");
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this document?"
+    );
     if (!confirmed) {
       return;
     }
-  
+
     try {
-      const docRef = doc(db, "users", selectedUserId, "userResponses", selectedId);
+      const docRef = doc(
+        db,
+        "users",
+        selectedUserId,
+        "userResponses",
+        selectedId
+      );
       await deleteDoc(docRef);
       const confirmed = window.confirm("Document successfully deleted.");
       if (!confirmed) {
         return;
       }
-  
+
       // Refresh the list of document IDs
       await fetchDocumentIds();
       await fetchQuestions();
 
       // Reset the selected ID and document data
-      setSelectedId('');
+      setSelectedId("");
       setDocumentData({}); // Reset to the initial state of your document data
-  
     } catch (error) {
       const confirmed = window.confirm("Can't delete document.");
       if (!confirmed) {
@@ -457,10 +421,8 @@ function Admin() {
       }
     }
   };
-  
-  // Function to fetch document IDs (similar to what's used in useEffect)
 
-  
+  // Function to fetch document IDs (similar to what's used in useEffect)
 
   const handleSave = async () => {
     if (!selectedId) {
@@ -468,9 +430,15 @@ function Admin() {
       // Handle the case where no document is selected
       return;
     }
-  
+
     try {
-      const docRef = doc(db, "users", selectedUserId, "userResponses", selectedId);
+      const docRef = doc(
+        db,
+        "users",
+        selectedUserId,
+        "userResponses",
+        selectedId
+      );
       await updateDoc(docRef, documentData);
       console.log("Document successfully updated");
       handleClose();
@@ -516,8 +484,30 @@ function Admin() {
     navigate("/login");
   };
 
-  const handleQuestionChange = (event) => {
-    setSelectedQuestion(event.target.value);
+  const handleQuestionChange = async (event) => {
+    const question = event.target.value;
+    setSelectedQuestion(question);
+
+    let userIdToFetch = selectedUserId || (user && user.uid);
+
+    if (userIdToFetch && question) {
+      try {
+        // Query Firestore to fetch document IDs based on the selected question
+        const q = query(
+          collection(db, "users", userIdToFetch, "userResponses"),
+          where("questionText", "==", question)
+        );
+        const querySnapshot = await getDocs(q);
+        const ids = querySnapshot.docs.map((doc) => doc.id);
+
+        // Set the state with the fetched document IDs
+        setDocumentIds(ids);
+      } catch (error) {
+        console.error("Error fetching document IDs for question:", error);
+      }
+    }
+    setSelectedId("");
+    setDocumentData({});
   };
 
   const Dashboard = () => {
@@ -536,7 +526,7 @@ function Admin() {
   }
 
   const reviseUserQuestionResponse = () => {
-    setChangeUserQuestionResponse(true);
+    setOpen(true);
   };
 
   function convertUtcToLocalTime(utcDateString) {
@@ -544,20 +534,9 @@ function Admin() {
     return date.toLocaleString(); // Converts to local time and formats it
   }
 
-  const reviseUserQuestionResponseByID = () => {
-    setOpen(true);
-  };
-
-  const reviseUserQuestionResponseByDate = () => {};
-
-  const reviseUserQuestionResponseByQuestion = () => {};
-
-  const reviseUserQuestionResponseByCurrent = () => {};
-
   function formatCharRatio(ratio) {
     return parseFloat(ratio).toFixed(2);
   }
-  
 
   const changeColor = async () => {
     if (!user || !user.uid) {
@@ -641,45 +620,12 @@ function Admin() {
           <div className="spacer"></div>
           <div className="QuestionResponsesByDate">
             <h3 className="ColorChanger-Title">User Response(s)</h3>
-            {!changeUserQuestionResponse ? (
-              <button
-                className="UserResponseRevise"
-                onClick={reviseUserQuestionResponse}
-              >
-                Revise
-              </button>
-            ) : (
-              <div className="ReviseType">
-                <h4>Revise By:</h4>
-                <div className="ReviseTypeSelect">
-                  <button
-                    className="UserResponseRevise"
-                    onClick={reviseUserQuestionResponseByID}
-                  >
-                    ID
-                  </button>
-                  <button
-                    className="UserResponseRevise"
-                    onClick={reviseUserQuestionResponseByDate}
-                  >
-                    Date
-                  </button>
-                  <button
-                    className="UserResponseRevise"
-                    onClick={reviseUserQuestionResponseByQuestion}
-                  >
-                    Question
-                  </button>
-                  <button
-                    className="UserResponseRevise"
-                    onClick={reviseUserQuestionResponseByCurrent}
-                  >
-                    Current
-                  </button>
-                </div>
-              </div>
-            )}
-
+            <button
+              className="UserResponseRevise"
+              onClick={reviseUserQuestionResponse}
+            >
+              Revise
+            </button>
             {questionResponses.map((response) => (
               <div key={response.id} className="response">
                 <p>ID: {response.id}</p>
@@ -708,43 +654,61 @@ function Admin() {
         <div>
           <Modal open={open} onClose={handleClose}>
             <div
-              style={
-                {
-                  backgroundColor: 'lightgray', // Light gray background
-                  border: '2px solid darkgray', // Dark border
-                  borderRadius: '10px', // Rounded edges
-                  width: '80%', // 50% of the viewport width
-                  height: '80%', // 75% of the viewport height
-                  position: 'fixed', // Fixed position
-                  top: '50%', // Center vertically
-                  left: '50%', // Center horizontally
-                  transform: 'translate(-50%, -50%)', // Adjust position to center
-                  overflowY: 'auto', // Add scroll for overflow content
-                  zIndex: 1000, // Ensure it's above other elements
-                  padding: '20px', // Internal padding
-                  boxSizing: 'border-box' // Include padding and border in width and height
-                }
-              }
+              style={{
+                backgroundColor: "lightgray", // Light gray background
+                border: "2px solid darkgray", // Dark border
+                borderRadius: "10px", // Rounded edges
+                width: "90%", // 50% of the viewport width
+                height: "80%", // 75% of the viewport height
+                position: "fixed", // Fixed position
+                top: "50%", // Center vertically
+                left: "50%", // Center horizontally
+                transform: "translate(-50%, -50%)", // Adjust position to center
+                overflowY: "auto", // Add scroll for overflow content
+                zIndex: 1000, // Ensure it's above other elements
+                padding: "20px", // Internal padding
+                boxSizing: "border-box", // Include padding and border in width and height
+              }}
             >
-              <FormControl fullWidth>
-                <InputLabel id="document-id-selector-label">
-                  Document ID
-                </InputLabel>
-                <Select
-                  labelId="document-id-selector-label"
-                  value={selectedId}
-                  label="Document ID"
-                  onChange={handleIdChange}
-                >
-                  {documentIds.map((id) => (
-                    <MenuItem key={id} value={id}>
-                      {id}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <h4>Selected ID: {selectedId}</h4>
+              <div>
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="document-id-selector-label">
+                    Document ID
+                  </InputLabel>
+                  <Select
+                    labelId="document-id-selector-label"
+                    value={selectedId}
+                    label="Document ID"
+                    onChange={handleIdChange}
+                  >
+                    {documentIds.map((id) => (
+                      <MenuItem key={id} value={id}>
+                        {id}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
 
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="question-selector-label">
+                    Selected Question
+                  </InputLabel>
+                  <Select
+                    labelId="question-selector-label"
+                    value={selectedQuestion}
+                    label="Selected Question"
+                    onChange={handleQuestionChange}
+                  >
+                    {questions.map((question, index) => (
+                      <MenuItem key={index} value={question}>
+                        {question}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </div>
+              <h4>Selected ID: {selectedId}</h4>
+              <h4>Selected Question: {selectedQuestion}</h4>
               {Object.entries(documentData).map(([key, value]) => (
                 <div key={key}>
                   <h4>{key}</h4>
@@ -762,9 +726,12 @@ function Admin() {
                   />
                 </div>
               ))}
-              <Button onClick={handleSave}>Save</Button>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={handleDelete}>Delete</Button>
+              <div className="button-Box">
+                <Button onClick={handleSave}>Save</Button>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handleDelete}>Delete</Button>
+                <Button onClick={handleClose}>Close</Button>
+              </div>
             </div>
           </Modal>
         </div>
