@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Drawer,
   IconButton,
@@ -229,23 +229,29 @@ function Admin() {
     }
   }, [selectedUserId, userRole, user]);
 
-  const fetchQuestions = async () => {
+  const fetchQuestions = useCallback(async () => {
     if (!user) return;
+  
     let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
   
     if (userIdToFetch) {
-      const responsesQuery = query(collection(db, "users", userIdToFetch, "userResponses"));
-      const querySnapshot = await getDocs(responsesQuery);
+      try {
+        const responsesQuery = query(collection(db, "users", userIdToFetch, "userResponses"));
+        const querySnapshot = await getDocs(responsesQuery);
   
-      const uniqueQuestions = new Set();
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        uniqueQuestions.add(data.questionText);
-      });
+        const uniqueQuestions = new Set();
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          uniqueQuestions.add(data.questionText);
+        });
   
-      setQuestions(Array.from(uniqueQuestions));
+        setQuestions(Array.from(uniqueQuestions));
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+        setQuestions([]);
+      }
     }
-  };
+  }, [user, userRole, selectedUserId]); // Dependencies of fetchQuestions
   
  
   
@@ -343,7 +349,8 @@ function Admin() {
   const fetchDocumentIds = async () => {
     if (!user) return;
     let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
-  
+    console.log("Fetching documents for user ID:", userIdToFetch);
+    
     if (userIdToFetch) {
       try {
         let q;
@@ -361,19 +368,19 @@ function Admin() {
         setDocumentIds(ids);
       } catch (error) {
         console.error("Error fetching document IDs:", error);
+        console.log("Error details:", error.code, error.message);
       }
     }
   };
-  
+
   useEffect(() => {
     if (!user) return;
     fetchDocumentIds();
   }); // Fetch document IDs when these dependencies change
 
    useEffect(() => {
-    if (!user) return;
     fetchQuestions();
-  }, [user, userRole, selectedUserId]); // Update the list of questions when these dependencies change
+  }, [fetchQuestions]); // Update the list of questions when these dependencies change
 
   if (!user) {
     return <div>Loading or not authorized...</div>;

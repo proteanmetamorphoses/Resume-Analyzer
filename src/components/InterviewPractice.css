@@ -17,7 +17,7 @@
 
 .instructVBClick{
   margin: 0;
-  width: 105%;
+  width: 22%;
 }
 
 .VoiceBotText {
@@ -28,7 +28,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 95%;
+  width: 65%;
   text-align: center; /* Center align the text */
   border: 5px solid #2281df58;
   border-radius: 4px;
@@ -166,6 +166,11 @@
 @media (max-width: 768px) {
   .Interview-Answer-Box, .openAIResponseBox {
     width: 80%; /* Adjust width for smaller screens */
+  }
+
+  .instructVBClick{
+    margin: 0;
+    width: 85%;
   }
 
 .SpeechRecButtons {

@@ -114,6 +114,10 @@
   border-radius: 4px;
 }
 
+.voiceBotTextElement{
+  width: 100%;
+}
+
 .HideButton {
   display: flex;
   flex-direction: column;
@@ -202,10 +206,10 @@ h4 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 43%;
 }
 
-.VoiceBotText {
+.VoiceBotTextDB {
   color: white;
   background-color: black; /* Set the background color to black */
   border: 2px solid white; /* Add a border, change color and width as needed */

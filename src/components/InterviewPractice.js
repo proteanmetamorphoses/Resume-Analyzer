@@ -401,11 +401,11 @@ const InterviewPractice = () => {
       const button = document.querySelector(".submitAnswer");
       if (button) {
         button.style.backgroundColor = "rgb(219, 45, 45)"; // Change color to red
-        button.textContent = "No Answer!";
+        button.textContent = "Empty";
         // Set a timeout to revert the color back after 250ms
         setTimeout(() => {
           button.style.backgroundColor = ""; // Revert to the initial color
-          button.textContent = "Add Answer";
+          button.textContent = "Add";
         }, 1500);
       }
       return;
@@ -723,13 +723,13 @@ const InterviewPractice = () => {
           <button onClick={handleVBNextButtonClick}>Next</button>
         </div>
       </div>
-      {voiceBotState.voiceBotText && (
+      {voiceBotState.voiceBotText ? (
       <div className="VoiceBotSays">
         <h2 id="voiceBotTextElement" className="VoiceBotText">
           {voiceBotState.voiceBotText}
         </h2>
       </div> 
-      )}:{<h4 className="instructVBClick">Click interviewer once to start, twice to hear again.</h4>}
+      ):(<h4 className="instructVBClick">Click interviewer once to start, twice to hear again.</h4>)}
       <div className="UserControls">
         <textarea
           ref={userSpeechRef}
