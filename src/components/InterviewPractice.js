@@ -171,7 +171,7 @@ const InterviewPractice = () => {
         ? responseAnalysisMatch[0].trim()
         : "";
       const score = scoreMatch ? scoreMatch[0].trim() : "";
-      const date = new Date().toISOString();
+      const date = new Date().toUTCString();
 
       try {
         await addDoc(collection(db, "users", user.uid, "userResponses"), {

@@ -97,6 +97,7 @@ function Login() {
         <HexagonBackground />
       </div>
       <h1 className="header-title">Advanced Career</h1>
+      <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
       <form className="Login-Input" onSubmit={handleLogin}>
         <input
           type="email"

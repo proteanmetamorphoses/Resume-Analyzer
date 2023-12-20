@@ -28,6 +28,7 @@ function PasswordReset() {
       </div>
       <div className="header-container">
         <h1 className="header-title">Advanced Career</h1>
+        <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
         <h2 className="header-subtitle">Password Reset</h2>
       </div>
       <form className="prform" onSubmit={handlePasswordReset}>

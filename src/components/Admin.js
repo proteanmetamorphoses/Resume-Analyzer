@@ -7,6 +7,15 @@ import {
   ListItemText,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Modal,
+  Button,
+  TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
 import "./Admin.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Line } from "react-chartjs-2";
@@ -14,6 +23,7 @@ import "chart.js/auto"; // Import Chart.js
 import { db } from "../utils/firebase";
 import {
   doc,
+  deleteDoc,
   updateDoc,
   collection,
   query,
@@ -51,6 +61,20 @@ function Admin() {
   const [userIds, setUserIds] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState("");
   const [questionResponses, setQuestionResponses] = useState([]);
+  const [changeUserQuestionResponse, setChangeUserQuestionResponse] =
+    useState(false);
+  const [open, setOpen] = useState(false);
+  const [documentIds, setDocumentIds] = useState([]);
+  const [selectedId, setSelectedId] = useState("");
+  const handleClose = () => setOpen(false);
+  const [documentData, setDocumentData] = useState({
+    date: "",
+    response: "",
+    responseAnalysis: "",
+    responseTime: "",
+    charRatio: "",
+    score: "",
+  });
   const [chartData, setChartData] = useState({
     labels: [], // for dates
     datasets: [
@@ -168,25 +192,53 @@ function Admin() {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser && userRole !== "admin") {
+        setSelectedUserId(currentUser.uid);
+      }
     });
-    /*if (userRole !== "admin") {
-      navigate("/Dashboard");
-    }*/
     return unsubscribe; // Cleanup subscription on unmount
   }, [navigate, userRole]);
 
   useEffect(() => {
+    // Fetching user IDs (for admin role)
     async function fetchUserIds() {
       if (userRole === "admin") {
         const usersCollection = collection(db, "users");
         const userDocs = await getDocs(usersCollection);
         const userIds = userDocs.docs.map((doc) => doc.id);
         setUserIds(userIds);
+  
+        // Optionally, set a default selectedUserId here, e.g., the first one
+        if (userIds.length > 0 && !selectedUserId) {
+          setSelectedUserId(userIds[0]);
+        }
       }
     }
+  
+    if (userRole === "admin") {
+      fetchUserIds();
+    }
+  }, [selectedUserId, userRole]);
 
-    fetchUserIds();
-  }, [userRole]); // Add userRole as a dependency
+  const fetchQuestions = async () => {
+    let userIdToFetch = selectedUserId || (user && user.uid);
+  
+    if (userIdToFetch) {
+      // Fetching userResponses collection for the specified user
+      const responsesQuery = query(
+        collection(db, "users", userIdToFetch, "userResponses")
+      );
+      const querySnapshot = await getDocs(responsesQuery);
+  
+      const uniqueQuestions = new Set();
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        uniqueQuestions.add(data.questionText);
+      });
+  
+      setQuestions(Array.from(uniqueQuestions));
+    }
+  };
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -275,40 +327,7 @@ function Admin() {
     }
   }, [selectedQuestion, selectedUserId, userRole, user]);
 
-  useEffect(() => {
-    async function fetchQuestions() {
-      let userIdToFetch = user && user.uid;
-
-      if (userRole === "admin" && selectedUserId) {
-        userIdToFetch = selectedUserId;
-      }
-
-      if (userIdToFetch) {
-        const responsesQuery = query(
-          collection(db, "users", userIdToFetch, "userResponses")
-        );
-        const querySnapshot = await getDocs(responsesQuery);
-
-        const uniqueQuestions = new Set();
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          uniqueQuestions.add(data.questionText);
-        });
-
-        setQuestions(Array.from(uniqueQuestions));
-      }
-    }
-
-    if (user) {
-      fetchQuestions();
-    }
-  }, [user, selectedUserId, userRole]);
-
-  useEffect(() => {
-    setSelectedQuestion("");
-  }, [selectedQuestion]);
-
-  useEffect(() => {
+   useEffect(() => {
     setQuestionResponses([]);
 
     async function fetchResponses() {
@@ -342,9 +361,124 @@ function Admin() {
     fetchResponses();
   }, [selectedQuestion, user, selectedUserId]);
 
+  const fetchDocumentIds = async () => {
+    if (selectedUserId) {
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, "users", selectedUserId, "userResponses")
+        );
+        const ids = querySnapshot.docs.map((doc) => doc.id);
+        setDocumentIds(ids);
+      } catch (error) {
+        console.error("Error fetching document IDs:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchDocumentIds = async () => {
+      let userIdToFetch = selectedUserId || (user && user.uid);
+  
+      if (userIdToFetch) {
+        try {
+          const querySnapshot = await getDocs(
+            collection(db, "users", userIdToFetch, "userResponses")
+          );
+          const ids = querySnapshot.docs.map((doc) => doc.id);
+          setDocumentIds(ids);
+        } catch (error) {
+          console.error("Error fetching document IDs:", error);
+        }
+      }
+    };
+  
+    if (user) {
+      fetchDocumentIds();
+    }
+  }, [selectedUserId, user, userRole]);
+
+
+  
+
   if (!user) {
     return <div>Loading or not authorized...</div>;
   }
+
+  const handleIdChange = async (event) => {
+    const id = event.target.value;
+    setSelectedId(id);
+  
+    try {
+      const docRef = doc(db, "users", selectedUserId, "userResponses", id);
+      const docSnap = await getDoc(docRef);
+  
+      if (docSnap.exists()) {
+        setDocumentData(docSnap.data());
+      } else {
+        console.log("No such document!");
+        setDocumentData({}); // Reset the document data if not found
+      }
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedId) {
+      console.error("No document selected");
+      return;
+    }
+  
+    const confirmed = window.confirm("Are you sure you want to delete this document?");
+    if (!confirmed) {
+      return;
+    }
+  
+    try {
+      const docRef = doc(db, "users", selectedUserId, "userResponses", selectedId);
+      await deleteDoc(docRef);
+      const confirmed = window.confirm("Document successfully deleted.");
+      if (!confirmed) {
+        return;
+      }
+  
+      // Refresh the list of document IDs
+      await fetchDocumentIds();
+      await fetchQuestions();
+
+      // Reset the selected ID and document data
+      setSelectedId('');
+      setDocumentData({}); // Reset to the initial state of your document data
+  
+    } catch (error) {
+      const confirmed = window.confirm("Can't delete document.");
+      if (!confirmed) {
+        return;
+      }
+    }
+  };
+  
+  // Function to fetch document IDs (similar to what's used in useEffect)
+
+  
+
+  const handleSave = async () => {
+    if (!selectedId) {
+      console.error("No document selected");
+      // Handle the case where no document is selected
+      return;
+    }
+  
+    try {
+      const docRef = doc(db, "users", selectedUserId, "userResponses", selectedId);
+      await updateDoc(docRef, documentData);
+      console.log("Document successfully updated");
+      handleClose();
+    } catch (error) {
+      console.error("Error updating document:", error);
+      // Handle any errors, such as displaying an error message
+    }
+  };
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -401,9 +535,29 @@ function Admin() {
     return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
 
+  const reviseUserQuestionResponse = () => {
+    setChangeUserQuestionResponse(true);
+  };
+
+  function convertUtcToLocalTime(utcDateString) {
+    const date = new Date(utcDateString);
+    return date.toLocaleString(); // Converts to local time and formats it
+  }
+
+  const reviseUserQuestionResponseByID = () => {
+    setOpen(true);
+  };
+
+  const reviseUserQuestionResponseByDate = () => {};
+
+  const reviseUserQuestionResponseByQuestion = () => {};
+
+  const reviseUserQuestionResponseByCurrent = () => {};
+
   function formatCharRatio(ratio) {
     return parseFloat(ratio).toFixed(2);
   }
+  
 
   const changeColor = async () => {
     if (!user || !user.uid) {
@@ -438,8 +592,8 @@ function Admin() {
     <div className="admin-section">
       <div className="Base">
         <header className="admin-Header">
-          <h1 >Advanced Career</h1>
-          <h3 >Admin</h3>
+          <h1>Advanced Career</h1>
+          <h3>Admin</h3>
         </header>
         <div className="AdminTools">
           <div className="AdminTools-Question-Chart">
@@ -486,11 +640,50 @@ function Admin() {
           </div>
           <div className="spacer"></div>
           <div className="QuestionResponsesByDate">
-          <h3 className="ColorChanger-Title">User Response(s)</h3>
+            <h3 className="ColorChanger-Title">User Response(s)</h3>
+            {!changeUserQuestionResponse ? (
+              <button
+                className="UserResponseRevise"
+                onClick={reviseUserQuestionResponse}
+              >
+                Revise
+              </button>
+            ) : (
+              <div className="ReviseType">
+                <h4>Revise By:</h4>
+                <div className="ReviseTypeSelect">
+                  <button
+                    className="UserResponseRevise"
+                    onClick={reviseUserQuestionResponseByID}
+                  >
+                    ID
+                  </button>
+                  <button
+                    className="UserResponseRevise"
+                    onClick={reviseUserQuestionResponseByDate}
+                  >
+                    Date
+                  </button>
+                  <button
+                    className="UserResponseRevise"
+                    onClick={reviseUserQuestionResponseByQuestion}
+                  >
+                    Question
+                  </button>
+                  <button
+                    className="UserResponseRevise"
+                    onClick={reviseUserQuestionResponseByCurrent}
+                  >
+                    Current
+                  </button>
+                </div>
+              </div>
+            )}
+
             {questionResponses.map((response) => (
               <div key={response.id} className="response">
                 <p>ID: {response.id}</p>
-                <p>Date: {response.date}</p>
+                <p>Date: {convertUtcToLocalTime(response.date)}</p>
                 <p>Response Time: {formatMillis(response.responseTime)}</p>
                 <p>Response: {response.response}</p>
                 <p>Response Analysis: {response.responseAnalysis}</p>
@@ -512,7 +705,69 @@ function Admin() {
             <div className="Empty-Drawer"></div>
           </div>
         </div>
+        <div>
+          <Modal open={open} onClose={handleClose}>
+            <div
+              style={
+                {
+                  backgroundColor: 'lightgray', // Light gray background
+                  border: '2px solid darkgray', // Dark border
+                  borderRadius: '10px', // Rounded edges
+                  width: '80%', // 50% of the viewport width
+                  height: '80%', // 75% of the viewport height
+                  position: 'fixed', // Fixed position
+                  top: '50%', // Center vertically
+                  left: '50%', // Center horizontally
+                  transform: 'translate(-50%, -50%)', // Adjust position to center
+                  overflowY: 'auto', // Add scroll for overflow content
+                  zIndex: 1000, // Ensure it's above other elements
+                  padding: '20px', // Internal padding
+                  boxSizing: 'border-box' // Include padding and border in width and height
+                }
+              }
+            >
+              <FormControl fullWidth>
+                <InputLabel id="document-id-selector-label">
+                  Document ID
+                </InputLabel>
+                <Select
+                  labelId="document-id-selector-label"
+                  value={selectedId}
+                  label="Document ID"
+                  onChange={handleIdChange}
+                >
+                  {documentIds.map((id) => (
+                    <MenuItem key={id} value={id}>
+                      {id}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <h4>Selected ID: {selectedId}</h4>
 
+              {Object.entries(documentData).map(([key, value]) => (
+                <div key={key}>
+                  <h4>{key}</h4>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={4}
+                    value={value}
+                    onChange={(e) =>
+                      setDocumentData({
+                        ...documentData,
+                        [key]: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              ))}
+              <Button onClick={handleSave}>Save</Button>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleDelete}>Delete</Button>
+            </div>
+          </Modal>
+        </div>
         <div className="background-container">
           <HexagonBackground />
         </div>

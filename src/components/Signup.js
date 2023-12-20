@@ -53,6 +53,7 @@ function Signup() {
         <HexagonBackground />
       </div>
       <h1 className="supheader-title">Advanced Career</h1>
+      <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
       <form className="SignUp-Input" onSubmit={handleSignup}>
         <input
           type="email"

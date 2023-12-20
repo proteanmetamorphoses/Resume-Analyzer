@@ -16,13 +16,8 @@ const LandingPage = () => {
         <HexagonBackground />
       </div>
       <h1 className="header-title">Advanced Career</h1>
-      <h3 className="tagline">Share your personal work brand with professionalism, confidence, and distinction.</h3>
-      <h3 className="tagline">
-        Shape your resume with powerful AI personal brand enhancements.
-      </h3>
-      <h3 className="tagline">
-        Professionalize your interview responses with engaging AI language suggestions.
-      </h3>
+      <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
+      
       <button onClick={goToLogin} className="cta-button">
         Get Started
       </button>
