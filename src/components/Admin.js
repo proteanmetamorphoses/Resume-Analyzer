@@ -311,7 +311,6 @@ function Admin() {
     setQuestionResponses([]);
 
     async function fetchResponses() {
-      if (!user) return;
       if (user && selectedQuestion) {
         const q = query(
           collection(db, "users", user.uid, "userResponses"),
@@ -371,11 +370,17 @@ function Admin() {
     fetchDocumentIds();
   }); // Fetch document IDs when these dependencies change
 
+   useEffect(() => {
+    if (!user) return;
+    fetchQuestions();
+  }, [user, userRole, selectedUserId]); // Update the list of questions when these dependencies change
+
   if (!user) {
     return <div>Loading or not authorized...</div>;
   }
 
   const handleIdChange = async (event) => {
+    if (!user) return;
     const id = event.target.value;
     setSelectedId(id);
 
@@ -501,6 +506,7 @@ function Admin() {
   };
 
   const handleQuestionChange = async (event) => {
+    if (!user) return;
     const question = event.target.value;
     setSelectedQuestion(question);
 
