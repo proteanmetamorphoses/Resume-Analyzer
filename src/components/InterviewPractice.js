@@ -723,11 +723,13 @@ const InterviewPractice = () => {
           <button onClick={handleVBNextButtonClick}>Next</button>
         </div>
       </div>
+      {voiceBotState.voiceBotText && (
       <div className="VoiceBotSays">
         <h2 id="voiceBotTextElement" className="VoiceBotText">
           {voiceBotState.voiceBotText}
         </h2>
-      </div>
+      </div> 
+      )}:{<h4 className="instructVBClick">Click interviewer once to start, twice to hear again.</h4>}
       <div className="UserControls">
         <textarea
           ref={userSpeechRef}

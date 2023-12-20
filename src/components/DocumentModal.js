@@ -23,12 +23,12 @@ function DocumentModal({ coverLetter, resume, onClose, onRework, onDelete }) {
           </div>
         </div>
         <div className="buttons-container">
-          <button id = "Rework" className="DocModal" onClick={onRework}>Use Resume</button>
-          <button id = "Download" className="DocModal" onClick={handleDownload}>Download</button>
-          <button id = "Delete" className="DocModal" onClick={onDelete} disabled={isDeleteDisabled}>
+          <button id = "Rework" className="DocModalButton" onClick={onRework}>Use Resume</button>
+          <button id = "Download" className="DocModalButton" onClick={handleDownload}>Download</button>
+          <button id = "Delete" className="DocModalButtonBottom" onClick={onDelete} disabled={isDeleteDisabled}>
             Delete
           </button>
-          <button id = "Close" className="DocModal" onClick={onClose}>Close</button>
+          <button id = "Close" className="DocModalButtonBottom" onClick={onClose}>Close</button>
         </div>
       </div>
     </div>

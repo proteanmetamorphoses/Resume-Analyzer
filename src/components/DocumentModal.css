@@ -47,7 +47,7 @@
   text-align: left;
 }
 
-.document-modal-section h3{
+.document-modal-section h3 {
   color: rgb(255, 255, 255);
 }
 
@@ -59,8 +59,13 @@ p {
 
 .buttons-container {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+}
+
+.DocModalButtonBottom{
+  margin-top: px;
 }
 
 .DocModal {
@@ -81,7 +86,6 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
-
 
 button:hover {
   background: #1565c0;
@@ -108,17 +112,19 @@ button:hover {
   .documents-modal-container {
     flex-direction: column;
   }
- 
+
   .document-modal-section {
     /* Add margin to separate the sections */
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
 }
 
 /* Button container adjustments */
 .buttons-container {
-  padding: 0 20px; /* Add padding to prevent buttons from touching the edges */
   flex-wrap: wrap; /* Wrap buttons if needed */
+  justify-content: space-around;
+  align-items: center;
+  width: 80%;
 }
 
 /* Button styling */

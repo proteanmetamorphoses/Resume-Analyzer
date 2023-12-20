@@ -15,6 +15,11 @@
   color: white;
 }
 
+.instructVBClick{
+  margin: 0;
+  width: 105%;
+}
+
 .VoiceBotText {
   color: white;
   background-color: black; /* Set the background color to black */

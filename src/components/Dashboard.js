@@ -67,8 +67,8 @@ function Dashboard() {
     useState("");
   const [isTest, setIsTest] = useState(false);
   const [showPreviousWork, setShowPreviousWork] = useState(false);
-  let voiceBotText = "";
-  let AudioFile = -1;
+  let voiceBotText = "You're at the right place for resume help.";
+  let AudioFile = 0;
   let sentences = [];
 
   useEffect(() => {
