@@ -729,9 +729,9 @@ function Dashboard() {
           ))}
         <div className="VoiceBotSays">
           {!isAnalyzing && !showResults && showVoiceBot && (
-            <h2 id="voiceBotTextElement" className="VoiceBotTextDB">
+            <h5 id="voiceBotTextElement" className="VoiceBotTextDB">
               {voiceBotText}
-            </h2>
+            </h5>
           )}
         </div>
       </div>
@@ -780,9 +780,9 @@ function Dashboard() {
           (showResults || showRevisionSection) &&
           !showFinalResults &&
           showVoiceBot && (
-            <h2 id="voiceBotTextElement" className="VoiceBotTextDB">
+            <h5 id="voiceBotTextElement" className="VoiceBotTextDB">
               {voiceBotText}
-            </h2>
+            </h5>
           )}
       </div>
       {!isAnalyzing && (showResults || showRevisionSection) && (
@@ -817,9 +817,9 @@ function Dashboard() {
           ))}
         <div className="VoiceBotSays">
           {!isAnalyzing && showFinalResults && showVoiceBot && (
-            <h2 id="voiceBotTextElement" className="VoiceBotTextDB">
+            <h5 id="voiceBotTextElement" className="VoiceBotTextDB">
               {voiceBotText}
-            </h2>
+            </h5>
           )}
         </div>
       </div>

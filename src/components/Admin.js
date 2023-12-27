@@ -253,9 +253,6 @@ function Admin() {
     }
   }, [user, userRole, selectedUserId]); // Dependencies of fetchQuestions
   
- 
-  
-
   useEffect(() => {
     if (!user) return;
     async function fetchData() {
@@ -317,9 +314,10 @@ function Admin() {
     setQuestionResponses([]);
 
     async function fetchResponses() {
-      if (user && selectedQuestion) {
+      let userIdToFetch = userRole === "admin" ? selectedUserId : user.uid;
+      if (userIdToFetch && selectedQuestion) {
         const q = query(
-          collection(db, "users", user.uid, "userResponses"),
+          collection(db, "users", userIdToFetch, "userResponses"),
           where("questionText", "==", selectedQuestion),
           orderBy("date", "desc")
         );
@@ -344,12 +342,11 @@ function Admin() {
     }
 
     fetchResponses();
-  }, [selectedQuestion, user, selectedUserId]);
+  }, [selectedQuestion, user, selectedUserId, userRole]);
 
-  const fetchDocumentIds = async () => {
+  const fetchDocumentIds = useCallback(async () => {
     if (!user) return;
     let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
-    console.log("Fetching documents for user ID:", userIdToFetch);
     
     if (userIdToFetch) {
       try {
@@ -371,16 +368,15 @@ function Admin() {
         console.log("Error details:", error.code, error.message);
       }
     }
-  };
+  },[user, selectedQuestion, selectedUserId, userRole]);
 
   useEffect(() => {
-    if (!user) return;
     fetchDocumentIds();
-  }); // Fetch document IDs when these dependencies change
+  }, [fetchDocumentIds]); // Fetch document IDs when these dependencies change
 
    useEffect(() => {
     fetchQuestions();
-  }, [fetchQuestions]); // Update the list of questions when these dependencies change
+  }, [fetchQuestions, selectedQuestion, user]); // Update the list of questions when these dependencies change
 
   if (!user) {
     return <div>Loading or not authorized...</div>;
@@ -388,11 +384,13 @@ function Admin() {
 
   const handleIdChange = async (event) => {
     if (!user) return;
+    
     const id = event.target.value;
     setSelectedId(id);
 
     try {
-      const docRef = doc(db, "users", selectedUserId, "userResponses", id);
+      const userIdToFetch = userRole === "admin" ? selectedUserId : user.uid;
+      const docRef = doc(db, "users", userIdToFetch, "userResponses", id);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -517,8 +515,7 @@ function Admin() {
     const question = event.target.value;
     setSelectedQuestion(question);
 
-    let userIdToFetch = selectedUserId || (user && user.uid);
-
+    let userIdToFetch = userRole === "admin" ? selectedUserId : user.uid;
     if (userIdToFetch && question) {
       try {
         // Query Firestore to fetch document IDs based on the selected question
@@ -528,11 +525,9 @@ function Admin() {
         );
         const querySnapshot = await getDocs(q);
         const ids = querySnapshot.docs.map((doc) => doc.id);
-
         // Set the state with the fetched document IDs
         setDocumentIds(ids);
       } catch (error) {
-        console.error("Error fetching document IDs for question:", error);
       }
     }
     setSelectedId("");

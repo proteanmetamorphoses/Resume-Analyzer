@@ -538,7 +538,7 @@ const InterviewPractice = () => {
         // Set a timeout to revert the color back after 250ms
         setTimeout(() => {
           button.style.backgroundColor = ""; // Revert to the initial color
-          button.textContent = "Speak";
+          button.textContent = "Respond";
         }, 1500);
       }
 
@@ -624,7 +624,7 @@ const InterviewPractice = () => {
         button.textContent = "Listening...";
       } else {
         button.style.backgroundColor = "";
-        button.textContent = "Speak";
+        button.textContent = "Respond";
       }
     } else {
       console.error("Start Listening button not found");
@@ -725,9 +725,9 @@ const InterviewPractice = () => {
       </div>
       {voiceBotState.voiceBotText ? (
       <div className="VoiceBotSays">
-        <h2 id="voiceBotTextElement" className="VoiceBotText">
+        <h5 id="voiceBotTextElement" className="VoiceBotText">
           {voiceBotState.voiceBotText}
-        </h2>
+        </h5>
       </div> 
       ):(<h4 className="instructVBClick">Click interviewer once to start, twice to hear again.</h4>)}
       <div className="UserControls">
@@ -738,7 +738,7 @@ const InterviewPractice = () => {
           onChange={handleUserTyping}
           placeholder="Position your microphone close to your mouth but away from your speech stream.
 
-          Type here or click the `Start Listening` button, below, to use speech recognition when you receive a question to answer."
+          Type here or click the `Respond` button, below, to use speech recognition when you receive a question to answer."
           disabled={shouldBlockAnswer()}
         ></textarea>
         <h4 className="instruct1">Wait for questions to input a reply.</h4>
@@ -749,7 +749,7 @@ const InterviewPractice = () => {
             onClick={startListening}
             disabled={voiceBotState.isListening}
           >
-            Speak
+            Respond
           </button>
           <button
             className="StpBttn"
