@@ -729,7 +729,7 @@ const InterviewPractice = () => {
           {voiceBotState.voiceBotText}
         </h5>
       </div> 
-      ):(<h4 className="instructVBClick">Click interviewer once to start, twice to hear again.</h4>)}
+      ):(<h4 className="instructVBClick">Click interviewer twice to speak.</h4>)}
       <div className="UserControls">
         <textarea
           ref={userSpeechRef}

@@ -568,7 +568,7 @@ function Admin() {
       return;
     }
 
-    const newColorMode = colorMode >= 8 ? 0 : colorMode + 1;
+    const newColorMode = colorMode >= 17 ? 0 : colorMode + 1;
     // Reference to the user's color mode document
     const colorModeRef = doc(
       db,

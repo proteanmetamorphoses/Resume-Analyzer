@@ -19,6 +19,7 @@ const HexagonBackground = () => {
 
   const allColors = useMemo(() => {
     const colors0 = [
+      "#c8c8c8",
       "#192416",
       "#B7C79D",
       "#739A78",
@@ -27,6 +28,7 @@ const HexagonBackground = () => {
       "#FF5E00",
     ];
     const colors1 = [
+      "#c8c8c8",
       "#a13720",
       "#FF33A1",
       "#33FF7A",
@@ -35,6 +37,7 @@ const HexagonBackground = () => {
       "#33FFD1",
     ];
     const colors2 = [
+      "#c8c8c8",
       "#bcbd8f",
       "#FBEA75",
       "#F9BD52",
@@ -43,6 +46,7 @@ const HexagonBackground = () => {
       "#FF3737",
     ];
     const colors3 = [
+      "#c8c8c8",
       "#3C0506",
       "#A62020",
       "#7F7975",
@@ -51,6 +55,7 @@ const HexagonBackground = () => {
       "#FFD700",
     ];
     const colors4 = [
+      "#c8c8c8",
       "#26435D",
       "#DDB90B",
       "#6C92B6",
@@ -59,6 +64,7 @@ const HexagonBackground = () => {
       "#FF1493",
     ];
     const colors5 = [
+      "#c8c8c8",
       "#04112D",
       "#043375",
       "#045AB7",
@@ -67,6 +73,7 @@ const HexagonBackground = () => {
       "#008000",
     ];
     const colors6 = [
+      "#c8c8c8",
       "#7f7c91",
       "#2B0B71",
       "#8572C0",
@@ -75,6 +82,7 @@ const HexagonBackground = () => {
       "#8A2BE2",
     ];
     const colors7 = [
+      "#c8c8c8",
       "#3571AC",
       "#0D1C24",
       "#78C4F8",
@@ -83,6 +91,88 @@ const HexagonBackground = () => {
       "#33BE5C",
     ];
     const colors8 = [
+      "#c8c8c8",
+      "#054C23",
+      "#33BE5C",
+      "#679243",
+      "#1C9B54",
+      "#3571AC",
+      "#0D1C24",
+    ];
+    const colors9 = [
+      "#191919",
+      "#192416",
+      "#B7C79D",
+      "#739A78",
+      "#2F808E",
+      "#FF9100",
+      "#FF5E00",
+    ];
+    const colors10 = [
+      "#191919",
+      "#a13720",
+      "#FF33A1",
+      "#33FF7A",
+      "#3380FF",
+      "#FFD133",
+      "#33FFD1",
+    ];
+    const colors11 = [
+      "#191919",
+      "#bcbd8f",
+      "#FBEA75",
+      "#F9BD52",
+      "#EDCC93",
+      "#FF6B6B",
+      "#FF3737",
+    ];
+    const colors12 = [
+      "#191919",
+      "#3C0506",
+      "#A62020",
+      "#7F7975",
+      "#40576B",
+      "#FFA500",
+      "#FFD700",
+    ];
+    const colors13 = [
+      "#191919",
+      "#26435D",
+      "#DDB90B",
+      "#6C92B6",
+      "#8AA7B8",
+      "#FF69B4",
+      "#FF1493",
+    ];
+    const colors14 = [
+      "#191919",
+      "#04112D",
+      "#043375",
+      "#045AB7",
+      "#046494",
+      "#32CD32",
+      "#008000",
+    ];
+    const colors15 = [
+      "#191919",
+      "#7f7c91",
+      "#2B0B71",
+      "#8572C0",
+      "#947BC6",
+      "#9932CC",
+      "#8A2BE2",
+    ];
+    const colors16 = [
+      "#191919",
+      "#3571AC",
+      "#0D1C24",
+      "#78C4F8",
+      "#B1E3F3",
+      "#054C23",
+      "#33BE5C",
+    ];
+    const colors17 = [
+      "#191919",
       "#054C23",
       "#33BE5C",
       "#679243",
@@ -101,6 +191,15 @@ const HexagonBackground = () => {
       colors6,
       colors7,
       colors8,
+      colors9,
+      colors10,
+      colors11,
+      colors12,
+      colors13,
+      colors14,
+      colors15,
+      colors16,
+      colors17
     ];
   }, []);
 
