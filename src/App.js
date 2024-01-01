@@ -5,6 +5,12 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
+import About from "./components/About";
+import Billing from "./components/Billing";
+import Careers from "./components/Careers";
+import Contactus from "./components/Contactus";
+import ConversationPractice from "./components/Conversationpractice";
+
 import ProtectedRoute from "./utils/ProtectedRoute";
 import PasswordReset from "./components/PasswordReset";
 import ScrollToTop from "./components/ScrollToTop";
@@ -27,6 +33,10 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/billing" element={<Billing />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/contactus" element={<Contactus />} />
               <Route
                 path="/dashboard"
                 element={
@@ -40,6 +50,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <InterviewPractice />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/conversationpractice"
+                element={
+                  <ProtectedRoute>
+                    <ConversationPractice />
                   </ProtectedRoute>
                 }
               />
