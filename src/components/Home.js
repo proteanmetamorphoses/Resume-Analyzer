@@ -15,9 +15,10 @@ const LandingPage = () => {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="header-title">Advanced Career</h1>
-      <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
-      
+      <h1 className="header-title">iSpeakWell</h1>
+      <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
+      <h5 className="tagline"> with Professionalism, Confidence, and Distinction.</h5>
+      <h3>Revise with OpenAI.</h3>
       <button onClick={goToLogin} className="cta-button">
         Get Started
       </button>

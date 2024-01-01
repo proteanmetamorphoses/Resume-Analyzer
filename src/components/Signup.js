@@ -11,6 +11,8 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -38,7 +40,9 @@ function Signup() {
       // Add a new document in collection "users" with the user's UID
       await setDoc(doc(db, "users", userCredential.user.uid), {
         email: email,
-        role: "user" // Assigning a default role, you can customize this part
+        firstName: firstName,
+        lastName: lastName,
+        role: "user" // Assigning a default role
       });
       navigate("/dashboard");
     } catch (error) {
@@ -52,9 +56,25 @@ function Signup() {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="supheader-title">Advanced Career</h1>
-      <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
+      <h1 className="supheader-title">iSpeakWell</h1>
+      <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
+      <h5 className="tagline"> with Professionalism, Confidence, and Distinction.</h5>
+      <h3>Revise with OpenAI.</h3>
       <form className="SignUp-Input" onSubmit={handleSignup}>
+      <h4>Please enter your name:</h4>
+      <input
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <h4>Please enter your email:</h4>
         <input
           type="email"
           placeholder="Email"

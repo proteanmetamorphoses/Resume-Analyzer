@@ -13,7 +13,7 @@ import ResultsSection from "./ResultsSection";
 import RevisionSection from "./RevisionSection";
 import FinalResultsSection from "./FinalResultsSection";
 import { logout } from "../utils/firebase";
-import "./Dashboard.css";
+import "./ResumeRevisor.css";
 import axios from "axios";
 import { db } from "../utils/firebase";
 import {
@@ -678,9 +678,9 @@ function Dashboard() {
         <HexagonBackground />
       </div>
       <header>
-        <h1 className="Main-Header">Advanced Resume</h1>
+        <h1 className="Main-Header">iSpeakWell Resume Revisor</h1>
         <h2 className="Main-Header">
-          Revise Your Career Opportunities with AI
+          Improve your Resume and Get a Cover Letter with AI
         </h2>
       </header>
       <h3 className="Main-Header">Saved Resumes</h3>

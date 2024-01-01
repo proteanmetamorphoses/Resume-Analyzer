@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/ResumeRevisor";
 import About from "./components/About";
 import Billing from "./components/Billing";
 import Careers from "./components/Careers";
@@ -38,7 +38,7 @@ function App() {
               <Route path="/careers" element={<Careers />} />
               <Route path="/contactus" element={<Contactus />} />
               <Route
-                path="/dashboard"
+                path="/resumerevisor"
                 element={
                   <ProtectedRoute>
                     <Dashboard />

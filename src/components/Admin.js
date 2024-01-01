@@ -493,7 +493,7 @@ function Admin() {
     >
       <List>
         <ListItemButton onClick={Dashboard}>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary="Resume Revisor" />
         </ListItemButton>
         <ListItemButton onClick={InterViewPractice}>
           <ListItemText primary="Interview Practice" />
@@ -535,7 +535,7 @@ function Admin() {
   };
 
   const Dashboard = () => {
-    navigate("/Dashboard");
+    navigate("/resumerevisor");
   };
 
   const InterViewPractice = () => {

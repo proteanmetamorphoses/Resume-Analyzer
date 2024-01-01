@@ -30,7 +30,7 @@ function Login() {
       // Use the hook to set the user role
       setUserRole(userRole);
       sessionStorage.setItem('userRole', userRole);
-      navigate("/dashboard");
+      navigate("/resumerevisor");
     } catch (error) {
       console.error("Error logging in:", error);
       setError("An error occurred while trying to log in. Please try again.");
@@ -96,8 +96,10 @@ function Login() {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="header-title">Advanced Career</h1>
-      <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
+      <h1 className="header-title">iSpeakWell</h1>
+      <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
+      <h5 className="tagline"> with Professionalism, Confidence, and Distinction.</h5>
+      <h3>Revise with OpenAI.</h3>
       <form className="Login-Input" onSubmit={handleLogin}>
         <input
           type="email"

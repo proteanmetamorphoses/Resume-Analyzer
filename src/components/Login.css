@@ -23,7 +23,8 @@ form {
 
 .Login-Input,
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   width: 90%; /* Full width for smaller screens */
   margin-bottom: 1rem;
   padding: 0.5rem;

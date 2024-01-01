@@ -219,7 +219,7 @@ const InterviewPractice = () => {
     >
       <List>
         <ListItemButton onClick={Dashboard}>
-          <ListItemText primary="Dashboard" />
+          <ListItemText primary="Resume Revisor" />
         </ListItemButton>
         <ListItemButton onClick={testResponses}>
           <ListItemText primary="Test" />
@@ -522,7 +522,7 @@ const InterviewPractice = () => {
   };
 
   const Dashboard = () => {
-    navigate("/Dashboard");
+    navigate("/resumerevisor");
   };
 
   const admin = () => {
@@ -710,7 +710,7 @@ const InterviewPractice = () => {
         <HexagonBackground />
       </div>
       <header>
-        <h1 className="Main-Header">Advanced Interview</h1>
+        <h1 className="Main-Header">iSpeakWell Interview Practice</h1>
         <h2 className="Main-Header">Practice Interviewing with AI</h2>
       </header>
       <div className="interviewTipsCard">

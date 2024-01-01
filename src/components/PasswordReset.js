@@ -27,8 +27,10 @@ function PasswordReset() {
         <HexagonBackground />
       </div>
       <div className="header-container">
-        <h1 className="header-title">Advanced Career</h1>
-        <h3 className="tagline">Shape Your Employment Brand with Professionalism, Confidence, and Distinction</h3>
+      <h1 className="header-title">iSpeakWell</h1>
+      <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
+      <h5 className="tagline"> with Professionalism, Confidence, and Distinction</h5>
+      <h3>Revise with OpenAI.</h3>
         <h2 className="header-subtitle">Password Reset</h2>
       </div>
       <form className="prform" onSubmit={handlePasswordReset}>
