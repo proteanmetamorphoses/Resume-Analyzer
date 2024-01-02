@@ -21,8 +21,12 @@ function About() {
         {" "}
         with Professionalism, Confidence, and Distinction.
       </h5>
-      <h2 className="under-construction-text">Under Construction</h2>
-      <p>This page is under construction.</p>
+      <h2 className="under-construction-text">About iSpeakWell by Fluent English</h2>
+      <p>Fluent English is a Canadian applied linguistics company located in Edmonton, Alberta, Canada.</p>
+      <h2 className="under-construction-text">Mission</h2>
+      <p>Fluent English is dedicated to helping people produce language with higher communicative value whether English is your first or second language.</p>
+      <h2 className="under-construction-text">Vision</h2>
+      <p>Our vision is a world where people simply deploy language with character, ease, and confidence.</p>
       <div className="links-section">
         <a onClick={() => navigateTo("/about")} href="/about">
           About
@@ -35,6 +39,9 @@ function About() {
         </a>
         <a onClick={() => navigateTo("/contactus")} href="contactus">
           Contact Us
+        </a>
+        <a onClick={() => navigateTo("/login")} href="login">
+          Login
         </a>
       </div>
     </div>

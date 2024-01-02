@@ -63,6 +63,9 @@ function Careers() {
           <a onClick={() => navigateTo("/contactus")} href="contactus">
             Contact Us
           </a>
+          <a onClick={() => navigateTo("/login")} href="login">
+          Login
+        </a>
         </div>
     </div>
   );

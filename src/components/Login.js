@@ -112,6 +112,10 @@ function Login() {
     }
   };
   
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+  
   return (
     <div className="login-container">
       <div className="background-container">
@@ -151,6 +155,23 @@ function Login() {
       <h3 className = "forgotPWD">
         Forgot your password? <Link to="/password-reset" className="pwReset-link">Reset it here</Link>
       </h3>
+      <div className="links-section">
+        <a onClick={() => navigateTo("/about")} href="/about">
+          About
+        </a>
+        <a onClick={() => navigateTo("/careers")} href="/careers">
+          Careers
+        </a>
+        <a onClick={() => navigateTo("/tokens")} href="/tokens">
+          Tokens
+        </a>
+        <a onClick={() => navigateTo("/contactus")} href="contactus">
+          Contact Us
+        </a>
+        <a onClick={() => navigateTo("/login")} href="login">
+          Login
+        </a>
+      </div>
     </div>
   );
 }
