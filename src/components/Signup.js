@@ -16,6 +16,10 @@ function Signup() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+  
   const isStrongPassword = (password) => {
     return /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
   };
@@ -99,6 +103,23 @@ function Signup() {
       <h3 className="link-text">
         Already have an account? <Link className="LogLink" to="/login">Login</Link>
       </h3>
+      <div className="links-section">
+        <a onClick={() => navigateTo("/about")} href="/about">
+          About
+        </a>
+        <a onClick={() => navigateTo("/careers")} href="/careers">
+          Careers
+        </a>
+        <a onClick={() => navigateTo("/tokens")} href="/tokens">
+          Tokens
+        </a>
+        <a onClick={() => navigateTo("/contactus")} href="contactus">
+          Contact Us
+        </a>
+        <a onClick={() => navigateTo("/login")} href="login">
+          Login
+        </a>
+      </div>
     </div>
   );
 }

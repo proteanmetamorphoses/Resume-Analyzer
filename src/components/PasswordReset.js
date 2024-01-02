@@ -1,3 +1,5 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { auth, sendPasswordResetEmail } from "../utils/firebase";
 import "./PasswordReset.css";
@@ -8,6 +10,11 @@ function PasswordReset() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  const navigateTo = (path) => {
+    navigate(path);
+  };
   const handlePasswordReset = async (event) => {
     event.preventDefault();
     try {
@@ -50,6 +57,23 @@ function PasswordReset() {
       </h3>
       {message && <p className="message">{message}</p>}
       {error && <p className="error-message">{error}</p>}
+      <div className="links-section">
+        <a onClick={() => navigateTo("/about")} href="/about">
+          About
+        </a>
+        <a onClick={() => navigateTo("/careers")} href="/careers">
+          Careers
+        </a>
+        <a onClick={() => navigateTo("/tokens")} href="/tokens">
+          Tokens
+        </a>
+        <a onClick={() => navigateTo("/contactus")} href="contactus">
+          Contact Us
+        </a>
+        <a onClick={() => navigateTo("/login")} href="login">
+          Login
+        </a>
+      </div>
     </div>
   );
 }

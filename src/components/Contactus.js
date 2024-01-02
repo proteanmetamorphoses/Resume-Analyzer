@@ -40,6 +40,7 @@ function ContactUs() {
       <h5 className="tagline">
         with Professionalism, Confidence, and Distinction.
       </h5>
+      <p>Please let us know your thoughts.</p>
       {emailSent ? (
         <div>
           <hr />
