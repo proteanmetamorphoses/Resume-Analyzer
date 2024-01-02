@@ -23,11 +23,11 @@ function PasswordReset() {
 
   return (
     <div className="password-reset-container">
-      <div className="background-container">
+      <div className="PassWord-background-container">
         <HexagonBackground />
       </div>
       <div className="header-container">
-      <h1 className="header-title">iSpeakWell</h1>
+      <h1 className="PassWord-header-title">iSpeakWell</h1>
       <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
       <h5 className="tagline"> with Professionalism, Confidence, and Distinction</h5>
       <h3>Revise with OpenAI.</h3>

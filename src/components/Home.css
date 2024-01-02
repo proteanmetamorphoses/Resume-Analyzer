@@ -1,0 +1,114 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200vh;
+  text-align: center;
+  color: white;
+}
+
+.tagline {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  
+}
+
+.cta-button {
+  padding: 10px 20px;
+  font-size: 1.25rem;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+}
+
+.new-section {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.row-2 .itema {
+  margin: 0 10px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 14px solid white;
+  box-shadow: 0 0 100px rgba(246, 236, 45, 0.321);
+}
+
+
+.row-2 .middle-item {
+  background-color: none;
+  border: none;
+}
+
+.arrow {
+  font-size: 6rem;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+
+  .row-2 .item {
+    margin-bottom: 10px;
+  }
+}
+
+.image-container {
+  width: 100%;           /* Adjust the width as needed */
+  height: 200px;         /* Adjust the height to control the slice size */
+  overflow: hidden;
+  position: relative;
+  border-radius: 5px; /* Optional, for rounded corners */
+}
+
+.unsplash-image {
+  width: 100%;
+  height: auto;
+  top: 50%;              /* Align the middle of the image with the container */
+  transform: translateY(-17%); /* Shift the image up by half its height */
+  opacity: 0.5;
+}
+.item, item middle-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 220px;
+}
+
+.links-section {
+  margin-top: 120px;
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust the gap between links as needed */
+}
+
+.links-section a {
+  color: white; /* Set link color */
+  text-decoration: none; /* Remove underline from links */
+  font-size: 1rem; /* Adjust font size as needed */
+  transition: color 0.3s ease;
+}
+
+.links-section a:hover {
+  color: #007bff; /* Change color on hover */
+}

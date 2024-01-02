@@ -6,7 +6,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/ResumeRevisor";
 import About from "./components/About";
-import Billing from "./components/Billing";
+import Tokens from "./components/Tokens";
 import Careers from "./components/Careers";
 import Contactus from "./components/Contactus";
 import ConversationPractice from "./components/Conversationpractice";
@@ -34,7 +34,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/about" element={<About />} />
-              <Route path="/billing" element={<Billing />} />
+              <Route path="/tokens" element={<Tokens />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/contactus" element={<Contactus />} />
               <Route

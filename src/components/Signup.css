@@ -73,3 +73,20 @@ subutton:hover {
 .SignUp-Input{
   width: 90%;
 }
+
+.Login-Input,
+input[type="email"],
+input[type="password"] {
+  width: 90%; /* Full width for smaller screens */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.Login-Input,
+input[type="text"] {
+  width: 50%; /* Full width for smaller screens */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+}

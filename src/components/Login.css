@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 20vh;
+  padding-top: 10vh;
   width: 100%;
   color: white;
 }
@@ -107,7 +107,7 @@ input[type="email"] {
     padding-top: 15vh;
   }
 
-  .header-title {
+  .login-header-title {
     font-size: 3.5rem; /* Larger font for larger screens */
   }
 }
@@ -116,10 +116,6 @@ input[type="email"] {
 @media (min-width: 1024px) {
   .login-container {
     padding-top: 20vh;
-  }
-
-  .header-title {
-    font-size: 4rem; /* Even larger font for desktops */
   }
 
   form {

@@ -1,9 +1,9 @@
 import HexagonBackground from "./HexagonBackground";
-import "./About.css";
+import "./Tokens.css";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function About() {
+function Tokens() {
   const navigate = useNavigate();
 
   const navigateTo = (path) => {
@@ -11,7 +11,7 @@ function About() {
   };
 
   return (
-    <div className="about-container">
+    <div className="Tokens-container">
       <HexagonBackground />
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagline">
@@ -40,4 +40,4 @@ function About() {
     </div>
   );
 }
-export default About;
+export default Tokens;

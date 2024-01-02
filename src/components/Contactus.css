@@ -7,7 +7,46 @@
     text-align: center;
     color: white;
   }
+
+
+  .header-title{
+    padding-top: 200px;
+  }
   
-  .under-construction-text {
-    font-size: 2rem; /* Set the font size to twice the normal size */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .contact-form label {
+    margin-top: 10px;
+  }
+  
+  .contact-form input{
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+  }
+
+ .contact-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    height: 200px;
+  }
+  
+  .contact-form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .contact-form button:hover {
+    background-color: #0056b3;
   }

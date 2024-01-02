@@ -43,19 +43,40 @@ function Login() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
-      // Check if the user exists in Firestore and fetch their role
-      const userRole = await fetchUserRole(user.uid);
-  
-      // If user does not exist in Firestore (i.e., new Google user), create a new entry
-      if (!userRole) {
-        await createNewUserWithRole(user.uid, user.email); // Implement this function
+
+      // Check if the user exists in Firestore
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        // User already exists, check for first and last name
+        const userData = userDocSnap.data();
+        if (!userData.firstName || !userData.lastName) {
+          // Extract first and last name from displayName
+          let [firstName, lastName] = user.displayName ? user.displayName.split(' ') : ['',''];
+          lastName = lastName || ''; // In case lastName is undefined or empty
+
+          // Update the user document with missing names
+          await setDoc(userDocRef, { ...userData, firstName: firstName, lastName: lastName }, { merge: true });
+        }
+      } else {
+        // User is new, extract first and last name from displayName
+        let [firstName, lastName] = user.displayName ? user.displayName.split(' ') : ['',''];
+        lastName = lastName || ''; // In case lastName is undefined or empty
+
+        // Create a new document for the user with the extracted names
+        await setDoc(userDocRef, {
+          email: user.email,
+          firstName: firstName,
+          lastName: lastName,
+          role: "user" // Assign a default role or any other initial properties
+        });
       }
-  
-      // Set the user role in global context
-      setUserRole(userRole || 'user'); // Replace 'default-role' with your default role
-  
-      navigate("/dashboard");
+
+      // Handle user role setting and navigation as before
+      const userRole = await fetchUserRole(user.uid);
+      setUserRole(userRole || 'user');
+      navigate("/resumerevisor");
     } catch (error) {
       console.error("Error logging in with Google:", error);
       setError("There was an issue with Google sign-in. Please try again.");
@@ -96,7 +117,7 @@ function Login() {
       <div className="background-container">
         <HexagonBackground />
       </div>
-      <h1 className="header-title">iSpeakWell</h1>
+      <h1 className="login-header-title">iSpeakWell</h1>
       <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
       <h5 className="tagline"> with Professionalism, Confidence, and Distinction.</h5>
       <h3>Revise with OpenAI.</h3>
