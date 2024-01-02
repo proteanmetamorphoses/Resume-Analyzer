@@ -30,14 +30,12 @@ function Login() {
       // Use the hook to set the user role
       setUserRole(userRole);
       sessionStorage.setItem('userRole', userRole);
-      navigate("/resumerevisor");
+      navigate("/menu");
     } catch (error) {
       console.error("Error logging in:", error);
       setError("An error occurred while trying to log in. Please try again.");
     }
   };
-
-
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
@@ -69,14 +67,15 @@ function Login() {
           email: user.email,
           firstName: firstName,
           lastName: lastName,
-          role: "user" // Assign a default role or any other initial properties
+          role: "user", // Assign a default role or any other initial properties
+          tokens: 2
         });
       }
 
       // Handle user role setting and navigation as before
       const userRole = await fetchUserRole(user.uid);
       setUserRole(userRole || 'user');
-      navigate("/resumerevisor");
+      navigate("/menu");
     } catch (error) {
       console.error("Error logging in with Google:", error);
       setError("There was an issue with Google sign-in. Please try again.");

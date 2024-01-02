@@ -19,7 +19,7 @@ function Signup() {
   const navigateTo = (path) => {
     navigate(path);
   };
-  
+
   const isStrongPassword = (password) => {
     return /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
   };
@@ -46,7 +46,8 @@ function Signup() {
         email: email,
         firstName: firstName,
         lastName: lastName,
-        role: "user" // Assigning a default role
+        role: "user",
+        tokens: 2
       });
       navigate("/dashboard");
     } catch (error) {

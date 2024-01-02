@@ -8,9 +8,9 @@ import Dashboard from "./components/ResumeRevisor";
 import About from "./components/About";
 import Tokens from "./components/Tokens";
 import Careers from "./components/Careers";
+import Menu from "./components/Menu";
 import Contactus from "./components/Contactus";
 import ConversationPractice from "./components/Conversationpractice";
-
 import ProtectedRoute from "./utils/ProtectedRoute";
 import PasswordReset from "./components/PasswordReset";
 import ScrollToTop from "./components/ScrollToTop";
@@ -37,6 +37,14 @@ function App() {
               <Route path="/tokens" element={<Tokens />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/contactus" element={<Contactus />} />
+              <Route
+                path="/menu"
+                element={
+                  <ProtectedRoute>
+                    <Menu />
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/resumerevisor"
                 element={
