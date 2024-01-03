@@ -1,7 +1,7 @@
 // Tokens.js
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TokenContext } from "./tokenContext"; // import TokenContext
+import { TokenContext } from "./tokenContext";
 import HexagonBackground from "./HexagonBackground";
 import "./Tokens.css";
 
@@ -16,6 +16,7 @@ function Tokens() {
   };
 
   const navigateTo = (path) => {
+    setTokens(0);
     navigate(path);
   };
 
@@ -44,15 +45,15 @@ function Tokens() {
         letter. You can do a practice interview. You can also have a practice
         conversation to feel more fluent.
       </p>
-      <h4>Tokens Required for Conversation Practice</h4>
+      <h4>Tokens for Conversation Practice</h4>
       <p className="divMsg">
         One (1) token is required for Conversation Practice (10 minutes)
       </p>
-      <h4>Tokens Required for Resume Revision and Cover Letter</h4>
+      <h4>Tokens for Resume Revision and Cover Letter</h4>
       <p className="divMsg">
         One (1) token is required for Resume Revision and Cover Letter
       </p>
-      <h4>Tokens Required for Interview Practice</h4>
+      <h4>Tokens for Interview Practice</h4>
       <p className="divMsg">
         One (1) token is required for Interview Practice (5 questions)
       </p>

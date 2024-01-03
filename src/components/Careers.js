@@ -27,35 +27,33 @@ function Careers() {
           </div>
           <hr />
           <div className="career">
-            <h3>Social Media UX Designer</h3>
+            <h3>Social Media Marketing</h3>
             <p>
-              Skilled in creating social media communications that translate into increased brand recognition.
+              Skilled in creating social media communications that translate into increased brand recognition and sales.
             </p>
           </div>
           <div className="career">
             <h3>Web Admin</h3>
             <p>
-              With skills IT support, software testing.
+              With skills in IT support, software testing, keep this service abreast of issues relating to client accounts and platform usability.
             </p>
           </div>
           <div className="career">
             <h3>Applied Linguist</h3>
             <p>
-              Specializing in discourse analysis and knowledge of adult
-              education principles.
+              Specializing in discourse analysis and knowledge of adult education principles, OpenAI, and Natural Language Processing (NLP).
             </p>
           </div>
           <div className="career">
             <h3>Full Stack Web Developer</h3>
             <p>
-              With skills in React, machine learning, AI, and OpenAI
-              capabilities.
+              With skills in React, machine learning, AI, OpenAI, server development, database management, and OpenAI capabilities, and NLTK.
             </p>
           </div>
           <div className="career">
             <h3>Senior Software Engineer</h3>
             <p>
-              With deep knowledge of machine learning, AI, and OpenAI
+              With deep knowledge of machine learning, AI, OpenAI, Python, and Natural Language Tool Kit.
               capabilities.
             </p>
           </div>

@@ -17,8 +17,9 @@ import { VoiceBotStateContext } from "./VoiceBotStateContext";
 import Spinner from "./Spinner";
 import { getAuth } from "firebase/auth";
 import { db } from "../utils/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, getDoc } from "firebase/firestore";
 import InterviewTips from "./InterviewTips";
+import { useAuth } from "./AuthContext";
 
 const InterviewPractice = () => {
   const { voiceBotState, setVoiceBotState } = useContext(VoiceBotStateContext);
@@ -53,6 +54,29 @@ const InterviewPractice = () => {
   const [typedChars, setTypedChars] = useState(0);
   const [spokenChars, setSpokenChars] = useState(0);
   const [prevLength, setPrevLength] = useState(0);
+  const [tokens, setTokens] = useState(0);
+  const { userRole } = useAuth();
+
+  useEffect(() => {
+    const fetchTokens = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        try {
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            setTokens(userDoc.data().tokens || 0);
+          }
+        } catch (error) {
+          console.error("Error fetching token count: ", error);
+        }
+      }
+    };
+
+    fetchTokens();
+  }, [tokens]);
 
   useEffect(() => {
     // Update the count of questions whenever qaPairs changes
@@ -104,10 +128,14 @@ const InterviewPractice = () => {
 
   const shouldBlockAnswer = () => {
     const blockedValues = [
-      -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22, 23,
-      25, 26, 28, 29,
+      -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 19, 20, 22,
+      23, 25, 26, 28, 29,
     ];
-    console.log(voiceBotState.audioFileIndex, " Blocked? ",blockedValues.includes(voiceBotState.audioFileIndex))
+    console.log(
+      voiceBotState.audioFileIndex,
+      " Blocked? ",
+      blockedValues.includes(voiceBotState.audioFileIndex)
+    );
     return blockedValues.includes(voiceBotState.audioFileIndex);
   };
 
@@ -218,15 +246,22 @@ const InterviewPractice = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
+        <ListItemButton onClick={Purchase}>
+          <ListItemText primary={`Tokens: ${tokens}`} />
+        </ListItemButton>
         <ListItemButton onClick={Dashboard}>
           <ListItemText primary="Resume Revisor" />
         </ListItemButton>
-        <ListItemButton onClick={testResponses}>
-          <ListItemText primary="Test" />
-        </ListItemButton>
-        <ListItemButton onClick={resetInterview}>
-          <ListItemText primary="Reset" />
-        </ListItemButton>
+        {userRole === "admin" && (
+          <>
+            <ListItemButton onClick={testResponses}>
+              <ListItemText primary="Test" />
+            </ListItemButton>
+            <ListItemButton onClick={resetInterview}>
+              <ListItemText primary="Reset" />
+            </ListItemButton>
+          </>
+        )}
         <ListItemButton onClick={admin}>
           <ListItemText primary="Admin" />
         </ListItemButton>
@@ -525,6 +560,10 @@ const InterviewPractice = () => {
     navigate("/resumerevisor");
   };
 
+  const Purchase = () => {
+    navigate("/purchase");
+  };
+
   const admin = () => {
     navigate("/admin");
   };
@@ -724,12 +763,14 @@ const InterviewPractice = () => {
         </div>
       </div>
       {voiceBotState.voiceBotText ? (
-      <div className="VoiceBotSays">
-        <h5 id="voiceBotTextElement" className="VoiceBotText">
-          {voiceBotState.voiceBotText}
-        </h5>
-      </div> 
-      ):(<h4 className="instructVBClick">Click interviewer twice to speak.</h4>)}
+        <div className="VoiceBotSays">
+          <h5 id="voiceBotTextElement" className="VoiceBotText">
+            {voiceBotState.voiceBotText}
+          </h5>
+        </div>
+      ) : (
+        <h4 className="instructVBClick">Click interviewer twice to speak.</h4>
+      )}
       <div className="UserControls">
         <textarea
           ref={userSpeechRef}

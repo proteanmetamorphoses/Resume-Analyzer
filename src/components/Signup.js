@@ -47,7 +47,8 @@ function Signup() {
         firstName: firstName,
         lastName: lastName,
         role: "user",
-        tokens: 2
+        tokens: 2,
+        desiredPurchase: 0
       });
       navigate("/dashboard");
     } catch (error) {

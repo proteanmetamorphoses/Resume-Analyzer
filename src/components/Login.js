@@ -71,7 +71,8 @@ function Login() {
           firstName: firstName,
           lastName: lastName,
           role: "user", // Assign a default role or any other initial properties
-          tokens: 2
+          tokens: 2,
+          desiredPurchase: 0
         });
       }
 

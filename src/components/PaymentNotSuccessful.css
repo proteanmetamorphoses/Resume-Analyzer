@@ -1,0 +1,25 @@
+.about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Set the container to full viewport height */
+    text-align: center;
+    color: white;
+  }
+  
+  .Task-Menu, .BTN-HLDR {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+.tagLine {
+  width: 100%;
+}
+
+.tagLine {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}

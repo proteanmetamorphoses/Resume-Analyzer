@@ -22,11 +22,7 @@ const Home = () => {
       </div>
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagline">
-        Shape Your Resume, Cover Letter, and Interview Language
-      </h5>
-      <h5 className="tagline">
-        {" "}
-        with Professionalism, Confidence, and Distinction.
+        Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
       </h5>
       <h3>Revise with OpenAI.</h3>
       <button onClick={goToLogin} className="cta-button">

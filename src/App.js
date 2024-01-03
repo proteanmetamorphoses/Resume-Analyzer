@@ -13,6 +13,8 @@ import Contactus from "./components/Contactus";
 import ConversationPractice from "./components/Conversationpractice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import PasswordReset from "./components/PasswordReset";
+import PaymentSuccessful from "./components/PaymentSuccessful";
+import PaymentNotSuccessful from "./components/PaymentNotSuccessful";
 import Purchase from "./components/Purchase";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFound from "./components/NotFound";
@@ -55,6 +57,22 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Purchase />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/paymentsuccessful"
+                  element={
+                    <ProtectedRoute>
+                      <PaymentSuccessful />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/paymentnotsuccessful"
+                  element={
+                    <ProtectedRoute>
+                      <PaymentNotSuccessful />
                     </ProtectedRoute>
                   }
                 />

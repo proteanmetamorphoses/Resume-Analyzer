@@ -65,6 +65,7 @@ function Admin() {
   const [documentIds, setDocumentIds] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const handleClose = () => setOpen(false);
+  const [tokens, setTokens] = useState(0);
   const [documentData, setDocumentData] = useState({
     date: "",
     response: "",
@@ -208,6 +209,27 @@ function Admin() {
   }, [navigate, userRole]);
 
   useEffect(() => {
+    const fetchTokens = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        try {
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            setTokens(userDoc.data().tokens || 0);
+          }
+        } catch (error) {
+          console.error("Error fetching token count: ", error);
+        }
+      }
+    };
+
+    fetchTokens();
+  }, [tokens]);
+
+  useEffect(() => {
     if (!user) return;
     // Fetching user IDs (for admin role)
     async function fetchUserIds() {
@@ -231,20 +253,23 @@ function Admin() {
 
   const fetchQuestions = useCallback(async () => {
     if (!user) return;
-  
-    let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
-  
+
+    let userIdToFetch =
+      userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
+
     if (userIdToFetch) {
       try {
-        const responsesQuery = query(collection(db, "users", userIdToFetch, "userResponses"));
+        const responsesQuery = query(
+          collection(db, "users", userIdToFetch, "userResponses")
+        );
         const querySnapshot = await getDocs(responsesQuery);
-  
+
         const uniqueQuestions = new Set();
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           uniqueQuestions.add(data.questionText);
         });
-  
+
         setQuestions(Array.from(uniqueQuestions));
       } catch (error) {
         console.error("Error fetching questions:", error);
@@ -252,7 +277,7 @@ function Admin() {
       }
     }
   }, [user, userRole, selectedUserId]); // Dependencies of fetchQuestions
-  
+
   useEffect(() => {
     if (!user) return;
     async function fetchData() {
@@ -346,8 +371,9 @@ function Admin() {
 
   const fetchDocumentIds = useCallback(async () => {
     if (!user) return;
-    let userIdToFetch = userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
-    
+    let userIdToFetch =
+      userRole === "admin" && selectedUserId ? selectedUserId : user?.uid;
+
     if (userIdToFetch) {
       try {
         let q;
@@ -359,7 +385,7 @@ function Admin() {
         } else {
           q = query(collection(db, "users", userIdToFetch, "userResponses"));
         }
-  
+
         const querySnapshot = await getDocs(q);
         const ids = querySnapshot.docs.map((doc) => doc.id);
         setDocumentIds(ids);
@@ -368,13 +394,13 @@ function Admin() {
         console.log("Error details:", error.code, error.message);
       }
     }
-  },[user, selectedQuestion, selectedUserId, userRole]);
+  }, [user, selectedQuestion, selectedUserId, userRole]);
 
   useEffect(() => {
     fetchDocumentIds();
   }, [fetchDocumentIds]); // Fetch document IDs when these dependencies change
 
-   useEffect(() => {
+  useEffect(() => {
     fetchQuestions();
   }, [fetchQuestions, selectedQuestion, user]); // Update the list of questions when these dependencies change
 
@@ -384,7 +410,7 @@ function Admin() {
 
   const handleIdChange = async (event) => {
     if (!user) return;
-    
+
     const id = event.target.value;
     setSelectedId(id);
 
@@ -474,6 +500,8 @@ function Admin() {
     }
   };
 
+  
+
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -492,6 +520,9 @@ function Admin() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
+        <ListItemButton onClick={Purchase}>
+          <ListItemText primary={`Tokens: ${tokens}`} />
+        </ListItemButton>
         <ListItemButton onClick={Dashboard}>
           <ListItemText primary="Resume Revisor" />
         </ListItemButton>
@@ -527,8 +558,7 @@ function Admin() {
         const ids = querySnapshot.docs.map((doc) => doc.id);
         // Set the state with the fetched document IDs
         setDocumentIds(ids);
-      } catch (error) {
-      }
+      } catch (error) {}
     }
     setSelectedId("");
     setDocumentData({});
@@ -536,6 +566,10 @@ function Admin() {
 
   const Dashboard = () => {
     navigate("/resumerevisor");
+  };
+
+  const Purchase = () => {
+    navigate("/purchase");
   };
 
   const InterViewPractice = () => {

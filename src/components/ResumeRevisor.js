@@ -22,6 +22,7 @@ import {
   serverTimestamp,
   query,
   where,
+  getDoc,
   getDocs,
   deleteDoc,
   doc,
@@ -35,6 +36,7 @@ import JobSearch from "./JobSearch";
 import { useNavigate } from "react-router-dom";
 import Papa from "papaparse";
 import Spinner from "./Spinner";
+import { useAuth } from "./AuthContext";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -67,9 +69,11 @@ function Dashboard() {
     useState("");
   const [isTest, setIsTest] = useState(false);
   const [showPreviousWork, setShowPreviousWork] = useState(false);
+  const { userRole } = useAuth();
   let voiceBotText = "You're at the right place for resume help.";
   let AudioFile = 0;
   let sentences = [];
+  const [tokens, setTokens] = useState(0);
 
   useEffect(() => {
     if (deletionCount > 0 || overwriteCount > 0 || saveCount > 0) {
@@ -94,6 +98,27 @@ function Dashboard() {
       });
     });
   };
+
+  useEffect(() => {
+    const fetchTokens = async () => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        try {
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            setTokens(userDoc.data().tokens || 0);
+          }
+        } catch (error) {
+          console.error("Error fetching token count: ", error);
+        }
+      }
+    };
+
+    fetchTokens();
+  }, [tokens]);
 
   async function init() {
     try {
@@ -133,15 +158,23 @@ function Dashboard() {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
+        <ListItemButton onClick={Purchase}>
+          <ListItemText primary={`Tokens: ${tokens}`} />
+        </ListItemButton>
         <ListItemButton onClick={InterViewPractice}>
           <ListItemText primary="Interview Practice" />
         </ListItemButton>
-        <ListItemButton onClick={testResponses}>
-          <ListItemText primary="Test" />
-        </ListItemButton>
-        <ListItemButton onClick={resetDashboard}>
-          <ListItemText primary="Reset" />
-        </ListItemButton>
+        {/* ... other list items ... */}
+        {userRole === 'admin' && (
+          <>
+            <ListItemButton onClick={testResponses}>
+              <ListItemText primary="Test" />
+            </ListItemButton>
+            <ListItemButton onClick={resetDashboard}>
+              <ListItemText primary="Reset" />
+            </ListItemButton>
+          </>
+        )}
         <ListItemButton onClick={admin}>
           <ListItemText primary="Admin" />
         </ListItemButton>
@@ -545,6 +578,10 @@ function Dashboard() {
 
   const admin = () => {
     navigate("/admin");
+  };
+
+  const Purchase = () => {
+    navigate("/purchase");
   };
 
   const Logout = async () => {
