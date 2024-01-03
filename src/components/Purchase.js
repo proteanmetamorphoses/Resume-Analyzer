@@ -3,6 +3,9 @@ import React, { useContext, useState } from "react";
 import { TokenContext } from "./tokenContext"; // import TokenContext
 import HexagonBackground from "./HexagonBackground";
 import "./Tokens.css";
+import { getAuth } from "firebase/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 import { loadStripe } from "@stripe/stripe-js";
 //const stripePromise = loadStripe('pk_live_51OUJ8RJs2pb8XH4PAC5jjh24HPSXDsYquxF8dkFwZJqzM3upN2rq56lWPNisXHcYZH7ifvwjY8ggZzroyS5pXHmD00Wb3XO5Zn');
 const stripePromise = loadStripe(
@@ -15,41 +18,57 @@ function Purchase() {
   console.log("selectedTokens: ", selectedTokens);
 
   const handleTokenPurchase = async () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     setTokens(selectedTokens);
-    const stripe = await stripePromise;
-  
-    try {
-      const response = await fetch("http://localhost:3001/api/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ quantity: selectedTokens }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      console.log("Session data:", data);
-  
-      if (data.sessionId) {
-        const result = await stripe.redirectToCheckout({
-          sessionId: data.sessionId,
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      try {
+        // Update desiredPurchase in Firestore
+        await updateDoc(userRef, {
+          desiredPurchase: parseInt(selectedTokens, 10), // Ensure it's an integer
         });
-  
-        if (result.error) {
-          console.log(result.error.message);
+        const stripe = await stripePromise;
+        try {
+          console.log("SelectedTokens: ", selectedTokens);
+          const response = await fetch(
+            "http://localhost:3001/api/create-checkout-session",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ quantity: selectedTokens }),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("Session data:", data);
+
+          if (data.sessionId) {
+            const result = await stripe.redirectToCheckout({
+              sessionId: data.sessionId,
+            });
+
+            if (result.error) {
+              console.log(result.error.message);
+            }
+          } else {
+            console.log("No session ID returned from the server");
+          }
+        } catch (error) {
+          console.error("Error in handleTokenPurchase:", error.message);
         }
-      } else {
-        console.log("No session ID returned from the server");
+      } catch (error) {
+        console.error("Error setting desiredPurchase:", error);
       }
-    } catch (error) {
-      console.error("Error in handleTokenPurchase:", error.message);
     }
   };
-  
+
   return (
     <div className="Tokens-container">
       <HexagonBackground />

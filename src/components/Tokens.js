@@ -12,6 +12,7 @@ function Tokens() {
 
   const handleTokenPurchase = () => {
     setTokens(selectedTokens);
+    console.log("SelectedTokens: ", selectedTokens);
     navigate("/login"); // Navigate to login page
   };
 

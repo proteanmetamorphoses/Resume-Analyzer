@@ -32,7 +32,8 @@ function Login() {
       // Use the hook to set the user role
       setUserRole(userRole);
       sessionStorage.setItem('userRole', userRole);
-      const redirectPath = tokens > 0 ? "/purchase" : "/menu"; // Redirect to purchase if tokens are selected
+      const redirectPath = tokens > 0 ? "/purchase" : "/menu"; 
+      console.log("Tokens for the redirect: ",tokens, " redirect: ", redirectPath);
       navigate(redirectPath);
     } catch (error) {
       console.error("Error logging in:", error);
