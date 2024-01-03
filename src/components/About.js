@@ -15,18 +15,14 @@ function About() {
       <HexagonBackground />
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagline">
-        Shape Your Resume, Cover Letter, and Interview Language
-      </h5>
-      <h5 className="tagline">
-        {" "}
-        with Professionalism, Confidence, and Distinction.
+        Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
       </h5>
       <h2 className="under-construction-text">About iSpeakWell by Fluent English</h2>
-      <p>Fluent English is a Canadian applied linguistics company located in Edmonton, Alberta, Canada.</p>
+      <p className="divMsg">Fluent English is a Canadian applied linguistics company located in Edmonton, Alberta, Canada.</p>
       <h2 className="under-construction-text">Mission</h2>
-      <p>Fluent English is dedicated to helping people produce language with higher communicative value whether English is your first or second language.</p>
+      <p className="divMsg">Fluent English is dedicated to helping people produce language with higher communicative value whether English is your first or second language.</p>
       <h2 className="under-construction-text">Vision</h2>
-      <p>Our vision is a world where people simply deploy language with character, ease, and confidence.</p>
+      <p className="divMsg">Our vision is a world where people simply deploy language with character, ease, and confidence.</p>
       <div className="links-section">
         <a onClick={() => navigateTo("/about")} href="/about">
           About

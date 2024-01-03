@@ -16,16 +16,16 @@ function ContactUs() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      message: formData.get('message'),
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
     };
-  
+
     try {
-      await axios.post('/api/send-email', data);
+      await axios.post("/api/send-email", data);
       setEmailSent(true); // Set emailSent to true on successful email sending
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error("Error sending email:", error);
       // Handle errors here, such as displaying a message to the user
     }
   };
@@ -35,10 +35,8 @@ function ContactUs() {
       <HexagonBackground />
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagline">
-        Shape Your Resume, Cover Letter, and Interview Language
-      </h5>
-      <h5 className="tagline">
-        with Professionalism, Confidence, and Distinction.
+        Shape Your Resume, Cover Letter, and Interview Language with
+        Professionalism, Confidence, and Distinction.
       </h5>
       <p>Please let us know your thoughts.</p>
       {emailSent ? (

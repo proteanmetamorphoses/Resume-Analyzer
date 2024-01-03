@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   auth,
@@ -14,6 +14,7 @@ import HexagonBackground from "./HexagonBackground";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../utils/firebase"; // Make sure to import your Firestore instance
 import { useAuth } from './AuthContext';
+import { TokenContext } from "./tokenContext"; // import TokenContext
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,6 +22,7 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { setUserRole } = useAuth();
+  const { tokens } = useContext(TokenContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -30,7 +32,8 @@ function Login() {
       // Use the hook to set the user role
       setUserRole(userRole);
       sessionStorage.setItem('userRole', userRole);
-      navigate("/menu");
+      const redirectPath = tokens > 0 ? "/purchase" : "/menu"; // Redirect to purchase if tokens are selected
+      navigate(redirectPath);
     } catch (error) {
       console.error("Error logging in:", error);
       setError("An error occurred while trying to log in. Please try again.");
@@ -75,7 +78,8 @@ function Login() {
       // Handle user role setting and navigation as before
       const userRole = await fetchUserRole(user.uid);
       setUserRole(userRole || 'user');
-      navigate("/menu");
+      const redirectPath = tokens > 0 ? "/purchase" : "/menu"; // Redirect to purchase if tokens are selected
+      navigate(redirectPath);
     } catch (error) {
       console.error("Error logging in with Google:", error);
       setError("There was an issue with Google sign-in. Please try again.");
@@ -121,8 +125,7 @@ function Login() {
         <HexagonBackground />
       </div>
       <h1 className="login-header-title">iSpeakWell</h1>
-      <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>
-      <h5 className="tagline"> with Professionalism, Confidence, and Distinction.</h5>
+      <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.</h5>
       <h3>Revise with OpenAI.</h3>
       <form className="Login-Input" onSubmit={handleLogin}>
         <input

@@ -1,10 +1,19 @@
+// Tokens.js
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TokenContext } from "./tokenContext"; // import TokenContext
 import HexagonBackground from "./HexagonBackground";
 import "./Tokens.css";
-import React from "react";
-import { useNavigate } from "react-router-dom";
 
 function Tokens() {
   const navigate = useNavigate();
+  const { setTokens } = useContext(TokenContext); // Use TokenContext
+  const [selectedTokens, setSelectedTokens] = useState(0); // State for selected token amount
+
+  const handleTokenPurchase = () => {
+    setTokens(selectedTokens);
+    navigate("/login"); // Navigate to login page
+  };
 
   const navigateTo = (path) => {
     navigate(path);
@@ -14,19 +23,39 @@ function Tokens() {
     <div className="Tokens-container">
       <HexagonBackground />
       <h1 className="header-title">iSpeakWell</h1>
-      <p className="tagline">
-        Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
-      </p>
+      <h5 className="tagline">
+        Shape Your Resume, Cover Letter, and Interview Language with
+        Professionalism, Confidence, and Distinction.
+      </h5>
       <h1>Purchase Tokens</h1>
-      <button className = "cta-button">Buy Tokens</button>
+      <input className="TokenNum"
+        type="number"
+        value={selectedTokens}
+        onChange={(e) => setSelectedTokens(e.target.value)}
+        min="0"
+      />
+      <button className="cta-button" onClick={handleTokenPurchase}>
+        Buy Tokens
+      </button>
       <h2 className="under-construction-text">What Are Tokens For?</h2>
-      <p>Tokens are your ticket to performing the resume or speech work you want to do.</p>
+      <p className="divMsg">
+        Tokens are your ticket to performing the resume or speech work you want
+        to do. With tokens, you can revise your resume and get a matching cover
+        letter. You can do a practice interview. You can also have a practice
+        conversation to feel more fluent.
+      </p>
       <h4>Tokens Required for Conversation Practice</h4>
-      <p>One (1) token is required for Conversation Practice (10 minutes)</p>
+      <p className="divMsg">
+        One (1) token is required for Conversation Practice (10 minutes)
+      </p>
       <h4>Tokens Required for Resume Revision and Cover Letter</h4>
-      <p>One (1) token is required for Resume Revision and Cover Letter</p>
+      <p className="divMsg">
+        One (1) token is required for Resume Revision and Cover Letter
+      </p>
       <h4>Tokens Required for Interview Practice</h4>
-      <p>One (1) token is required for Interview Practice (5 questions)</p>
+      <p className="divMsg">
+        One (1) token is required for Interview Practice (5 questions)
+      </p>
       <div className="links-section">
         <a onClick={() => navigateTo("/about")} href="/about">
           About

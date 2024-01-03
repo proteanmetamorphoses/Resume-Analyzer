@@ -7,11 +7,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 300px; /* Use max-width for flexibility */
-  width: 100%; /* Make width adapt to screen size */
+  width: 375px;
   text-align: center;
   margin: 20px auto; /* Ensure margin on all sides for smaller screens */
   padding: 20px; 
+}
+
+
+.tipContent {
+  height: 150px; /* Make height flexible to accommodate content */
+}
+
+.tipHeader {
+  height: 50px;
 }
 
 .interviewTipBucket{
@@ -35,11 +43,15 @@
 
 /* Responsive Adjustments for Smaller Screens */
 @media (max-width: 768px) {
-  .interviewTips {
-    padding: 15px; /* Slightly reduce padding for smaller screens */
+  .interviewTips{
+    width: 75%;
+    height: 400px;
+  }
+  .tipContent {
+    height: 170px; /* Make height flexible to accommodate content */
   }
 
-  .tipContent, .tipHeader {
-    height: auto; /* Make height flexible to accommodate content */
+  .tipHeader {
+    height: 50px;
   }
 }

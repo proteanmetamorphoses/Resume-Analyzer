@@ -11,3 +11,24 @@
   .under-construction-text {
     font-size: 2rem; /* Set the font size to twice the normal size */
   }
+
+.tagline{
+  width: 70%;
+}
+
+  .divMsg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 35%;
+  }
+  
+  @media (max-width: 767px) {
+    .divMsg {
+      width: 90%;
+    }
+    .tagline{
+      width: 90%;
+    }
+  }
