@@ -73,6 +73,32 @@
   margin: 0 auto; /* Center the base container */
 }
 
+.token-increment-section{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminTools{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.IncrementTokens-Title{
+  margin-top: 40px;
+}
+
+.IncrementTokens-Title-Small{
+  margin-top: 0px;
+}
+
+.IncrementTokens{
+  margin: 0 16px 16px 16px;
+}
+
 .AdminTools {
   width: 100%;
   display: flex;

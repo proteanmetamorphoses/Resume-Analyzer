@@ -49,6 +49,7 @@ import HexagonBackground from "./HexagonBackground";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../utils/firebase";
 import { useAuth } from "./AuthContext";
+import { increment } from "firebase/firestore";
 
 function Admin() {
   const [questions, setQuestions] = useState([]);
@@ -66,6 +67,7 @@ function Admin() {
   const [selectedId, setSelectedId] = useState("");
   const handleClose = () => setOpen(false);
   const [tokens, setTokens] = useState(0);
+  const [tokenIncrement, setTokenIncrement] = useState(0);
   const [documentData, setDocumentData] = useState({
     date: "",
     response: "",
@@ -228,6 +230,26 @@ function Admin() {
 
     fetchTokens();
   }, [tokens]);
+
+  const fetchUserDetails = useCallback(async () => {
+    if (!selectedUserId || userRole !== "admin") return;
+
+    const userRef = doc(db, "users", selectedUserId);
+    try {
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        setTokens(userDoc.data().tokens || 0);
+      } else {
+        setTokens(0); // Reset tokens if no user document is found
+      }
+    } catch (error) {
+      console.error("Error fetching user details: ", error);
+    }
+  }, [selectedUserId, userRole]);
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, [fetchUserDetails]);
 
   useEffect(() => {
     if (!user) return;
@@ -500,8 +522,6 @@ function Admin() {
     }
   };
 
-  
-
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -625,11 +645,37 @@ function Admin() {
     changeColorMode(newColorMode);
   };
 
+  const incrementUserTokens = async () => {
+    if (userRole !== "admin") {
+      alert("Only admins can perform this operation.");
+      return;
+    }
+
+    if (!selectedUserId) {
+      alert("No user selected.");
+      return;
+    }
+
+    const userRef = doc(db, "users", selectedUserId);
+
+    try {
+      await updateDoc(userRef, {
+        tokens: increment(tokenIncrement),
+      });
+      alert(`Successfully added ${tokenIncrement} tokens to the user.`);
+      setTokenIncrement(0); // Reset the increment input
+      fetchUserDetails(); // Refetch user details to update the token count
+    } catch (error) {
+      console.error("Error updating tokens: ", error);
+      alert("Failed to update tokens.");
+    }
+  };
+
   return (
     <div className="admin-section">
       <div className="Base">
         <header className="admin-Header">
-          <h1>Advanced Career</h1>
+          <h1>iSpeakWell</h1>
           <h3>Admin</h3>
         </header>
         <div className="AdminTools">
@@ -706,7 +752,33 @@ function Admin() {
                 Change Color Theme {colorMode + 1}
               </button>
             </div>
-            <div className="Empty-Drawer"></div>
+            {userRole === "admin" && (
+              <div className="adminTools">
+                <h3 className="IncrementTokens-Title">
+                  Increment Selected User Tokens
+                </h3>
+                <h4 className="IncrementTokens-Title-Small">
+                  User Tokens: {tokens}
+                </h4>
+                <div className="token-increment-section">
+                  <input
+                    className="IncrementTokens"
+                    type="number"
+                    value={tokenIncrement}
+                    onChange={(e) =>
+                      setTokenIncrement(parseInt(e.target.value, 10))
+                    }
+                    placeholder="Enter token amount"
+                  />
+                  <button
+                    className="IncrementTokens"
+                    onClick={incrementUserTokens}
+                  >
+                    Add Tokens
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div>
