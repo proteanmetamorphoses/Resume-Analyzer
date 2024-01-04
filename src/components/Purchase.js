@@ -27,6 +27,7 @@ function Purchase() {
         // Update desiredPurchase in Firestore
         await updateDoc(userRef, {
           desiredPurchase: parseInt(selectedTokens, 10), // Ensure it's an integer
+          paying: true,
         });
         const stripe = await stripePromise;
         try {

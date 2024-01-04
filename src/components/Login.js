@@ -73,7 +73,8 @@ function Login() {
           lastName: lastName,
           role: "user", // Assign a default role or any other initial properties
           tokens: 2,
-          desiredPurchase: 0
+          desiredPurchase: 0,
+          paying: false
         });
       }
 

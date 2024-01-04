@@ -22,12 +22,19 @@ function PaymentSuccessful() {
           const userDoc = await getDoc(userRef);
           if (userDoc.exists()) {
             const userData = userDoc.data();
+
+            if (!userData.paying) {
+              navigate("/paymentnotsuccessful");
+              return;
+            }
+
             const desiredPurchase = userData.desiredPurchase || 0;
 
             // Update tokens field with desiredPurchase value
             await updateDoc(userRef, {
               tokens: userData.tokens + desiredPurchase,
-              desiredPurchase: 0 // Resetting desiredPurchase
+              desiredPurchase: 0, // Resetting desiredPurchase
+              paying: false
             });
 
             // Update local token context
@@ -41,7 +48,7 @@ function PaymentSuccessful() {
     };
 
     transferDesiredPurchaseToTokens();
-  }, [setTokens]);
+  }, [setTokens, navigate]);
 
   const navigateTo = (path) => {
     navigate(path);
