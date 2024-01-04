@@ -95,7 +95,7 @@ function Purchase() {
       </p>
       <h4>Tokens Required for Conversation Practice</h4>
       <p className="divMsg">
-        One (1) token is required for Conversation Practice (10 minutes)
+        One (1) token is required for Conversation Practice (1,200 words approximately)
       </p>
       <h4>Tokens Required for Resume Revision and Cover Letter</h4>
       <p className="divMsg">

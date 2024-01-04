@@ -60,7 +60,7 @@ function Careers() {
           <h3>Senior Software Engineer</h3>
           <p>
             With deep knowledge of machine learning, AI, OpenAI, Python, and
-            Natural Language Tool Kit. capabilities.
+            Natural Language Tool Kit.
           </p>
         </div>
       </div>
