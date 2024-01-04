@@ -89,7 +89,7 @@ function Purchase() {
       <button onClick={handleTokenPurchase}>Purchase Tokens</button>
       <h2 className="under-construction-text">What Are Tokens For?</h2>
       <p className="divMsg">
-        Tokens are your ticket to performing the resume or speech work you want
+        Tokens enable you to performing the resume or speech work you want
         to do. With tokens, you can revise your resume and get a matching cover
         letter. You can do a practice interview. You can also have a practice
         conversation to feel more fluent.
