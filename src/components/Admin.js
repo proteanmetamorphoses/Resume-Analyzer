@@ -66,8 +66,12 @@ function Admin() {
   const [documentIds, setDocumentIds] = useState([]);
   const [selectedId, setSelectedId] = useState("");
   const handleClose = () => setOpen(false);
-  const [tokens, setTokens] = useState(0);
   const [tokenIncrement, setTokenIncrement] = useState(0);
+  const [newRole, setNewRole] = useState("");
+  const [roleUpdated, setRoleUpdated] = useState(false);
+  const [selectedUserRole, setSelectedUserRole] = useState("");
+  const [loggedInUserTokens, setLoggedInUserTokens] = useState(0);
+  const [selectedUserTokens, setSelectedUserTokens] = useState(0);
   const [documentData, setDocumentData] = useState({
     date: "",
     response: "",
@@ -211,16 +215,16 @@ function Admin() {
   }, [navigate, userRole]);
 
   useEffect(() => {
-    const fetchTokens = async () => {
+    const fetchLoggedInUserTokens = async () => {
       const auth = getAuth();
-      const user = auth.currentUser;
+      const currentUser = auth.currentUser;
 
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
+      if (currentUser) {
+        const userRef = doc(db, "users", currentUser.uid);
         try {
           const userDoc = await getDoc(userRef);
           if (userDoc.exists()) {
-            setTokens(userDoc.data().tokens || 0);
+            setLoggedInUserTokens(userDoc.data().tokens || 0);
           }
         } catch (error) {
           console.error("Error fetching token count: ", error);
@@ -228,8 +232,8 @@ function Admin() {
       }
     };
 
-    fetchTokens();
-  }, [tokens]);
+    fetchLoggedInUserTokens();
+  }, [user]); // Dependency on the logged-in user
 
   const fetchUserDetails = useCallback(async () => {
     if (!selectedUserId || userRole !== "admin") return;
@@ -238,9 +242,11 @@ function Admin() {
     try {
       const userDoc = await getDoc(userRef);
       if (userDoc.exists()) {
-        setTokens(userDoc.data().tokens || 0);
+        setSelectedUserTokens(userDoc.data().tokens || 0);
+        setSelectedUserRole(userDoc.data().role || "user");
       } else {
-        setTokens(0); // Reset tokens if no user document is found
+        setSelectedUserTokens(0);
+        setSelectedUserRole("user");
       }
     } catch (error) {
       console.error("Error fetching user details: ", error);
@@ -249,7 +255,7 @@ function Admin() {
 
   useEffect(() => {
     fetchUserDetails();
-  }, [fetchUserDetails]);
+  }, [fetchUserDetails, userRole]);
 
   useEffect(() => {
     if (!user) return;
@@ -271,7 +277,7 @@ function Admin() {
     if (userRole === "admin") {
       fetchUserIds();
     }
-  }, [selectedUserId, userRole, user]);
+  }, [selectedUserId, userRole, user, roleUpdated]);
 
   const fetchQuestions = useCallback(async () => {
     if (!user) return;
@@ -426,6 +432,30 @@ function Admin() {
     fetchQuestions();
   }, [fetchQuestions, selectedQuestion, user]); // Update the list of questions when these dependencies change
 
+  const handleRoleUpdate = async () => {
+    if (!selectedUserId || !newRole) {
+      alert("Please select a user and a role.");
+      return;
+    }
+
+    if (user && selectedUserId === user.uid) {
+      alert("You cannot change your own role.");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", selectedUserId);
+      await updateDoc(userRef, { role: newRole });
+      alert("User role updated successfully");
+      // Reset the state or perform any additional actions
+      setNewRole("");
+      setRoleUpdated((prev) => !prev);
+    } catch (error) {
+      console.error("Error updating user role: ", error);
+      alert("Failed to update user role.");
+    }
+  };
+
   if (!user) {
     return <div>Loading or not authorized...</div>;
   }
@@ -541,13 +571,16 @@ function Admin() {
     >
       <List>
         <ListItemButton onClick={Purchase}>
-          <ListItemText primary={`Tokens: ${tokens}`} />
+          <ListItemText primary={`Tokens: ${loggedInUserTokens}`} />
         </ListItemButton>
         <ListItemButton onClick={Dashboard}>
           <ListItemText primary="Resume Revisor" />
         </ListItemButton>
         <ListItemButton onClick={InterViewPractice}>
           <ListItemText primary="Interview Practice" />
+        </ListItemButton>
+        <ListItemButton onClick={ConversationPractice}>
+          <ListItemText primary="Conversation Practice" />
         </ListItemButton>
         <ListItemButton onClick={Logout}>
           <ListItemText primary="Logout" />
@@ -595,6 +628,11 @@ function Admin() {
   const InterViewPractice = () => {
     // Navigate to the InterviewPractice page
     navigate("/interview-practice");
+  };
+
+  const ConversationPractice = () => {
+    // Navigate to the ConversationPractice page
+    navigate("/conversationPractice");
   };
 
   function formatMillis(millis) {
@@ -662,9 +700,29 @@ function Admin() {
       await updateDoc(userRef, {
         tokens: increment(tokenIncrement),
       });
-      alert(`Successfully added ${tokenIncrement} tokens to the user.`);
+      if (tokenIncrement < 0) {
+        alert(
+          `Successfully removed ${Math.abs(tokenIncrement)} ${
+            Math.abs(tokenIncrement) > 1 ? "tokens" : "token"
+          } from the user's account.`
+        );
+      } else {
+        alert(
+          `Successfully added ${tokenIncrement} ${
+            tokenIncrement > 1 ? "tokens" : "token"
+          } to the user's account.`
+        );
+      }
       setTokenIncrement(0); // Reset the increment input
-      fetchUserDetails(); // Refetch user details to update the token count
+
+      if (user && user.uid === selectedUserId) {
+        setLoggedInUserTokens((prevTokens) => prevTokens + tokenIncrement);
+      }
+
+      // Always update the selected user's token count
+      setSelectedUserTokens((prevTokens) => prevTokens + tokenIncrement);
+
+      fetchUserDetails();
     } catch (error) {
       console.error("Error updating tokens: ", error);
       alert("Failed to update tokens.");
@@ -758,7 +816,7 @@ function Admin() {
                   Increment Selected User Tokens
                 </h3>
                 <h4 className="IncrementTokens-Title-Small">
-                  User Tokens: {tokens}
+                  User Tokens: {selectedUserTokens}
                 </h4>
                 <div className="token-increment-section">
                   <input
@@ -774,8 +832,31 @@ function Admin() {
                     className="IncrementTokens"
                     onClick={incrementUserTokens}
                   >
-                    Add Tokens
+                    {tokenIncrement < 0 ? "Remove Tokens" : "Add Tokens"}
                   </button>
+                </div>
+                <div className="UserRoleManagement">
+                  <h3>Manage User Role</h3>
+                  <h4 className="IncrementTokens-Title-Small">
+                    User Role: {selectedUserRole}
+                  </h4>
+                  <div className="RoleSelection">
+                    <select
+                      className="RoleSelector"
+                      value={newRole}
+                      onChange={(e) => setNewRole(e.target.value)}
+                    >
+                      <option value="">Select Role</option>
+                      <option value="admin">Admin</option>
+                      <option value="user">User</option>
+                    </select>
+                    <button
+                      className="RoleSelectorButton"
+                      onClick={handleRoleUpdate}
+                    >
+                      Update Role
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

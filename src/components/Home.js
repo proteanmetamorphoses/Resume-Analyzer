@@ -30,7 +30,7 @@ const Home = () => {
       </button>
       <div className="new-section">
         <div className="row row-1">
-          <h3>Sign Up, Login, then Purchase Tokens to Get Started</h3>
+          <h3>Sign Up, Login, then Select a Task to Get Started</h3>
           <h4>You get <u>2 free tokens</u> to start when you sign up!</h4>
         </div>
         <div className="row row-1">

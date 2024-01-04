@@ -252,6 +252,9 @@ const InterviewPractice = () => {
         <ListItemButton onClick={Dashboard}>
           <ListItemText primary="Resume Revisor" />
         </ListItemButton>
+        <ListItemButton onClick={ConversationPractice}>
+          <ListItemText primary="Conversation Practice" />
+        </ListItemButton>
         {userRole === "admin" && (
           <>
             <ListItemButton onClick={testResponses}>
@@ -558,6 +561,10 @@ const InterviewPractice = () => {
 
   const Dashboard = () => {
     navigate("/resumerevisor");
+  };
+
+  const ConversationPractice = () => {
+    navigate("/conversationPractice");
   };
 
   const Purchase = () => {

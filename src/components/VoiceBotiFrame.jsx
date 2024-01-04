@@ -4,14 +4,11 @@ import { getAuth, getIdToken } from 'firebase/auth';
 
 const VoiceBotIframe = () => {
   const [iframeSrc, setIframeSrc] = useState('');
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    // Initialize Firebase Authentication
     const auth = getAuth();
-
-    // Check if the user is currently authenticated
     if (auth.currentUser) {
-      // Get the user's Firebase authentication token
       getIdToken(auth.currentUser)
         .then((firebaseAuthToken) => {
           const serverEndpoint = `https://voicebot.ispeakwell.ca/get-html?authToken=${firebaseAuthToken}`;
@@ -20,17 +17,23 @@ const VoiceBotIframe = () => {
         .catch((error) => {
           console.error('Error getting ID token:', error);
         });
-        
     }
   }, []);
 
   return (
     <div id="wrap">
+      <div
+        className={`tooltip ${showTooltip ? 'show-tooltip' : ''}`}
+      >
+        Double-click to speak or repeat, then click next or last buttons.
+      </div>
       <iframe
         id="theBot"
         src={iframeSrc}
         title="VoiceBot"
         allow="microphone"
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
       ></iframe>
     </div>
   );

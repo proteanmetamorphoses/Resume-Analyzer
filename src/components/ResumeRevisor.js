@@ -164,7 +164,9 @@ function Dashboard() {
         <ListItemButton onClick={InterViewPractice}>
           <ListItemText primary="Interview Practice" />
         </ListItemButton>
-        {/* ... other list items ... */}
+        <ListItemButton onClick={ConversationPractice}>
+          <ListItemText primary="Conversation Practice" />
+        </ListItemButton>
         {userRole === 'admin' && (
           <>
             <ListItemButton onClick={testResponses}>
@@ -566,6 +568,10 @@ function Dashboard() {
   const InterViewPractice = () => {
     // Navigate to the InterviewPractice page
     navigate("/interview-practice");
+  };
+
+  const ConversationPractice = () => {
+    navigate("/conversationPractice");
   };
 
   const showResumes = () => {
