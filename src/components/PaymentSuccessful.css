@@ -8,6 +8,24 @@
     color: white;
   }
   
+.Transaction{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.TransactionNumber{
+  padding-top: 40px;
+}
+
+.ReceiptButtons{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
   .Task-Menu, .BTN-HLDR {
     display: flex;
     flex-direction: row;

@@ -884,12 +884,12 @@ function Admin() {
               <div>
                 <FormControl fullWidth margin="normal">
                   <InputLabel id="document-id-selector-label">
-                    Document ID
+                    Question ID
                   </InputLabel>
                   <Select
                     labelId="document-id-selector-label"
                     value={selectedId}
-                    label="Document ID"
+                    label="Question ID"
                     onChange={handleIdChange}
                   >
                     {documentIds.map((id) => (
