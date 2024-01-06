@@ -14,6 +14,7 @@ import ConversationPractice from "./components/Conversationpractice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import PasswordReset from "./components/PasswordReset";
 import PaymentSuccessful from "./components/PaymentSuccessful";
+import PageExpired from "./components/PageExpired";
 import PaymentNotSuccessful from "./components/PaymentNotSuccessful";
 import Purchase from "./components/Purchase";
 import ScrollToTop from "./components/ScrollToTop";
@@ -57,6 +58,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <Purchase />
+                    </ProtectedRoute>
+                  }
+                />
+                 <Route
+                  path="/pageexpired"
+                  element={
+                    <ProtectedRoute>
+                      <PageExpired />
                     </ProtectedRoute>
                   }
                 />

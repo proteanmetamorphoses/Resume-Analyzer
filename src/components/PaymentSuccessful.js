@@ -17,27 +17,25 @@ function PaymentSuccessful() {
   const uniqueId = uuidv4(); // Generate unique ID for success log
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId = urlParams.get("session_id");
-  console.log("SessionId: ", sessionId);
-  const MAX_ATTEMPTS = 5;
+  const MAX_ATTEMPTS = 10;
   const INITIAL_INTERVAL = 3000; // 3 seconds
   const MAX_INTERVAL = 60000; // 60 seconds
-  const [receiptUrl, setReceiptUrl] = useState("");
+  const [receiptUrl, setReceiptUrl] = useState("No purchase recorded.");
 
   useEffect(() => {
     if (hasCheckedPayment) {
-      console.log("Just passing through...0");
       return; // Prevents useEffect from running more than once
     }
+    
     if (!sessionId) {
       navigate("/paymentnotsuccessful");
       return;
     }
 
-    const transferDesiredPurchaseToTokens = async () => {
+    const transferDesiredPurchaseToTokens = async (newReceiptUrl) => {
       const auth = getAuth();
       const user = auth.currentUser;
       if (user) {
-        console.log("Just passing through...1");
         const userRef = doc(db, "users", user.uid);
         try {
           const userDoc = await getDoc(userRef);
@@ -49,19 +47,18 @@ function PaymentSuccessful() {
               return;
             }
             const desiredPurchase = userData.desiredPurchase || 0;
-            console.log("Just passing through...2");
+            const userDataTokens = userData.tokens + desiredPurchase;
             // Update tokens field with desiredPurchase value
             await updateDoc(userRef, {
-              tokens: userData.tokens + desiredPurchase,
+              tokens: userDataTokens,
               desiredPurchase: 0,
               paying: false,
+              receiptUrl: newReceiptUrl,
             });
-            console.log("Just passing through...3");
             // Update local token context
             setTokens(userData.tokens + desiredPurchase);
-            console.log("Just passing through...4");
             // Log the successful transfer
-            logTokenTransfer(user.uid, desiredPurchase, uniqueId, "Successful");
+            logTokenTransfer(user.uid, desiredPurchase, uniqueId, "Successful", newReceiptUrl);
             setTransactionId(uniqueId); // Set for display purposes
             setHasCheckedPayment(true);
             document.getElementById('PaymentType').textContent = 'Payment Successful';
@@ -80,7 +77,7 @@ function PaymentSuccessful() {
                   user.uid,
                   0,
                   uniqueId,
-                  "ERROR - Not Successful"
+                  "ERROR - Not Successful", newReceiptUrl
                 );
                 navigate("/paymentnotsuccessful");
                 return;
@@ -91,8 +88,7 @@ function PaymentSuccessful() {
       }
     };
 
-    const logTokenTransfer = async (userId, tokens, uniqueId, status) => {
-      console.log("Just passing through...5");
+    const logTokenTransfer = async (userId, tokens, uniqueId, status, receipt) => {
       const logRef = collection(db, "tokenTransfers");
       const logData = {
         date: new Date(),
@@ -101,10 +97,10 @@ function PaymentSuccessful() {
         uniqueId: uniqueId,
         sessionId: sessionId,
         status: status,
+        receiptUrl: receipt,
       };
 
       try {
-        console.log("Just passing through...6");
         await addDoc(logRef, logData);
         console.log("Log entry created successfully");
       } catch (error) {
@@ -128,7 +124,7 @@ function PaymentSuccessful() {
             console.log(data.receipt_url);
             // Handle receipt URL
             setReceiptUrl(data.receipt_url);
-            transferDesiredPurchaseToTokens();
+            transferDesiredPurchaseToTokens(data.receipt_url);
           } else if (attempt < MAX_ATTEMPTS) {
             // Retry after the interval
             setTimeout(
@@ -138,7 +134,7 @@ function PaymentSuccessful() {
           } else {
             // Handle maximum attempts reached
             console.log("No receipt url received.");
-            navigate("/paymentnotsuccessful");
+            navigate("/pageexpired");
           }
         })
         .catch((error) => {
@@ -147,13 +143,11 @@ function PaymentSuccessful() {
       console.log("Waiting for a reply from the payment server...");
     }
 
-    // Start polling after the user initiates a payment
-    // Assuming sessionId is obtained after initiating the payment
     pollPaymentStatus(sessionId);
 
-    console.log("Just passing through...7");
-  }, [setTokens, navigate, hasCheckedPayment, uniqueId, sessionId]);
+  }, [setTokens, navigate, hasCheckedPayment, uniqueId, sessionId, receiptUrl]);
 
+  
   const handleButtonClick = () => {
     window.open(receiptUrl, "_blank");
   };
@@ -191,12 +185,15 @@ function PaymentSuccessful() {
       )}
       {transactionId && (
         <div className="Transaction">
+          <h2 className="Task-Menu">
+            Thank you for your purchase.
+          </h2>
           <h3 className="Task-Menu">
-            Thank you for your purchase. Your token count has been updated.
+            Your token count has been increased.
           </h3>
-          <h3 className="TransactionNumber">
+          <h4 className="TransactionNumber">
             Transaction number: {transactionId}
-          </h3>
+          </h4>
           <button onClick={copyToClipboard}>Copy Transaction Number</button>
           <h5 className="TransactionNumber">Receipt URL: {receiptUrl}</h5>
           <div className="ReceiptButtons">

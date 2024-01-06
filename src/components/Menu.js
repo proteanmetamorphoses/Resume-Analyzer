@@ -23,7 +23,7 @@ function Menu() {
         <button onClick={() => navigateTo("/interview-practice")}>Interview Practice</button>
         <button onClick={() => navigateTo("/conversationpractice")}>Conversation Practice</button>
       </div>
-      <div className="BTN-HLDR" onClick={() => navigateTo("/Tokens")}><button>Buy Tokens</button></div>
+      <div className="BTN-HLDR" onClick={() => navigateTo("/Purchase")}><button>Buy Tokens</button></div>
     </div>
   );
 }

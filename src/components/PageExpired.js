@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HexagonBackground from './HexagonBackground';
-import './PaymentNotSuccessful.css';
+import './PageExpired.css';
 import { getAuth } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase'; // Ensure this points to your Firestore instance
 
-function PaymentNotSuccessful() {
+function PageExpired() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,8 +42,7 @@ function PaymentNotSuccessful() {
         Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
       </h5>
       <hr />
-      <h1 className = "Task-Menu">Payment Incomplete</h1>
-      <h3 className="Task-Menu">Your tokens have not been updated.</h3>
+      <h1 className = "Task-Menu">Page Expired</h1>
       <hr />
       <h2 className="Task-Menu">Select a task to continue</h2>
       <div className="BTN-HLDR">
@@ -56,4 +55,4 @@ function PaymentNotSuccessful() {
   );
 }
 
-export default PaymentNotSuccessful;
+export default PageExpired;

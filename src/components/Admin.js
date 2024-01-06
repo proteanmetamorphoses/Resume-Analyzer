@@ -28,6 +28,7 @@ import {
   collection,
   query,
   where,
+  addDoc,
   getDoc,
   setDoc,
   getDocs,
@@ -67,6 +68,7 @@ function Admin() {
   const [selectedId, setSelectedId] = useState("");
   const handleClose = () => setOpen(false);
   const [tokenIncrement, setTokenIncrement] = useState(0);
+  const [reasonToChangeTs, setReasonToChangeTs] = useState("");
   const [newRole, setNewRole] = useState("");
   const [roleUpdated, setRoleUpdated] = useState(false);
   const [selectedUserRole, setSelectedUserRole] = useState("");
@@ -721,13 +723,33 @@ function Admin() {
 
       // Always update the selected user's token count
       setSelectedUserTokens((prevTokens) => prevTokens + tokenIncrement);
-
+      logTokenTransfer(tokenIncrement);
       fetchUserDetails();
     } catch (error) {
       console.error("Error updating tokens: ", error);
       alert("Failed to update tokens.");
     }
   };
+
+  const logTokenTransfer = async (tokens) => {
+    const logRef = collection(db, "tokenTransfers");
+    const logData = {
+      date: new Date(),
+      userId: user.uid,
+      tokens: tokens,
+      reason: reasonToChangeTs,
+      node: selectedUserId,
+    };
+    try {
+      await addDoc(logRef, logData);
+      console.log("Log entry created successfully");
+      setReasonToChangeTs("");
+    } catch (error) {
+      console.error("Error logging token transfer: ", error);
+    }
+  };
+
+
 
   return (
     <div className="admin-section">
@@ -835,6 +857,14 @@ function Admin() {
                     {tokenIncrement < 0 ? "Remove Tokens" : "Add Tokens"}
                   </button>
                 </div>
+                <input className="ReasonToChangeTokens"
+                    type="text"
+                    value={reasonToChangeTs}
+                    onChange={(e) =>
+                      setReasonToChangeTs(e.target.value)
+                    }
+                    placeholder="Enter reason for change"
+                    />
                 <div className="UserRoleManagement">
                   <h3>Manage User Role</h3>
                   <h4 className="IncrementTokens-Title-Small">
