@@ -1,8 +1,9 @@
 // Tokens.js
 import React, { useContext, useState } from "react";
 import { TokenContext } from "./tokenContext"; // import TokenContext
+import { useNavigate } from "react-router-dom";
 import HexagonBackground from "./HexagonBackground";
-import "./Tokens.css";
+import "./Purchase.css";
 import { getAuth } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
@@ -15,7 +16,13 @@ const stripePromise = loadStripe(
 function Purchase() {
   const { tokens, setTokens } = useContext(TokenContext); // Use TokenContext
   const [selectedTokens, setSelectedTokens] = useState(tokens); // State for selected token amount
+  const navigate = useNavigate();
   console.log("selectedTokens: ", selectedTokens);
+
+const goAway = () => {
+  navigate("/menu");
+}
+
 
   const handleTokenPurchase = async () => {
     const auth = getAuth();
@@ -87,6 +94,7 @@ function Purchase() {
         min="0"
       />
       <button onClick={handleTokenPurchase}>Purchase Tokens</button>
+      <button className = "menuGoer" onClick={goAway}>Menu</button>
       <h2 className="under-construction-text">What Are Tokens For?</h2>
       <p className="divMsg">
         Tokens enable you to performing the resume or speech work you want

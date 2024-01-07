@@ -35,7 +35,11 @@ function RevisionSection({
   };
 
   const handleSubmitRevisions = () => {
-    onSubmitRevisions(originalResume, originalJobDescription, userRevisions);
+    if(window.confirm('This action will require 0.5 Tokens.')){
+      onSubmitRevisions(originalResume, originalJobDescription, userRevisions);
+    } else{
+      return;
+    }
   };
   return (
     <div className="revision-section">

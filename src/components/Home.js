@@ -34,7 +34,7 @@ const Home = () => {
           <h4>You get <u>2 free tokens</u> to start when you sign up!</h4>
         </div>
         <div className="row row-1">
-          <h4>1 Token Provides You With</h4>
+          <h4>1 Token Gives You</h4>
         </div>
         <div className="row row-2">
           <div className="itema">

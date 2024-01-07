@@ -687,12 +687,19 @@ function Admin() {
 
   const incrementUserTokens = async () => {
     if (userRole !== "admin") {
+
       alert("Only admins can perform this operation.");
       return;
     }
 
     if (!selectedUserId) {
       alert("No user selected.");
+      return;
+    }
+
+    if(reasonToChangeTs === ""){
+      console.log("ReasonToChangeTs: ", reasonToChangeTs);
+      alert("You must add a reason to perform this update.");
       return;
     }
 

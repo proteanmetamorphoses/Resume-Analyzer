@@ -33,8 +33,7 @@ function App() {
     <AuthProvider>
       <ColorModeProvider>
         <VoiceBotStateProvider>
-          
-            <Router>
+          <Router>
             <TokenProvider>
               <ScrollToTop />
               <Routes>
@@ -61,7 +60,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                 <Route
+                <Route
                   path="/pageexpired"
                   element={
                     <ProtectedRoute>
@@ -120,9 +119,8 @@ function App() {
                 <Route path="/password-reset" element={<PasswordReset />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
-              </TokenProvider>
-            </Router>
-          
+            </TokenProvider>
+          </Router>
         </VoiceBotStateProvider>
       </ColorModeProvider>
     </AuthProvider>

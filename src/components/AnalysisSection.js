@@ -76,7 +76,12 @@ function AnalysisSection({
   };
 
   const handleAnalyzeClick = () => {
-    onSubmit(resumeText, jobDescriptionText);
+    if(window.confirm('This action will require 0.5 Tokens.  Do not leave this page during the process.')){
+      onSubmit(resumeText, jobDescriptionText);
+    } else{
+      return;
+    }
+    
   };
 
   const getCharacterMessage = (count, maxCount) => {
@@ -163,7 +168,7 @@ function AnalysisSection({
           className="styled-textarea"
           value={resumeText}
           onChange={handleResumeTextChange}
-          placeholder="Type or paste your current resume text here.
+          placeholder="Type or paste your current resume text here in a well-formatted or a denser, space-free approach.
           Include:
           Header
           • [Full Name]

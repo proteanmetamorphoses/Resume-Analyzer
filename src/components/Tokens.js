@@ -30,7 +30,8 @@ function Tokens() {
         Professionalism, Confidence, and Distinction.
       </h5>
       <h1>Purchase Tokens</h1>
-      <input className="TokenNum"
+      <input 
+        className="TokenNum"
         type="number"
         value={selectedTokens}
         onChange={(e) => setSelectedTokens(e.target.value)}
