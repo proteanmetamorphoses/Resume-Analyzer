@@ -1,9 +1,9 @@
-.Tokens-container {
+.Purchase-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 130vh; /* Set the container to full viewport height */
+  height: 150vh; /* Set the container to full viewport height */
   text-align: center;
   color: white;
 }

@@ -1,18 +1,11 @@
-.about-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* Set the container to full viewport height */
-    text-align: center;
-    color: white;
-  }
+
   
   .Task-Menu, .BTN-HLDR {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    margin-bottom: 30px;
   }
 
 .tagLine {
@@ -23,3 +16,10 @@
     font-size: 1.5rem;
     margin-bottom: 2rem;
 }
+
+.menu-header-title {
+  text-align: center;
+  font-size: 4rem; /* Smaller font size for smaller screens */
+  margin-top: 150px;
+}
+

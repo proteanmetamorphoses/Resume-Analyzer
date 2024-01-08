@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "./tokenContext";
-import HexagonBackground from "./HexagonBackground";
 import "./PaymentSuccessful.css";
 import { getAuth } from "firebase/auth";
 import { doc, getDoc, updateDoc, addDoc, collection } from "firebase/firestore";
@@ -170,7 +169,6 @@ function PaymentSuccessful() {
 
   return (
     <div className="Menu-container">
-      <HexagonBackground />
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagLine">
         Shape Your Resume, Cover Letter, and Interview Language with

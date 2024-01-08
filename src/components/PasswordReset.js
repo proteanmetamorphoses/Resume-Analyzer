@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { auth, sendPasswordResetEmail } from "../utils/firebase";
 import "./PasswordReset.css";
-import HexagonBackground from "./HexagonBackground";
 import { Link } from "react-router-dom";
 
 function PasswordReset() {
@@ -30,9 +29,6 @@ function PasswordReset() {
 
   return (
     <div className="password-reset-container">
-      <div className="PassWord-background-container">
-        <HexagonBackground />
-      </div>
       <div className="header-container">
       <h1 className="PassWord-header-title">iSpeakWell</h1>
       <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language</h5>

@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
-import HexagonBackground from "./HexagonBackground";
 import UnsplashImage from "./UnsplashImage.jpg"; // Ensure the path and file extension are correct
 
 const Home = () => {
@@ -17,12 +16,10 @@ const Home = () => {
 
   return (
     <div className="landing-container">
-      <div className="background-container">
-        <HexagonBackground />
-      </div>
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagline">
-        Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
+        Shape Your Resume, Cover Letter, and Interview Language with
+        Professionalism, Confidence, and Distinction.
       </h5>
       <h3>Revise with OpenAI.</h3>
       <button onClick={goToLogin} className="cta-button">
@@ -30,11 +27,15 @@ const Home = () => {
       </button>
       <div className="new-section">
         <div className="row row-1">
-          <h3>Sign Up, Login, then Select a Task to Get Started</h3>
-          <h4>You get <u>2 free tokens</u> to start when you sign up!</h4>
+          <h1>
+            <strong>
+              <u>2 tokens FREE</u>
+            </strong>{" "}
+            when you sign up
+          </h1>
         </div>
         <div className="row row-1">
-          <h4>1 Token Gives You</h4>
+          <h3>Each Token Gives You</h3>
         </div>
         <div className="row row-2">
           <div className="itema">
@@ -53,8 +54,11 @@ const Home = () => {
             <h3>(5 Questions)</h3>
           </div>
         </div>
+        <div className="row row-3">
+          <span className="arrow">&#8595;</span>
+        </div>
         <div className="row row-1">
-          <h4>Buy Single or Multiple Tokens</h4>
+          <h3>Sign Up, Login, then Select a Task to Get Started</h3>
         </div>
         <div className="row row-3">
           <span className="arrow">&#8595;</span>
@@ -76,18 +80,11 @@ const Home = () => {
           Let's Get Started
         </button>
         <div className="links-section">
-          <a onClick={() => navigateTo("/about")} href="/about">
-            About
-          </a>
-          <a onClick={() => navigateTo("/careers")} href="/careers">
-            Careers
-          </a>
-          <a onClick={() => navigateTo("/tokens")} href="/tokens">
-            Tokens
-          </a>
-          <a onClick={() => navigateTo("/contactus")} href="contactus">
-            Contact Us
-          </a>
+          <button className="link-button" onClick={() => navigateTo("/about")}>About</button>
+          <button className="link-button" onClick={() => navigateTo("/careers")}>Careers</button>
+          <button className="link-button" onClick={() => navigateTo("/tokens")}>Tokens</button>
+          <button className="link-button" onClick={() => navigateTo("/contactus")}>Contact Us</button>
+          <button className="link-button" onClick={() => navigateTo("/login")}>Login</button>
         </div>
       </div>
     </div>

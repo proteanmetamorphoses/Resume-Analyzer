@@ -1,11 +1,22 @@
 .landing-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200vh;
   text-align: center;
   color: white;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: rgba(51, 51, 102, 0.561); /* or your link color */
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
 }
 
 .tagline {

@@ -1,8 +1,8 @@
-import HexagonBackground from "./HexagonBackground";
 import "./Conversationpractice.css";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../utils/firebase";
+import VoiceBotIframe from "./VoiceBotiFrame";
 import {
   Drawer,
   IconButton,
@@ -80,6 +80,7 @@ function ConversationPractice() {
     }
     setIsOpen(open);
   };
+  
 
   const list = () => (
     <div
@@ -106,16 +107,77 @@ function ConversationPractice() {
       </List>
     </div>
   );
+const handleUserTyping = () =>{
+
+}
+const shouldBlockAnswer = () =>{
+
+}
+
+const startListening = () =>{
+
+}
+
+const stopListening = () => {
+
+}
+
+const handleSubmit = () => {
+
+}
+
+const clearTextArea = () => {
+  
+}
+
 
 
   return (
-    <div className="about-container">
-      <HexagonBackground />
-      <h1 className="header-title">iSpeakWell</h1>
-      <h5 className="tagline">
-        Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
-      </h5>
-      <h2 className="under-construction-text">shhh!...This Area Is Under Construction...Don't Tell Anyone.</h2>
+    <div className="Conversation-Practice-container">
+        <h1 className="Main-Header-convo">iSpeakWell Conversation Practice</h1>
+        <h2 className="Main-Header-tagline">Practice Speaking with AI</h2>
+      <div className="VoiceBot-container">
+        <VoiceBotIframe />
+      </div>
+      <div className="UserControls">
+        <textarea
+          id="speech"
+          className="userSpeech"
+          onChange={handleUserTyping}
+          placeholder="Position your microphone close to your mouth but away from your speech stream.
+
+          Type here or click the `Respond` button, below, to use speech recognition when you receive a question to answer."
+          disabled={shouldBlockAnswer()}
+        ></textarea>
+        <h4 className="instruct1">Wait for <u>your turn</u> to input your reply.</h4>
+
+        <div className="SpeechRecButtons">
+          <button
+            className="StartListeningButton"
+            onClick={startListening}
+
+          >
+            Respond
+          </button>
+          <button
+            className="StpBttn"
+            onClick={stopListening}
+
+          >
+            Stop
+          </button>
+          <button
+            className="submitAnswer"
+            onClick={handleSubmit}
+
+          >
+            Add
+          </button>
+          <button className="clearButton" onClick={clearTextArea}>
+            Clear
+          </button>
+        </div>
+      </div>
       <nav className="logout-nav">
         {/* Hamburger Menu Icon */}
         <IconButton className="menu-icon" onClick={toggleDrawer(true)}>

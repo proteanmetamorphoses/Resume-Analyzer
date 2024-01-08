@@ -46,7 +46,6 @@ import {
   Legend,
 } from "chart.js";
 import zoomPlugin from "chartjs-plugin-zoom";
-import HexagonBackground from "./HexagonBackground";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../utils/firebase";
 import { useAuth } from "./AuthContext";
@@ -982,9 +981,6 @@ function Admin() {
               </div>
             </div>
           </Modal>
-        </div>
-        <div className="background-container">
-          <HexagonBackground />
         </div>
       </div>
       <nav className="logout-nav">

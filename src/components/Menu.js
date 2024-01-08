@@ -1,8 +1,7 @@
-import HexagonBackground from "./HexagonBackground";
 import "./Menu.css";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import VoiceBotIframe from "./VoiceBotiFrame";
 function Menu() {
   const navigate = useNavigate();
 
@@ -11,12 +10,14 @@ function Menu() {
   };
 
   return (
-    <div className="Menu-container">
-      <HexagonBackground />
-      <h1 className="header-title">iSpeakWell</h1>
+    <div className="menu-container">
+      <h1 className="menu-header-title">iSpeakWell</h1>
       <h5 className="tagLine">
-        Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.
+        Menu
       </h5>
+      <div className="VoiceBot-container">
+        <VoiceBotIframe />
+      </div>
       <h2 className="Task-Menu">Select a Task</h2>
       <div className="BTN-HLDR">
         <button onClick={() => navigateTo("/resumerevisor")}>Resume and Cover Letter</button>

@@ -9,7 +9,6 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import { logout } from "../utils/firebase";
 import VoiceBotIframe from "./VoiceBotiFrame";
-import HexagonBackground from "./HexagonBackground";
 import "./InterviewPractice.css";
 import { useNavigate } from "react-router-dom";
 import Papa from "papaparse";
@@ -752,9 +751,6 @@ const InterviewPractice = () => {
 
   return (
     <div className="InterviewPractice">
-      <div className="background-container">
-        <HexagonBackground />
-      </div>
       <header>
         <h1 className="Main-Header">iSpeakWell Interview Practice</h1>
         <h2 className="Main-Header">Practice Interviewing with AI</h2>

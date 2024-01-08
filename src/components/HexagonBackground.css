@@ -1,9 +1,0 @@
-.HexagonBackground {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw; /* Full viewport width */
-  height: 100vh; /* Full viewport height */
-  z-index: -1; /* Place it behind other content */
-  color: #c8c8c8
-  }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import HexagonBackground from "./HexagonBackground";
 import "./Contactus.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -31,8 +30,7 @@ function ContactUs() {
   };
 
   return (
-    <div className="about-container">
-      <HexagonBackground />
+    <div className="ContactUs-container">
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagline">
         Shape Your Resume, Cover Letter, and Interview Language with
@@ -60,22 +58,12 @@ function ContactUs() {
         </form>
       )}
       <div className="links-section">
-        <a onClick={() => navigateTo("/about")} href="/about">
-          About
-        </a>
-        <a onClick={() => navigateTo("/careers")} href="/careers">
-          Careers
-        </a>
-        <a onClick={() => navigateTo("/tokens")} href="/tokens">
-          Tokens
-        </a>
-        <a onClick={() => navigateTo("/contactus")} href="contactus">
-          Contact Us
-        </a>
-        <a onClick={() => navigateTo("/login")} href="login">
-          Login
-        </a>
-      </div>
+          <button className="link-button" onClick={() => navigateTo("/about")}>About</button>
+          <button className="link-button" onClick={() => navigateTo("/careers")}>Careers</button>
+          <button className="link-button" onClick={() => navigateTo("/tokens")}>Tokens</button>
+          <button className="link-button" onClick={() => navigateTo("/contactus")}>Contact Us</button>
+          <button className="link-button" onClick={() => navigateTo("/login")}>Login</button>
+        </div>
     </div>
   );
 }

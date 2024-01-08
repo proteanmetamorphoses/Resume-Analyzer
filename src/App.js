@@ -25,6 +25,8 @@ import { VoiceBotStateProvider } from "./components/VoiceBotStateContext";
 import { ColorModeProvider } from "./ColorModeContext";
 import axios from "axios";
 import { TokenProvider } from "./components/tokenContext";
+import HexagonBackground from "./components/HexagonBackground";
+import "./App.css";
 
 axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
@@ -34,92 +36,97 @@ function App() {
       <ColorModeProvider>
         <VoiceBotStateProvider>
           <Router>
-            <TokenProvider>
-              <ScrollToTop />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/tokens" element={<Tokens />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/contactus" element={<Contactus />} />
-                <Route
-                  path="/menu"
-                  element={
-                    <ProtectedRoute>
-                      <Menu />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/purchase"
-                  element={
-                    <ProtectedRoute>
-                      <Purchase />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/pageexpired"
-                  element={
-                    <ProtectedRoute>
-                      <PageExpired />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/paymentsuccessful"
-                  element={
-                    <ProtectedRoute>
-                      <PaymentSuccessful />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/paymentnotsuccessful"
-                  element={
-                    <ProtectedRoute>
-                      <PaymentNotSuccessful />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/resumerevisor"
-                  element={
-                    <ProtectedRoute>
-                      <Dashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/interview-practice"
-                  element={
-                    <ProtectedRoute>
-                      <InterviewPractice />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/conversationpractice"
-                  element={
-                    <ProtectedRoute>
-                      <ConversationPractice />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute>
-                      <Admin />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="/password-reset" element={<PasswordReset />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </TokenProvider>
+            <div className="HexagonBackGround">
+              <HexagonBackground />
+            </div>
+            <div className="content-container">
+              <TokenProvider>
+                <ScrollToTop />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/tokens" element={<Tokens />} />
+                  <Route path="/careers" element={<Careers />} />
+                  <Route path="/contactus" element={<Contactus />} />
+                  <Route
+                    path="/menu"
+                    element={
+                      <ProtectedRoute>
+                        <Menu />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/purchase"
+                    element={
+                      <ProtectedRoute>
+                        <Purchase />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/pageexpired"
+                    element={
+                      <ProtectedRoute>
+                        <PageExpired />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/paymentsuccessful"
+                    element={
+                      <ProtectedRoute>
+                        <PaymentSuccessful />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/paymentnotsuccessful"
+                    element={
+                      <ProtectedRoute>
+                        <PaymentNotSuccessful />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/resumerevisor"
+                    element={
+                      <ProtectedRoute>
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/interview-practice"
+                    element={
+                      <ProtectedRoute>
+                        <InterviewPractice />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/conversationpractice"
+                    element={
+                      <ProtectedRoute>
+                        <ConversationPractice />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <Admin />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/password-reset" element={<PasswordReset />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </TokenProvider>
+            </div>
           </Router>
         </VoiceBotStateProvider>
       </ColorModeProvider>

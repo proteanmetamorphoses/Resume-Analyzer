@@ -10,7 +10,6 @@ import {
 import { Link } from "react-router-dom";
 import "./Login.css";
 import googleLogo from "./GoogleG.png";
-import HexagonBackground from "./HexagonBackground";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../utils/firebase"; // Make sure to import your Firestore instance
 import { useAuth } from './AuthContext';
@@ -124,9 +123,6 @@ function Login() {
   
   return (
     <div className="login-container">
-      <div className="background-container">
-        <HexagonBackground />
-      </div>
       <h1 className="login-header-title">iSpeakWell</h1>
       <h5 className="tagline">Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.</h5>
       <h3>Revise with OpenAI.</h3>
@@ -161,22 +157,12 @@ function Login() {
         Forgot your password? <Link to="/password-reset" className="pwReset-link">Reset it here</Link>
       </h3>
       <div className="links-section">
-        <a onClick={() => navigateTo("/about")} href="/about">
-          About
-        </a>
-        <a onClick={() => navigateTo("/careers")} href="/careers">
-          Careers
-        </a>
-        <a onClick={() => navigateTo("/tokens")} href="/tokens">
-          Tokens
-        </a>
-        <a onClick={() => navigateTo("/contactus")} href="contactus">
-          Contact Us
-        </a>
-        <a onClick={() => navigateTo("/login")} href="login">
-          Login
-        </a>
-      </div>
+          <button className="link-button" onClick={() => navigateTo("/about")}>About</button>
+          <button className="link-button" onClick={() => navigateTo("/careers")}>Careers</button>
+          <button className="link-button" onClick={() => navigateTo("/tokens")}>Tokens</button>
+          <button className="link-button" onClick={() => navigateTo("/contactus")}>Contact Us</button>
+          <button className="link-button" onClick={() => navigateTo("/login")}>Login</button>
+        </div>
     </div>
   );
 }

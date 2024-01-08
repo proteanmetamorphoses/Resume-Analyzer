@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HexagonBackground from './HexagonBackground';
 import './PageExpired.css';
 import { getAuth } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -36,7 +35,6 @@ function PageExpired() {
 
   return (
     <div className="Menu-container">
-      <HexagonBackground />
       <h1 className="header-title">iSpeakWell</h1>
       <h5 className="tagLine">
         Shape Your Resume, Cover Letter, and Interview Language with Professionalism, Confidence, and Distinction.

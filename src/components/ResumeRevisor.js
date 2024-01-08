@@ -31,7 +31,6 @@ import {
 import { getAuth } from "firebase/auth";
 import DocumentModal from "./DocumentModal";
 import VoiceBotIframe from "./VoiceBotiFrame";
-import HexagonBackground from "./HexagonBackground";
 import JobSearch from "./JobSearch";
 import { useNavigate } from "react-router-dom";
 import Papa from "papaparse";
@@ -717,9 +716,6 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <div className="background-container">
-        <HexagonBackground />
-      </div>
       <header>
         <h1 className="Main-Header">iSpeakWell Resume Revisor</h1>
         <h2 className="Main-Header">
